@@ -31,6 +31,8 @@ router.get('/listStoreProduct/:id', productController.listStoreProduct); //add a
 //updated router
 
 router.get('/listCategory', ProductController2.listCategory);
+router.get('/listProduct',   ProductController2.listProduct);
+//
 router.get('/test2', productController.test);
 
 

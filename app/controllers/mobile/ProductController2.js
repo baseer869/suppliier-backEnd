@@ -99,4 +99,32 @@ module.exports = {
           sendResponse.error(error);
         }
       },
+      listProduct: async (req, res, next) => {
+        try {
+          let { search } = req.query;
+          let findQuery = {
+            where: [],
+          };
+          // if (search) {
+          //     findQuery.where.push({ name: { [Op.like]: '%' + search + '%' } });
+          // }
+          let list = await models.products.findAll({});
+          if (!list) {
+            return res.status(200).send({
+              status: 200,
+              messsage: "No record",
+              data: [],
+            });
+          }
+          return res.status(200).send({
+            status: 200,
+            message: "fetch successfull",
+            data: {
+              list: list,
+            },
+          });
+        } catch (error) {
+          sendResponse.error(error);
+        }
+      },
 }
