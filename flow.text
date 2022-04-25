@@ -1,0 +1,3 @@
+****************** Vendor *****************
+1: create shop for vendor 
+ field : [ name,categoryId, cityId, marketId, image, phone_number, emailAddress,status,allow ]
