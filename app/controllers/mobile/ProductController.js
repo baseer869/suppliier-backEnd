@@ -183,6 +183,19 @@ module.exports = {
       sendResponse.error(error);
     }
   },
+// test API
+
+test: async (req, res, next) => {
+  try {
+    let DATA = [{  id:"1", firstname:'ahmed' }]
+      return res.status(200).send(DATA);
+  } catch (error) {
+    sendResponse.error(error);
+  }
+},
+
+//
+
   listStoreProduct: async (req, res, next) => {
     try {
       let findQuery = {
