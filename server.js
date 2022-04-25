@@ -1,6 +1,7 @@
 
 const express = require('express');
 const morgan = require('morgan')
+const router = express.Router();
 const app = express();
 const bodyParser = require('body-parser');
 app.use(express.json());
@@ -14,9 +15,11 @@ app.options('*', cors())
 app.use('/cir/api/v1/cms', require('./app/routes/cms/cms'));
 app.use('/cir/api/v1/mobile', require('./app/routes/mobile/mobile'));
 
+router.get('/test', function (req, res)  {
+  res.render('hello world')
+})
 
-
-app.use('/',(req, res) => {
+app.use((req, res) => {
     return res.status(404).send({
         code: 404,
         message: 'requested route is not available',
