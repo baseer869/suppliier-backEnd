@@ -1,7 +1,9 @@
 
 const express = require('express');
 const morgan = require('morgan')
+const router = express.Router();
 const app = express();
+
 const bodyParser = require('body-parser');
 app.use(express.json());
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
@@ -13,6 +15,10 @@ app.options('*', cors())
 // Routes
 app.use('/cir/api/v1/cms', require('./app/routes/cms/cms'));
 app.use('/cir/api/v1/mobile', require('./app/routes/mobile/mobile'));
+
+router.get('/test', (req, res, err)=>{
+    res.render('hello world.')
+})
 
 app.use((req, res) => {
     return res.status(404).send({
