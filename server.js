@@ -12,11 +12,11 @@ const cors = require('cors');
 app.options('*', cors())
 
 // Routes
-app.use('/cir/api/v1/cms', require('./app/routes/cms/cms'));
-app.use('/cir/api/v1/mobile', require('./app/routes/mobile/mobile'));
+// app.use('/cir/api/v1/cms', require('./app/routes/cms/cms'));
+// app.use('/cir/api/v1/mobile', require('./app/routes/mobile/mobile'));
 
-router.get('/test', function (req, res)  {
-  res.render('hello world')
+app.get('/test', function (req, res)  {
+  res.json('hello world')
 })
 
 app.use((req, res) => {
