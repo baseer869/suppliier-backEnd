@@ -73,4 +73,30 @@ module.exports = {
             sendResponse.error(error)
         }
     },
+
+
+    addProduct: async (req, res, next) => {
+        try {
+            console.log('body', req.body);
+          let product = new models.products(req.body);
+          console.log('body', product);
+
+          let item = await product.save();
+          if (item) {
+            return res.status(200).send({
+              status: 200,
+              message: "Product added successfully",
+              data: item,
+            });
+          } else {
+            return res.status(400).send({
+              status: 400,
+              message: "Db Error",
+              data: [],
+            });
+          }
+        } catch (error) {
+          sendResponse.error(error);
+        }
+      },
 }

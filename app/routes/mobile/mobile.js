@@ -5,8 +5,9 @@ const authenticate = require('../../middleware/authentication');
 const authorization = require('../../middleware/authorization');
 const authController = require('../../controllers/mobile/authController');
 const productController = require('../../controllers/mobile/ProductController');
-const shopRequestController = require('../../controllers/mobile/shopRequestController');
+const shopRequestController = require('../../controllers/mobile/ProductController2');
 const cartController = require('../../controllers/mobile/cartController');
+const ProductController2 = require('../../controllers/mobile/ProductController2');
 
 
 
@@ -29,8 +30,7 @@ router.get('/listStoreProduct/:id', productController.listStoreProduct); //add a
 
 //updated router
 
-router.get('/listCategory', productController.listCategory);
-
+router.get('/listCategory', ProductController2.listCategory);
 router.get('/test2', productController.test);
 
 
