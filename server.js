@@ -27,7 +27,7 @@ app.use('/',(req, res) => {
 
 const sequelize = require('./database/sequelize/sequelize');
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT|| 3000, () => {
     console.log(`server is running on http://localhost:${process.env.PORT}`);
     sequelize.instance.authenticate().then(function(){
         console.log("DB Connection Successful");
