@@ -3,7 +3,13 @@ const Sequelize = require("sequelize");
 module.exports.sequelize = Sequelize;
 module.exports.instance = function () {
   let sequelize;
-  if (process.env.JAWSDB_URL) {
+  if (process.env.ENV === 'development') {
+    sequelize = new Sequelize("suppliier", "root", "root", {
+      host: "localhost",
+      dialect: "mysql",
+    });
+   
+  } else if(process.env.ENV === 'staging') {
     sequelize = new Sequelize(
       "kclpzjl4k26ckd6e",
       "knloqgrr1hzptv94",
@@ -13,11 +19,6 @@ module.exports.instance = function () {
         dialect: "mysql",
       }
     );
-  } else {
-    sequelize = new Sequelize("suppliier", "root", "root", {
-      host: "localhost",
-      dialect: "mysql",
-    });
   }
 
   return sequelize;
