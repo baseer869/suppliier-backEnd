@@ -12,8 +12,8 @@ const cors = require('cors');
 app.options('*', cors())
 
 // Routes
-// app.use('/cir/api/v1/cms', require('./app/routes/cms/cms'));
-// app.use('/cir/api/v1/mobile', require('./app/routes/mobile/mobile'));
+app.use('/cir/api/v1/cms', require('./app/routes/cms/cms'));
+app.use('/cir/api/v1/mobile', require('./app/routes/mobile/mobile'));
 
 app.get('/test', function (req, res)  {
   res.json('hello world')
