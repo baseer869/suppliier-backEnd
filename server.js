@@ -14,6 +14,10 @@ app.options('*', cors())
 app.use('/cir/api/v1/cms', require('./app/routes/cms/cms'));
 app.use('/cir/api/v1/mobile', require('./app/routes/mobile/mobile'));
 
+app.use('/aa',(req, res)=>{
+  res.render('hello world')
+})
+
 app.use((req, res) => {
     return res.status(404).send({
         code: 404,
