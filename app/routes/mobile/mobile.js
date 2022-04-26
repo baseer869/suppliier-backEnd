@@ -32,9 +32,11 @@ router.get('/listStoreProduct/:id', productController.listStoreProduct); //add a
 
 router.get('/listCategory', ProductController2.listCategory);
 router.get('/listProduct',   ProductController2.listProduct);
-//
-router.get('/test2', productController.test);
+router.get('/getProductDetail/:id',   ProductController2.productDetail )
+router.get('/categoryProduct', ProductController2.categoryProduct )
 
+
+//
 
 
 
@@ -49,7 +51,6 @@ router.get('/listStore', productController.listStore);
 router.get('/listProduct/:id', productController.listProduct);
 // 
 router.get('/listShopCategory/:id',  productController.listShopCategory)
-router.get('/categoryProduct', productController.categoryProduct )
 // 
 router.get('/storeChoiceProduct', productController.storeChoiceProduct )
 
@@ -58,7 +59,6 @@ router.post('/addUpdateCart', authenticate(), cartController.addUpdateCart )
 router.post('/addUpdateCart2', authenticate(), cartController.addUpdateCart2)
 router.get('/listCart/:id', authenticate(), cartController.listCart )
 router.post('/removeFromCart/:id', authenticate(), cartController.removeFromCart)
-router.get('/getProductDetail/:id',   productController.productDetail )
 
 
 // 
