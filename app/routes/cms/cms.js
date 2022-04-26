@@ -52,6 +52,9 @@ router.post('/login', authController.login );
 router.post('/addCategory', upload.single('attachement'), ProductController2.addCategory)
 router.post('/addProduct',   ProductController2.addProduct);
 router.get('/listProduct',   ProductController2.listProduct);
+router.get('/getProductDetail/:id',   ProductController2.productDetail )
+router.get('/categoryProduct', ProductController2.categoryProduct )
+
 
 
 

@@ -185,14 +185,7 @@ module.exports = {
   },
 // test API
 
-test: async (req, res, next) => {
-  try {
-    let DATA = [{  id:"1", firstname:'ahmed' }]
-      return res.status(200).send(DATA);
-  } catch (error) {
-    sendResponse.error(error);
-  }
-},
+
 
 //
 
@@ -326,45 +319,7 @@ test: async (req, res, next) => {
     }
   },
 
-  categoryProduct: async (req, res, next) => {
-    try {
-      let findQuery = {
-        where: {
-          [Op.and]: [
-            { shop_id: req.query.id },
-            { category_id: req.query.category_id }
-          ],
-        },
-        include:{
-          model: models.cart,
-          as: "carts_products",
-          where:{ userId: 32 },
-          required: false
-        }
-      };
-      // if (search) {
-      //     findQuery.where.push({ name: { [Op.like]: '%' + search + '%' } });
-      // }
-      let list = await models.products.findAndCountAll(findQuery);
-      if (!list) {
-        return res.status(200).send({
-          status: 200,
-          messsage: "No record",
-          data: [],
-        });
-      } else if (list) {
-        return res.status(200).send({
-          status: 200,
-          message: "fetch successfull",
-          data: {
-            list: list,
-          },
-        });
-      }
-    } catch (error) {
-      sendResponse.error(error);
-    }
-  },
+  
 // 
 storeChoiceProduct: async (req, res, next) => {
   try {
@@ -401,34 +356,6 @@ storeChoiceProduct: async (req, res, next) => {
 },
 
 
-productDetail: async (req, res, next) => {
-  try {
-    let findQuery = {
-      where: {  id: req.params.id },
-      include:{
-        model: models.cart,
-        as:"carts_products"
-      }
-    };
-    let list = await models.products.findOne(findQuery);
-    if (!list) {
-      return res.status(200).send({
-        status: 200,
-        messsage: "No record",
-        data: [],
-      });
-    } else if (list) {
-      return res.status(200).send({
-        status: 200,
-        message: "fetch successfull",
-        data: {
-          list: list,
-        },
-      });
-    }
-  } catch (error) {
-    sendResponse.error(error);
-  }
-},
+
 
 };
