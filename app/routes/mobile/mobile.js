@@ -36,7 +36,7 @@ router.get('/getProductDetail/:id',   ProductController2.productDetail )
 router.get('/categoryProduct', ProductController2.categoryProduct )
 
 //CART
-router.post('/addUpdateCart2', cartController.addUpdateCart2)
+router.post('/addUpdateCart2', authenticate(), cartController.addUpdateCart2)
 
 
 //

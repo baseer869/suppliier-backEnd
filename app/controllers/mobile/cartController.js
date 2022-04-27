@@ -124,77 +124,71 @@ module.exports = {
   addUpdateCart2: async (req, res, next) => {
     try {
       let cart;
-      console.log('body', req.body)
-
       let findQuery = {
         where: {
-          // [Op.and]: [
-          //   { productId: parseInt(req.body.productId) },
-          //   { userId: req.body.userId },
-          // ],
+          [Op.and]: [
+            { productId: parseInt(req.body.productId) },
+            { userId: req.userId },
+          ],
            productId: parseInt(req.body.productId)
 
         },
       };
-      console.log('jjsjsjj')
       let itemInCart = await models.cart.findOne(findQuery);
-      console.log('cartsss')
-      // if (itemInCart) {
-      //   itemInCart.dataValues.totalPrice += req.body.firstPrice;
-      //   itemInCart.dataValues.quantity + 1;
-      //   let cartUpdated;
-      //   cartUpdated = await models.cart.update(
-      //     {
-      //       totalPrice: itemInCart.dataValues.totalPrice,
-      //       quantity: (itemInCart.dataValues.quantity += 1),
-      //     },
-      //     {
-      //       where: {
-      //         id: itemInCart.dataValues.id,
-      //         productId: itemInCart.dataValues.productId,
-      //       },
-      //     }
-      //   );
-      //   if (cartUpdated) {
-      //     return res.status(200).send({
-      //       status: 200,
-      //       message: "Item updated",
-      //       item: cartUpdated,
-      //     });
-      //   } else {
-      //     return res.status(200).send({
-      //       status: 200,
-      //       message: "not updated",
-      //       item: cartUpdated,
-      //     });
-      //   }
-      // } else if (!itemInCart) {
-      // console.log('cart detail', itemInCart)
+      if (itemInCart) {
+        itemInCart.dataValues.totalPrice += req.body.firstPrice;
+        itemInCart.dataValues.quantity + 1;
+        let cartUpdated;
+        cartUpdated = await models.cart.update(
+          {
+            totalPrice: itemInCart.dataValues.totalPrice,
+            quantity: (itemInCart.dataValues.quantity += 1),
+          },
+          {
+            where: {
+              id: itemInCart.dataValues.id,
+              productId: itemInCart.dataValues.productId,
+            },
+          }
+        );
+        if (cartUpdated) {
+          return res.status(200).send({
+            status: 200,
+            message: "Item updated",
+            item: cartUpdated,
+          });
+        } else {
+          return res.status(200).send({
+            status: 200,
+            message: "not updated",
+            item: cartUpdated,
+          });
+        }
+      } else if (!itemInCart) {
 
-      //   let cartDetail = {
-      //     productId: parseInt(req.body.productId),
-      //     totalPrice: req.body.firstPrice,
-      //     quantity: req.body.quantity,
-      //     // userId: req.userId,
-      //   };
-      // console.log('body', cartDetail)
-      //   let cartItem = new models.cart(cartDetail);
-      //   let itemAdded = cartItem.save(cartItem);
+        let cartDetail = {
+          productId: parseInt(req.body.productId),
+          totalPrice: req.body.firstPrice,
+          quantity: req.body.quantity,
+          userId: req.userId,
+        };
+        let cartItem = new models.cart(cartDetail);
+        let itemAdded = cartItem.save(cartItem);
 
-      //   if (itemAdded) {
-      //     return res.status(200).send({
-      //       status: 200,
-      //       message: "Item added to cat",
-      //       data: cart,
-      //     });
-      //   } else {
-      //     return res.status(200).send({
-      //       status: 200,
-      //       message: "DB Error",
-      //       data: cart,
-      //     });
-      //   }
-      // }
+        if (itemAdded) {
+          return res.status(200).send({
+            status: 200,
+            message: "Item added to cat",
+            data: cart,
+          });
+        } else {
+          return res.status(200).send({
+            status: 200,
+            message: "DB Error",
+            data: cart,
+          });
+        }
+      }
     } catch (error) {
       sendResponse.error(error);
     }
