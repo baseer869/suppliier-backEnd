@@ -57,8 +57,7 @@ module.exports = {
           let cartItemDetail = {
             cartId: isUser.id,
             productId: parseInt(req.body.productId),
-            shopId: parseInt(req.body.shopId),
-            totalPrice: req.body.price,
+            totalPrice: req.body.firstPrice,
             quantity: req.body.quantity,
           };
           let cartItem = new models.cart_items(cartItemDetail);
@@ -90,8 +89,7 @@ module.exports = {
           let cartItemDetail = {
             cartId: cart.id,
             productId: parseInt(req.body.productId),
-            shopId: parseInt(req.body.shopId),
-            totalPrice: req.body.price,
+            totalPrice: req.body.firstPrice,
             quantity: req.body.quantity,
           };
           let cartItem = new models.cart_items(cartItemDetail);
@@ -126,18 +124,19 @@ module.exports = {
   addUpdateCart2: async (req, res, next) => {
     try {
       let cart;
-
       let findQuery = {
         where: {
           [Op.and]: [
             { productId: parseInt(req.body.productId) },
-            { userId: req.body.userId },
+            { userId: req.userId },
           ],
+           productId: parseInt(req.body.productId)
+
         },
       };
       let itemInCart = await models.cart.findOne(findQuery);
       if (itemInCart) {
-        itemInCart.dataValues.totalPrice += req.body.price;
+        itemInCart.dataValues.totalPrice += req.body.firstPrice;
         itemInCart.dataValues.quantity + 1;
         let cartUpdated;
         cartUpdated = await models.cart.update(
@@ -166,12 +165,12 @@ module.exports = {
           });
         }
       } else if (!itemInCart) {
+
         let cartDetail = {
           productId: parseInt(req.body.productId),
-          shopId: parseInt(req.body.shopId),
-          totalPrice: req.body.price,
+          totalPrice: req.body.firstPrice,
           quantity: req.body.quantity,
-          userId: req.body.userId,
+          userId: req.userId,
         };
         let cartItem = new models.cart(cartDetail);
         let itemAdded = cartItem.save(cartItem);
