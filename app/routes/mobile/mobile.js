@@ -37,7 +37,7 @@ router.get('/categoryProduct', ProductController2.categoryProduct )
 
 //CART
 router.post('/addUpdateCart2', authenticate(), cartController.addUpdateCart2)
-
+router.post('/checkout', authenticate(), cartController.checkout )
 
 //
 
