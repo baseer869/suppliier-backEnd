@@ -47,14 +47,14 @@ module.exports = function (db) {
     });
 
 
-    db.shops.hasMany(db.cart, {
-        as:'carts_shop',
-        foreignKey:"shopId",
-    });
-    db.cart.belongsTo(db.shops, {
-        as:'shops',
-        foreignKey:"shopId",
-    });
+    // db.shops.hasMany(db.cart, {
+    //     as:'carts_shop',
+    //     foreignKey:"shopId",
+    // });
+    // db.cart.belongsTo(db.shops, {
+    //     as:'shops',
+    //     foreignKey:"shopId",
+    // });
     
     //
 

@@ -21,13 +21,13 @@ module.exports = function (sequelize, Sequelizew) {
         key: "id",
       },
     },
-    shopId: {
-      type: DataTypes.BIGINT(20),
-      references: {
-        model: "shop",
-        key: "id",
-      },
-    },
+    // shopId: {
+    //   type: DataTypes.BIGINT(20),
+    //   references: {
+    //     model: "shop",
+    //     key: "id",
+    //   },
+    // },
     status: {
       type: DataTypes.ENUM,
       values: ['0', '1'],  // 0 for active 1 for inactive

@@ -1,72 +1,62 @@
-const { DataTypes, Sequelize } = require('sequelize');
+const { DataTypes, Sequelize } = require("sequelize");
 
 module.exports = function (sequelize, Sequelizew) {
-
-    const Model = sequelize.define('products', {
-        id: {
-            type: DataTypes.BIGINT(20),
-            primaryKey: true,
-            autoIncrement: true
-        },
-        name: {
-            type: DataTypes.STRING,
-        },
-        description: {
-            type: DataTypes.STRING,
-        },
-        price: {
-            type: DataTypes.FLOAT,
-        },
-        attachment: {
-            type: DataTypes.STRING,
-        },
-        stock: {
-            type: DataTypes.INTEGER,
-        },
-        longDesc: {
-            type: DataTypes.STRING
-        },
-        storeChoice:{
-            type:  Sequelize.ENUM,
-            values: ['0', '1'],
-            defaultValues:'0'
-        },
-        shop_id: {
-            type: DataTypes.BIGINT(20),
-            references: {
-                model: "shops",
-                key: "id"
-            },
-        },
-        category_id: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: "categories",
-                key: "id"
-            },
-        },
-        unitType:{
-            type: Sequelize.STRING,    
-        },
-        discountedPrice:{
-            type: Sequelize.FLOAT,
-            defaultValues:0.0
-        },
-        isAvailable :{
-           type: Sequelize.BOOLEAN,
-           defaultValues: true,
-        },
-        createdAt: {
-            field: "created_at",
-            type: Sequelize.DATE,
-        },
-        updatedAt: {
-            field: "updated_at",
-            type: Sequelize.DATE,
-        },
-       
+  const Model = sequelize.define("products", {
+    id: {
+      type: DataTypes.BIGINT(20),
+      primaryKey: true,
+      autoIncrement: true,
     },
-    );
-    return Model;
-}
+    name: {
+      type: DataTypes.STRING,
+    },
+    description: {
+      type: DataTypes.STRING,
+    },
+    firstPrice: {
+      type: DataTypes.FLOAT,
+    },
+    secondPrice: {
+      type: DataTypes.FLOAT,
+    },
+    attachment: {
+      type: DataTypes.STRING,
+    },
+    moq: {
+      type: DataTypes.FLOAT,
+    },
+    status: {
+      type: DataTypes.ENUM,
+      values: ["0", "1", "2"], // 0 for regular product 1 for arrival 3 for recommended
+      defaultValues: "0",
+    },
+    stock: {
+      type: DataTypes.INTEGER,
+    },
+    longDescription: {
+      type: DataTypes.STRING,
+    },
 
+    category_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "categories",
+        key: "id",
+      },
+    },
+
+    isAvailable: {
+      type: Sequelize.BOOLEAN,
+      defaultValues: true,
+    },
+    createdAt: {
+      field: "created_at",
+      type: Sequelize.DATE,
+    },
+    updatedAt: {
+      field: "updated_at",
+      type: Sequelize.DATE,
+    },
+  });
+  return Model;
+};

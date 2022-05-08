@@ -16,13 +16,8 @@ let db = {
  shop_category: (require('../schemas/shop_category'))(instance, Sequelize),
  cart: (require('../schemas/cart'))(instance, Sequelize),
  cart_items: (require('../schemas/cart_items'))(instance, Sequelize),
-
-
-
-
-
-
-
+ order : (require('../schemas/order'))(instance, Sequelize),
+ orderDetail : (require('../schemas/orderDetail'))(instance, Sequelize)
 
 
 };
