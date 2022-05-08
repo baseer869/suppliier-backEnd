@@ -216,7 +216,7 @@ module.exports = {
             required: true,
           },
           {
-            model: models.products,
+            model: models.products ,
             as: "products",
           },
         ],
