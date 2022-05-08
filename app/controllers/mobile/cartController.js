@@ -219,6 +219,8 @@ module.exports = {
             model: models.products ,
             as: "products",
           },
+
+          //
         ],
       };
       let list = await models.cart.findAll(findQuery);
