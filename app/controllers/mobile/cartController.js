@@ -1,4 +1,5 @@
 const { Op, Sequelize } = require("sequelize");
+const db = require("../../../database/sequelize/sequelize");
 const models = require("../../../database/sequelize/sequelize");
 const sendResponse = require("../../utility/functon/sendResponse");
 
@@ -130,8 +131,7 @@ module.exports = {
             { productId: parseInt(req.body.productId) },
             { userId: req.userId },
           ],
-           productId: parseInt(req.body.productId)
-
+          productId: parseInt(req.body.productId),
         },
       };
       let itemInCart = await models.cart.findOne(findQuery);
@@ -165,7 +165,6 @@ module.exports = {
           });
         }
       } else if (!itemInCart) {
-
         let cartDetail = {
           productId: parseInt(req.body.productId),
           totalPrice: req.body.firstPrice,
@@ -217,14 +216,11 @@ module.exports = {
             required: true,
           },
           {
-            model: models.products,
+            model: models.products ,
             as: "products",
           },
-          {
-            model: models.shops,
-            as: "shops",
-            attributes: ["id", "name"],
-          },
+
+          //
         ],
       };
       let list = await models.cart.findAll(findQuery);
@@ -313,6 +309,78 @@ module.exports = {
             data: cart,
           });
         }
+      }
+    } catch (error) {
+      sendResponse.error(error);
+    }
+  },
+
+  checkout: async (req, res, next) => {
+    try {
+      let product = [
+        {
+          id: 3,
+          quantity: 2,
+          price: 100,
+          discount: 0,
+        },
+        {
+          id: 4,
+          quantity: 2,
+          price: 100,
+          discount: 0,
+        },
+        {
+          id: 5,
+          quantity: 2,
+          price: 100,
+          discount: 0,
+        },
+      ];
+      let findQuery = {
+        where: {},
+      };
+      // let t = db.Sequelize.transaction;
+      let orderDetail = { ...req.body };
+      orderDetail.userId = req.userId;
+      orderDetail.orderDate = Date.now();
+      orderDetail.orderDate = Date.now();
+      orderDetail.orderNumber = Math.floor(100000 + Math.random() * 900000)
+      let order = new models.order(orderDetail);
+      let isOrderPlaced = await order.save(order);
+
+      if (isOrderPlaced) {
+        let orderDetails = [];
+        for (let index = 0; index < product.length; index++) {
+          orderDetails.push({
+            orderId: isOrderPlaced.id,
+            productId: product[index].id,
+            quantity: product[index].quantity,
+            price: product[index].price,
+            discount: product[index].discount,
+            orderNumber: isOrderPlaced.dataValues.orderNumber
+          });
+        }
+        let isPlaced = await models.orderDetail.bulkCreate(orderDetails);
+        if (isPlaced) {
+          return res.status(200).send({
+            status: 200,
+            message: "order successfully placed!",
+            order: isOrderPlaced,
+          });
+        } else {
+          return res.status(200).send({
+            status: 200,
+            message: "DB error while saving order",
+            order: null,
+          });
+        }
+      } else {
+        return res.status(200).send({
+          status: 200,
+          message: "DB error while saving set order",
+          order: null,
+        });
       }
     } catch (error) {
       sendResponse.error(error);

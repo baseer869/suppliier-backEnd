@@ -16,7 +16,9 @@ app.options('*', cors())
 app.use('/cir/api/v1/cms', require('./app/routes/cms/cms'));
 app.use('/cir/api/v1/mobile', require('./app/routes/mobile/mobile'));
 
-
+router.get('/test', (req, res, err)=>{
+    res.render('hello world.')
+})
 
 app.use((req, res) => {
     return res.status(404).send({
@@ -29,11 +31,11 @@ const sequelize = require('./database/sequelize/sequelize');
 
 app.listen(process.env.PORT|| 3000, () => {
     console.log(`server is running on http://localhost:${process.env.PORT}`);
-    sequelize.instance.authenticate().then(function(){
-        console.log("DB Connection Successful");
-    }).catch(function(error){
-        console.log("Unable to connect to database", error);
-    });
+    // sequelize.instance.authenticate().then(function(){
+    //     console.log("DB Connection Successful");
+    // }).catch(function(error){
+    //     console.log("Unable to connect to database", error);
+    // });
 });
 
 
