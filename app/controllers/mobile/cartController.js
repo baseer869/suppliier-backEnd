@@ -267,7 +267,7 @@ module.exports = {
       };
       let itemInCart = await models.cart.findOne(findQuery);
       if (itemInCart && itemInCart.dataValues.quantity > 1) {
-        itemInCart.dataValues.totalPrice -= req.body.price;
+        itemInCart.dataValues.totalPrice -= req.body.firstPrice;
         itemInCart.dataValues.quantity - 1;
         let cartUpdated;
         cartUpdated = await models.cart.update(
