@@ -9,6 +9,7 @@ const multer  = require('multer')
 const path = require('path');
 const mime = require('mime-types');
 const ProductController2 = require('../../controllers/mobile/ProductController2');
+const InqueryController = require('../../controllers/mobile/InqueryController');
 
 /*******************************************************/
 var allowed = [];
@@ -55,6 +56,8 @@ router.get('/listProduct',   ProductController2.listProduct);
 router.get('/getProductDetail/:id',   ProductController2.productDetail )
 router.get('/categoryProduct', ProductController2.categoryProduct )
 
+//INQUERY 
+router.get('/listInquery', authenticate(), InqueryController.listInquery )
 
 
 

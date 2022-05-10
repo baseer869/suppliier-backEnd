@@ -8,6 +8,7 @@ const productController = require('../../controllers/mobile/ProductController');
 const shopRequestController = require('../../controllers/mobile/ProductController2');
 const cartController = require('../../controllers/mobile/cartController');
 const ProductController2 = require('../../controllers/mobile/ProductController2');
+const InqueryController = require('../../controllers/mobile/InqueryController');
 
 
 
@@ -42,6 +43,9 @@ router.post('/removeFromCart/:id', authenticate(), cartController.removeFromCart
 router.get('/listCart', authenticate(), cartController.listCart )
 router.post('/checkout', authenticate(), cartController.checkout )
 
+
+//INQUERY 
+router.post('/postInquery', authenticate(), InqueryController.postInquery )
 
 //
 
