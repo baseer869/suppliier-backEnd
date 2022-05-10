@@ -253,12 +253,13 @@ module.exports = {
   removeFromCart: async (req, res, next) => {
     try {
       let cart;
+      console.log('user id',);
 
       let findQuery = {
         where: {
           [Op.and]: [
             { productId: parseInt(req.body.productId) },
-            { userId: req.body.userId },
+            { userId: req.userId },
           ],
         },
       };
