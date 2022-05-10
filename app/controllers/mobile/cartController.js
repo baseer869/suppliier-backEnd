@@ -198,7 +198,7 @@ module.exports = {
       let totalAmount;
       let shippingFee = 69;
       let findQuery = {
-        where: { userId: req.params.id },
+        where: { userId: req.userId },
 
         include: [
           {

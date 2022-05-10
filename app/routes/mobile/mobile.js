@@ -36,8 +36,12 @@ router.get('/getProductDetail/:id',   ProductController2.productDetail )
 router.get('/categoryProduct', ProductController2.categoryProduct )
 
 //CART
+
 router.post('/addUpdateCart2', authenticate(), cartController.addUpdateCart2)
+router.post('/removeFromCart/:id', authenticate(), cartController.removeFromCart)
+router.get('/listCart/:id', authenticate(), cartController.listCart )
 router.post('/checkout', authenticate(), cartController.checkout )
+
 
 //
 
@@ -59,8 +63,6 @@ router.get('/storeChoiceProduct', productController.storeChoiceProduct )
 
 // CART 
 router.post('/addUpdateCart', authenticate(), cartController.addUpdateCart )
-router.get('/listCart/:id', authenticate(), cartController.listCart )
-router.post('/removeFromCart/:id', authenticate(), cartController.removeFromCart)
 
 
 // 
