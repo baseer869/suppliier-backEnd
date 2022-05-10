@@ -39,7 +39,7 @@ router.get('/categoryProduct', ProductController2.categoryProduct )
 
 router.post('/addUpdateCart2', authenticate(), cartController.addUpdateCart2)
 router.post('/removeFromCart/:id', authenticate(), cartController.removeFromCart)
-router.get('/listCart/:id', authenticate(), cartController.listCart )
+router.get('/listCart', authenticate(), cartController.listCart )
 router.post('/checkout', authenticate(), cartController.checkout )
 
 
