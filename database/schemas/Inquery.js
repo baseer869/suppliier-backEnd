@@ -14,6 +14,9 @@ module.exports = function (sequelize, Sequelizew) {
         key: "id",
       },
     },
+    description:{
+     type: Sequelize.STRING,
+    },
     productId: {
       type: DataTypes.BIGINT(20),
       references: {
