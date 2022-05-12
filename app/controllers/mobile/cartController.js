@@ -320,19 +320,19 @@ module.exports = {
     try {
       let product = [
         {
-          id: 3,
+          id: 1,
           quantity: 2,
           price: 100,
           discount: 0,
         },
         {
-          id: 4,
+          id: 2,
           quantity: 2,
           price: 100,
           discount: 0,
         },
         {
-          id: 5,
+          id: 2,
           quantity: 2,
           price: 100,
           discount: 0,
