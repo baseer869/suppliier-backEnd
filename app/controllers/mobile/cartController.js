@@ -318,26 +318,7 @@ module.exports = {
 
   checkout: async (req, res, next) => {
     try {
-      let product = [
-        {
-          id: 1,
-          quantity: 2,
-          price: 100,
-          discount: 0,
-        },
-        {
-          id: 2,
-          quantity: 2,
-          price: 100,
-          discount: 0,
-        },
-        {
-          id: 2,
-          quantity: 2,
-          price: 100,
-          discount: 0,
-        },
-      ];
+     
       let findQuery = {
         where: {},
       };
@@ -352,13 +333,13 @@ module.exports = {
 
       if (isOrderPlaced) {
         let orderDetails = [];
-        for (let index = 0; index < product.length; index++) {
+        for (let index = 0; index <  req.body.product.length; index++) {
           orderDetails.push({
             orderId: isOrderPlaced.id,
-            productId: product[index].id,
-            quantity: product[index].quantity,
-            price: product[index].price,
-            discount: product[index].discount,
+            productId: req.body.product[index].id,
+            quantity:req.body.product[index].quantity,
+            price: req.body.product[index].price,
+            discount: req.body.product[index].discount,
             orderNumber: isOrderPlaced.dataValues.orderNumber
           });
         }
