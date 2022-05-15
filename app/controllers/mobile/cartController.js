@@ -340,6 +340,7 @@ module.exports = {
             price: req.body.product[index].price,
             discount: req.body.product[index].discount,
             orderNumber: isOrderPlaced.dataValues.orderNumber,
+            total: req.body.totalAmount
           });
         }
         let isPlaced = await models.orderDetail.bulkCreate(orderDetails);
