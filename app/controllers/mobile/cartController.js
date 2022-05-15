@@ -216,7 +216,7 @@ module.exports = {
             required: true,
           },
           {
-            model: models.products ,
+            model: models.products,
             as: "products",
           },
 
@@ -255,7 +255,7 @@ module.exports = {
   removeFromCart: async (req, res, next) => {
     try {
       let cart;
-      console.log('user id',);
+      console.log("user id");
 
       let findQuery = {
         where: {
@@ -318,38 +318,46 @@ module.exports = {
 
   checkout: async (req, res, next) => {
     try {
-     
       let findQuery = {
-        where: {},
+        where: { userId: req.userId },
       };
       // let t = db.Sequelize.transaction;
       let orderDetail = { ...req.body };
       orderDetail.userId = req.userId;
       orderDetail.orderDate = Date.now();
       orderDetail.orderDate = Date.now();
-      orderDetail.orderNumber = Math.floor(100000 + Math.random() * 900000)
+      orderDetail.orderNumber = Math.floor(100000 + Math.random() * 900000);
       let order = new models.order(orderDetail);
       let isOrderPlaced = await order.save(order);
 
       if (isOrderPlaced) {
         let orderDetails = [];
-        for (let index = 0; index <  req.body.product.length; index++) {
+        for (let index = 0; index < req.body.product.length; index++) {
           orderDetails.push({
             orderId: isOrderPlaced.id,
             productId: req.body.product[index].id,
-            quantity:req.body.product[index].quantity,
+            quantity: req.body.product[index].quantity,
             price: req.body.product[index].price,
             discount: req.body.product[index].discount,
-            orderNumber: isOrderPlaced.dataValues.orderNumber
+            orderNumber: isOrderPlaced.dataValues.orderNumber,
           });
         }
         let isPlaced = await models.orderDetail.bulkCreate(orderDetails);
         if (isPlaced) {
-          return res.status(200).send({
-            status: 200,
-            message: "order successfully placed!",
-            order: isOrderPlaced,
-          });
+          let removeCartItem = await models.cart.destroy(findQuery);
+          if (removeCartItem) {
+            return res.status(200).send({
+              status: 200,
+              message: "order successfully placed!",
+              order: isOrderPlaced,
+            });
+          } else {
+            return res.status(200).send({
+              status: 200,
+              message: "Unable to remove cart",
+              order: [],
+            });
+          }
         } else {
           return res.status(200).send({
             status: 200,
