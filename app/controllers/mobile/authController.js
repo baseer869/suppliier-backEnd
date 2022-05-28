@@ -8,11 +8,13 @@ module.exports = {
     signUp: async (req, res, next) => {
 
         try {
-            let { phone, shopName, shopAddress, cnicNumber, email, active, username, password, role } = req.body;
+            // let { phone, shopName, shopAddress, cnicNumber, email, active, username, password, role_id } = req.body;
+            let bodyData = {...req.body};
             let user ;
+           
             let findQuery = {
                 where: {
-                    email : email
+                    email : bodyData.email
                 }
             }
               user = await models.users.findOne(findQuery);
@@ -22,22 +24,15 @@ module.exports = {
                      message: `User already exists with this email ${email} address`
                  })
              }  
-            user = new models.users({});
-            user.email = email;
-            user.username = username;
-            user.active = active;
-            user.role = role,
-            user.phone = phone,
-            user.shopName = shopName,
-            user.shopAddress = shopAddress
-            user.cnicNumber = cnicNumber
-            user.generatePassword(password);
-            let test = await user.save();
-            if (test) {
+            user = new models.users(bodyData);
+           
+            user.generatePassword(bodyData.password);
+            let isSave = await user.save();
+            if (isSave) {
                 return res.status(200).send({
                     status: 200,
                     message: 'User Created successfully',
-                    data: test
+                    data: isSave
                 });
             } else {
                 return res.status(400).send({

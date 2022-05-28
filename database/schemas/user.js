@@ -9,7 +9,7 @@ module.exports = function (sequelize, Sequelizew) {
       autoIncrement: true,
     },
     role_id: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       references: {
         model: "roles",
         key: "id",
@@ -37,12 +37,6 @@ module.exports = function (sequelize, Sequelizew) {
     },
     cnicNumber: {
       type: Sequelize.STRING,
-    },
-
-    role: {
-      type: Sequelize.ENUM,
-      values: ["1", "2"],
-      defaultValues: "2", // 1 for admin , 2 for seller
     },
     password: {
       type: Sequelize.STRING,
@@ -76,7 +70,7 @@ module.exports = function (sequelize, Sequelizew) {
     attributes.username == "" || attributes.username == null
       ? (attributes.username = "Annonyoums")
       : "";
-    if (attributes.role === "2") {
+    if (attributes.role_id === 1) {
       delete attributes.password;
       delete attributes.email,
         delete attributes.zip,
@@ -85,13 +79,15 @@ module.exports = function (sequelize, Sequelizew) {
         delete attributes.city,
         delete attributes.token,
         delete attributes.state,
-        (attributes.role = "vendor");
+        (attributes.role = "admin");
     }
-    if (attributes.role === "1") {
-      attributes.role = "admin";
+    if (attributes.role_id === 2) {
+      attributes.role = "vendor";
     }
-    if (attributes.role === null) {
-      (attributes.role = "customer"), delete attributes.password;
+    if (attributes.role_id === 3) {
+      (attributes.role = "user"), 
+      delete attributes.password;
+      delete attributes.role_id;
     }
     return attributes;
   };

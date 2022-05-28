@@ -31,11 +31,11 @@ const sequelize = require('./database/sequelize/sequelize');
 
 app.listen(process.env.PORT|| 3000, () => {
     console.log(`server is running on http://localhost:${process.env.PORT}`);
-    // sequelize.instance.authenticate().then(function(){
-    //     console.log("DB Connection Successful");
-    // }).catch(function(error){
-    //     console.log("Unable to connect to database", error);
-    // });
+    sequelize.instance.authenticate().then(function(){
+        console.log("DB Connection Successful");
+    }).catch(function(error){
+        console.log("Unable to connect to database", error);
+    });
 });
 
 
