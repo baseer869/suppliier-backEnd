@@ -8,7 +8,13 @@ module.exports = function (sequelize, Sequelizew) {
       primaryKey: true,
       autoIncrement: true,
     },
-
+    role_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "roles",
+        key: "id",
+      },
+    },
     email: {
       type: Sequelize.STRING,
       unique: true,
