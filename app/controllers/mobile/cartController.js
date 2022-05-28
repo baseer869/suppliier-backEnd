@@ -216,7 +216,7 @@ module.exports = {
             required: true,
           },
           {
-            model: models.products ,
+            model: models.products,
             as: "products",
           },
 
@@ -255,7 +255,7 @@ module.exports = {
   removeFromCart: async (req, res, next) => {
     try {
       let cart;
-      console.log('user id',);
+      console.log("user id");
 
       let findQuery = {
         where: {
@@ -318,57 +318,47 @@ module.exports = {
 
   checkout: async (req, res, next) => {
     try {
-      let product = [
-        {
-          id: 1,
-          quantity: 2,
-          price: 100,
-          discount: 0,
-        },
-        {
-          id: 2,
-          quantity: 2,
-          price: 100,
-          discount: 0,
-        },
-        {
-          id: 2,
-          quantity: 2,
-          price: 100,
-          discount: 0,
-        },
-      ];
       let findQuery = {
-        where: {},
+        where: { userId: req.userId },
       };
       // let t = db.Sequelize.transaction;
       let orderDetail = { ...req.body };
       orderDetail.userId = req.userId;
       orderDetail.orderDate = Date.now();
       orderDetail.orderDate = Date.now();
-      orderDetail.orderNumber = Math.floor(100000 + Math.random() * 900000)
+      orderDetail.orderNumber = Math.floor(100000 + Math.random() * 900000);
       let order = new models.order(orderDetail);
       let isOrderPlaced = await order.save(order);
 
       if (isOrderPlaced) {
         let orderDetails = [];
-        for (let index = 0; index < product.length; index++) {
+        for (let index = 0; index < req.body.product.length; index++) {
           orderDetails.push({
             orderId: isOrderPlaced.id,
-            productId: product[index].id,
-            quantity: product[index].quantity,
-            price: product[index].price,
-            discount: product[index].discount,
-            orderNumber: isOrderPlaced.dataValues.orderNumber
+            productId: req.body.product[index].id,
+            quantity: req.body.product[index].quantity,
+            price: req.body.product[index].price,
+            discount: req.body.product[index].discount,
+            orderNumber: isOrderPlaced.dataValues.orderNumber,
+            total: req.body.totalAmount
           });
         }
         let isPlaced = await models.orderDetail.bulkCreate(orderDetails);
         if (isPlaced) {
-          return res.status(200).send({
-            status: 200,
-            message: "order successfully placed!",
-            order: isOrderPlaced,
-          });
+          let removeCartItem = await models.cart.destroy(findQuery);
+          if (removeCartItem) {
+            return res.status(200).send({
+              status: 200,
+              message: "order successfully placed!",
+              order: isOrderPlaced,
+            });
+          } else {
+            return res.status(200).send({
+              status: 200,
+              message: "Unable to remove cart",
+              order: [],
+            });
+          }
         } else {
           return res.status(200).send({
             status: 200,
