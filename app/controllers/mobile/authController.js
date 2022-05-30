@@ -8,7 +8,6 @@ module.exports = {
     signUp: async (req, res, next) => {
 
         try {
-            // let { phone, shopName, shopAddress, cnicNumber, email, active, username, password, role_id } = req.body;
             let bodyData = {...req.body};
             let user ;
            
@@ -24,6 +23,12 @@ module.exports = {
                      message: `User already exists with this email ${email} address`
                  })
              }  
+             if(bodyData.userType === 'user'){
+                 bodyData.role_id = 3
+             } 
+             if(bodyData.userType === 'reseller'){
+                bodyData.role_id = 2
+             }
             user = new models.users(bodyData);
            
             user.generatePassword(bodyData.password);
