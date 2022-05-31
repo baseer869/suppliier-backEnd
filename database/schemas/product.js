@@ -25,6 +25,11 @@ module.exports = function (sequelize, Sequelizew) {
     moq: {
       type: DataTypes.FLOAT,
     },
+    productType:{
+      type: DataTypes.ENUM,
+      values:['normal', 'sale', 'offer', 'groupBuy', 'launchingSoon', 'zotoChoice'],
+      defaultValues: "normal",
+    },
     status: {
       type: DataTypes.ENUM,
       values: ["0", "1", "2"], // 0 for regular product 1 for arrival 3 for recommended
