@@ -75,9 +75,8 @@ module.exports = {
 
   addProduct: async (req, res, next) => {
     try {
-      console.log("body", req.body);
-      let product = new models.products(req.body);
-      console.log("body", product);
+      let productBody = {...req.body};
+      let product = new models.products(productBody);
 
       let item = await product.save();
       if (item) {

@@ -59,7 +59,6 @@ router.post('/postInquery', authenticate(), InqueryController.postInquery )
 
 /******************* End User  ***************************/
 router.get('/listStore', productController.listStore); 
-router.get('/listProduct/:id', productController.listProduct);
 // 
 router.get('/listShopCategory/:id',  productController.listShopCategory)
 // 
@@ -71,8 +70,20 @@ router.post('/addUpdateCart', authenticate(), cartController.addUpdateCart )
 
 // 
 
+//***************************** ZOTO APP UPDATED API */
+
+/******************** Auth  ****************************/
+router.post('/signUp', authController.signUp);
+router.post('/login', authController.login)
+router.get('/listUser', authenticate(), authorization(), authController.listUser);
+router.get('/authenticateUser', authenticate(),  authController.authenticateUser);
 
 
+
+//********************** product listing/App ****************/
+
+
+router.get('/listProduct', productController.listProduct);
 
 
 
