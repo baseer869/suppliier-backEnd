@@ -13,10 +13,10 @@ module.exports = function (sequelize, Sequelizew) {
     description: {
       type: DataTypes.STRING,
     },
-    firstPrice: {
+    originalPrice: {
       type: DataTypes.FLOAT,
     },
-    secondPrice: {
+    discountedPrice: {
       type: DataTypes.FLOAT,
     },
     attachment: {
