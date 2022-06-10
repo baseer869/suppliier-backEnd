@@ -9,6 +9,7 @@ const shopRequestController = require('../../controllers/mobile/ProductControlle
 const cartController = require('../../controllers/mobile/cartController');
 const ProductController2 = require('../../controllers/mobile/ProductController2');
 const InqueryController = require('../../controllers/mobile/InqueryController');
+const userController = require('../../controllers/mobile/user/userController');
 
 
 
@@ -70,7 +71,7 @@ router.post('/addUpdateCart', authenticate(), cartController.addUpdateCart )
 
 // 
 
-//***************************** ZOTO APP UPDATED API */
+//***************************** RESELLO APP UPDATED API */
 
 /******************** Auth  ****************************/
 router.post('/signUp', authController.signUp);
@@ -78,12 +79,15 @@ router.post('/login', authController.login)
 router.get('/listUser', authenticate(), authorization(), authController.listUser);
 router.get('/authenticateUser', authenticate(),  authController.authenticateUser);
 
-
+// ---- //
+router.get('/fetchUserAddress', authenticate(),  userController.fetchUserAddress )
+router.post('/updateUserAddress', authenticate(),  userController.updateUserAddress )
 
 //********************** product listing/App ****************/
 
 
 router.get('/listProduct', productController.listProduct);
+
 
 
 

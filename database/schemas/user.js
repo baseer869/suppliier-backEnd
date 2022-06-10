@@ -26,7 +26,19 @@ module.exports = function (sequelize, Sequelizew) {
       type: Sequelize.BOOLEAN,
       default: true,
     },
+    default: {
+      type: Sequelize.BOOLEAN,
+      default: false,
+    },
+   addressTitle:{
+    type:  Sequelize.ENUM,
+    values: ['home', 'office',],
+    defaultValues: "home",
+   } ,
     username: {
+      type: Sequelize.STRING,
+    },
+    customerName: {
       type: Sequelize.STRING,
     },
     shopName: {
