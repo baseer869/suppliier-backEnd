@@ -16,7 +16,7 @@ module.exports = function (sequelize, Sequelizew) {
     originalPrice: {
       type: DataTypes.FLOAT,
     },
-    discountedPrice: {
+    price: {
       type: DataTypes.FLOAT,
     },
     attachment: {
