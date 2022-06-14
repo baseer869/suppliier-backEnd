@@ -49,7 +49,13 @@ module.exports = function (sequelize, Sequelizew) {
         key: "id",
       },
     },
-
+    store_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "store",
+        key: "id",
+      },
+    },
     isAvailable: {
       type: Sequelize.BOOLEAN,
       defaultValues: true,

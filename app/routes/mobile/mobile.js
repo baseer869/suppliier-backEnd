@@ -33,7 +33,7 @@ router.get('/listStoreProduct/:id', productController.listStoreProduct); //add a
 //updated router
 
 router.get('/listCategory', ProductController2.listCategory);
-router.get('/listProduct',   ProductController2.listProduct);
+// router.get('/listProduct',   ProductController2.listProduct);
 router.get('/getProductDetail/:id',   ProductController2.productDetail )
 router.get('/categoryProduct', ProductController2.categoryProduct )
 
@@ -80,13 +80,13 @@ router.get('/listUser', authenticate(), authorization(), authController.listUser
 router.get('/authenticateUser', authenticate(),  authController.authenticateUser);
 
 // ---- //
-router.get('/fetchUserAddress', authenticate(),  userController.fetchUserAddress )
+router.get('/fetchUserAddress', authenticate(),  userController.fetchUserAddress ) // new
 router.post('/updateUserAddress', authenticate(),  userController.updateUserAddress )
 
 //********************** product listing/App ****************/
 
 
-router.get('/listProduct', productController.listProduct);
+router.get('/listProduct', ProductController2.listProduct); // new
 
 
 

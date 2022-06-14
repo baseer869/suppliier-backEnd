@@ -101,16 +101,25 @@ module.exports = {
       let { search } = req.query;
       let findQuery = {
         where: [],
+        include:[ {
+          model: models.store,
+          as :"stores",
+          where:[{
+            status :'1'
+          } ],
+          attributes :['id', 'name',]
+
+        }]
       };
-      // if (search) {
-      //     findQuery.where.push({ name: { [Op.like]: '%' + search + '%' } });
-      // }
-      let list = await models.products.findAll({});
+      if (search) {
+          findQuery.where.push({ name: { [Op.like]: '%' + search + '%' } });
+      }
+      let list = await models.products.findAll(findQuery);
       if (!list) {
-        return res.status(200).send({
-          status: 200,
+        return res.status(202).send({
+          status: 202,
           messsage: "No record",
-          data: [],
+          data: null,
         });
       }
       return res.status(200).send({
