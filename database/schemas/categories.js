@@ -20,6 +20,10 @@ const Product = sequelize.define('categories', {
     color:{
         type: DataTypes.STRING,
     },
+    categoryType :{
+      type : DataTypes.ENUM,
+      values:['Electronics Accessories', 'Electronic Devices' ],
+    },
     createdAt: {
         field: "created_at",
         type: Sequelize.DATE,

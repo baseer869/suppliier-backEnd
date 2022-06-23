@@ -6,24 +6,9 @@ module.exports = {
   addCategory: async (req, res, next) => {
     try {
       let category;
-      // let findQuery = {
-      //     where: { user_id: req.body.user_id },
-      // };
-      // category = await models.categories.findOne(findQuery);
-      // if (category) {
-      //     return res.status(400).json({
-      //         status: 400,
-      //         message: "category Already exist on this request",
-      //         data: []
-      //     });
-      // } else
-      // if (!category && category === null) {
       req.body.attachement =
-        "http://localhost:3000/uploads/" + req.file.filename;
-      console.log(req.body);
+        "https://suppliier-new-staging-app.herokuapp.com/cir/api/v1/uploads/" + req.file.filename;
       category = await models.categories.create(req.body);
-      console.log("category===", category);
-
       if (category) {
         return res.status(200).json({
           status: 200,
@@ -37,14 +22,7 @@ module.exports = {
           data: [],
         });
       }
-      // }
-      // else {
-      //     return res.status(400).json({
-      //         status: 400,
-      //         message: "Db Eror",
-      //         data: []
-      //     });
-      // }
+     
     } catch (error) {
       sendResponse.error(error);
     }
