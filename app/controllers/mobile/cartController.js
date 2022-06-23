@@ -178,7 +178,7 @@ module.exports = {
           return res.status(200).send({
             status: 200,
             message: "Item added to cat",
-            data: cart,
+            data: cartItem,
           });
         } else {
           return res.status(200).send({
@@ -231,18 +231,18 @@ module.exports = {
         initialValue
       );
       if (!list) {
-        return res.status(200).json({
-          status: 200,
+        return res.status(202).json({
+          status: 202,
           message: "No Record",
-          data: [],
+          data: null,
         });
-      } else if (list) {
+      } else if (list.length >0) {
         return res.status(200).json({
           status: 200,
           message: "fetch succesfully",
           data: {
             shippingFee: shippingFee,
-            amount: totalAmount,
+            totalAmount: totalAmount,
             list: list,
           },
         });
