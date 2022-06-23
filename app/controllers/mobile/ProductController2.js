@@ -31,7 +31,9 @@ module.exports = {
   listCategory: async (req, res, next) => {
     try {
       let list;
-      let findQuery = {};
+      let findQuery = {
+        status : 1
+      };
       list = await models.categories.findAll(findQuery);
       if (list) {
         return res.status(200).json({
