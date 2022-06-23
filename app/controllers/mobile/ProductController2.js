@@ -32,7 +32,7 @@ module.exports = {
     try {
       let list;
       let findQuery = {
-        status : 1
+        status : '1'
       };
       list = await models.categories.findAll(findQuery);
       if (list) {
