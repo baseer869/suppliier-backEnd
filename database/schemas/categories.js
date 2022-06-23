@@ -26,7 +26,8 @@ const Product = sequelize.define('categories', {
     },
     status :{
        type : DataTypes.ENUM,
-       values:['0', '1']  // 0 for inactive , 1 for active
+       values:['0', '1'],  // 0 for inactive , 1 for active,
+       defaultValues: "0",
     },
     createdAt: {
         field: "created_at",
