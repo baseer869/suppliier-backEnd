@@ -19,7 +19,6 @@ let db = {
  Inquery : (require('../schemas/Inquery'))(instance, Sequelize)
 
 
-
 };
 
 (require("./associations"))(db);

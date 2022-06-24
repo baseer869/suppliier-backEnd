@@ -1,27 +1,41 @@
 const { Op } = require("sequelize");
 const models = require("../../../database/sequelize/sequelize");
 const sendResponse = require("../../utility/functon/sendResponse");
+const cloudinary = require('cloudinary').v2;
+const dotenv = require('dotenv');
+dotenv.config();
+
+
+
+cloudinary.config({
+  cloud_name : 'resello',
+  api_key : '739663612946264',
+  api_secret : 'LMWS-a7v4hvR7Yra3-ZcyAxi5SU'
+})
 
 module.exports = {
   addCategory: async (req, res, next) => {
     try {
       let category;
-      req.body.attachement =
-        "https://suppliier-new-staging-app.herokuapp.com/cir/api/v1/uploads/" + req.file.filename;
-      category = await models.categories.create(req.body);
-      if (category) {
-        return res.status(200).json({
-          status: 200,
-          message: "category created successfully",
-          data: category,
-        });
-      } else {
-        return res.status(400).json({
-          status: 400,
-          message: "Unable to create category",
-          data: [],
-        });
-      }
+      let  image = req.files.attachement ? req.files.attachement.tempFilePath : "" 
+       cloudinary.uploader.upload(image, { folder :'/uploads' }).then( async (result)=>{
+        req.body.attachement = result.url
+        category = await models.categories.create(req.body);
+        if (category) {
+          return res.status(200).json({
+            status: 200,
+            message: "category created successfully",
+            data: category,
+          });
+        } else {
+          return res.status(400).json({
+            status: 400,
+            message: "Unable to create category",
+            data: [],
+          });
+        }
+       
+      })
      
     } catch (error) {
       sendResponse.error(error);
