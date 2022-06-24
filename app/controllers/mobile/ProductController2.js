@@ -14,6 +14,7 @@ cloudinary.config({
 })
 
 module.exports = {
+  
   addCategory: async (req, res, next) => {
     try {
       let category;
