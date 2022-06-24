@@ -8,9 +8,9 @@ dotenv.config();
 
 
 cloudinary.config({
-  cloud_name : 'resello',
-  api_key : '739663612946264',
-  api_secret : 'LMWS-a7v4hvR7Yra3-ZcyAxi5SU'
+  cloud_name : process.env.CLOUDINARY_NAME,
+  api_key : process.env.CLOUDINARY_API_KEY,
+  api_secret : process.env.CLOUDINARY_API_SECRET
 })
 
 module.exports = {
