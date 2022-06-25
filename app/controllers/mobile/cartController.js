@@ -224,8 +224,7 @@ module.exports = {
         ],
       };
       let list = await models.cart.findAll(findQuery);
-     
-      if (!list) {
+      if (!list || list.length == []) {
         return res.status(202).json({
           status: 202,
           message: "No Record",
