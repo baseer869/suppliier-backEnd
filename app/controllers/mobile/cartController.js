@@ -224,14 +224,6 @@ module.exports = {
         ],
       };
       let list = await models.cart.findAll(findQuery);
-      if(list.length >0){
-        const initialValue = 69;
-        totalAmount = list.reduce(
-          (previousValue, currentValue) =>
-            previousValue + currentValue.dataValues.totalPrice,
-          initialValue
-        );
-      }
      
       if (!list) {
         return res.status(202).json({
@@ -240,6 +232,12 @@ module.exports = {
           data: null,
         });
       } else if (list.length >0) {
+        const initialValue = 69;
+        totalAmount = list.reduce(
+          (previousValue, currentValue) =>
+            previousValue + currentValue.dataValues.totalPrice,
+          initialValue
+        );
         return res.status(200).json({
           status: 200,
           message: "fetch succesfully",
