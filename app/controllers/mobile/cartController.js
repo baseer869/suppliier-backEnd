@@ -224,12 +224,15 @@ module.exports = {
         ],
       };
       let list = await models.cart.findAll(findQuery);
-      const initialValue = 69;
-      totalAmount = list.reduce(
-        (previousValue, currentValue) =>
-          previousValue + currentValue.dataValues.totalPrice,
-        initialValue
-      );
+      if(list.length >0){
+        const initialValue = 69;
+        totalAmount = list.reduce(
+          (previousValue, currentValue) =>
+            previousValue + currentValue.dataValues.totalPrice,
+          initialValue
+        );
+      }
+     
       if (!list) {
         return res.status(202).json({
           status: 202,
