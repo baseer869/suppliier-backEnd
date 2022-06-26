@@ -87,7 +87,7 @@ module.exports = {
       // })
       console.log('product is save=======', productBody)
 
-       item = new models.products.create(productBody);
+       item = await models.products.create(productBody);
        
       if (item) {
         return res.status(200).send({
