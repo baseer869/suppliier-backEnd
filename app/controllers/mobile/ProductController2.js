@@ -83,7 +83,8 @@ module.exports = {
          console.log('product is save=======', productBody)
 
          let product = new models.products(productBody);
-   
+         console.log('insatfctctc is save=======', product)
+        
           item = await product.save();
           console.log('item is save=======', item)
       })
