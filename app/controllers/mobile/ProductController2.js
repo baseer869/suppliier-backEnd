@@ -74,22 +74,29 @@ module.exports = {
   addProduct: async (req, res, next) => {
     try {
       let productBody = {...req.body};
-      let product = new models.products(productBody);
+      let  image = req.files.attachment ? req.files.attachment.tempFilePath : "" 
+      cloudinary.uploader.upload(image, { folder :'/uploads' }).then(async (result)=>{
 
-      let item = await product.save();
-      if (item) {
-        return res.status(200).send({
-          status: 200,
-          message: "Product added successfully",
-          data: item,
-        });
-      } else {
-        return res.status(400).send({
-          status: 400,
-          message: "Db Error",
-          data: [],
-        });
-      }
+        productBody.attachment = result.url
+
+        let product = new models.products(productBody);
+        let item = await product.save();
+
+        if (item) {
+          return res.status(200).send({
+            status: 200,
+            message: "Product added successfully",
+            data: item,
+          });
+        } else {
+          return res.status(400).send({
+            status: 400,
+            message: "Db Error",
+            data: [],
+          });
+        }
+      })
+
     } catch (error) {
       sendResponse.error(error);
     }
