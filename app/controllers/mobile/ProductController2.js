@@ -75,12 +75,12 @@ module.exports = {
     try {
       let productBody = {...req.body};
       let  image = req.files.attachment ? req.files.attachment.tempFilePath : "" 
-      cloudinary.uploader.upload(image, { folder :'/uploads' }).then(async (result)=>{
+      // cloudinary.uploader.upload(image, { folder :'/uploads' }).then(async (result)=>{
 
-        productBody.attachment = result.url
-         console.log("result========", result);
+      //   productBody.attachment = result.url
+      //    console.log("result========", result);
 
-      })
+      // })
 
       let product = new models.products(productBody);
       console.log('product is save=======', product)
