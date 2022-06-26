@@ -82,11 +82,11 @@ module.exports = {
          console.log("result========", result);
          console.log('product is save=======', productBody)
 
-         let product = new models.products(productBody);
-         console.log('insatfctctc is save=======', product)
+          item = new models.products.create(productBody);
+        //  console.log('insatfctctc is save=======', product)
         
-          item = await product.save();
-          console.log('item is save=======', item)
+          // item = await product.save();
+          // console.log('item is save=======', item)
       })
  
        
