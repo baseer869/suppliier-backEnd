@@ -78,10 +78,14 @@ module.exports = {
       cloudinary.uploader.upload(image, { folder :'/uploads' }).then(async (result)=>{
 
         productBody.attachment = result.url
+         console.log("result========", result);
 
         let product = new models.products(productBody);
-        let item = await product.save();
+        console.log('product is save=======', product)
 
+        let item = await product.save();
+         console.log('item is save=======', item)
+         
         if (item) {
           return res.status(200).send({
             status: 200,
