@@ -80,25 +80,25 @@ module.exports = {
 
         productBody.attachment = result.url
       
+        console.log('product is save=======', productBody)
 
+        item = await models.products.create(productBody);
+        
+       if (item) {
+         return res.status(200).send({
+           status: 200,
+           message: "Product added successfully",
+           data: item,
+         });
+       } else {
+         return res.status(400).send({
+           status: 400,
+           message: "Db Error",
+           data: [],
+         });
+       }
       })
-      console.log('product is save=======', productBody)
 
-       item = await models.products.create(productBody);
-       
-      if (item) {
-        return res.status(200).send({
-          status: 200,
-          message: "Product added successfully",
-          data: item,
-        });
-      } else {
-        return res.status(400).send({
-          status: 400,
-          message: "Db Error",
-          data: [],
-        });
-      }
     } catch (error) {
       sendResponse.error(error);
     }
