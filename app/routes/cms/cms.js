@@ -12,6 +12,7 @@ const mime = require('mime-types');
 const ProductController2 = require('../../controllers/mobile/ProductController2');
 const InqueryController = require('../../controllers/mobile/InqueryController');
 const StoreController = require('../../controllers/mobile/StoreController');
+const app_advertisement = require('../../controllers/mobile/appAdvertisement/app_advertisement');
 
 /*******************************************************/
 dotenv.config();
@@ -84,8 +85,11 @@ router.get('/listStoreCategory',  StoreController.listStoreCategory)
 router.post('/createStore',  StoreController.createStore)
 router.get('/listStore',  StoreController.listStore)
 
+// addAppAdvertisement
 
-
+router.post('/addAppAdvertisement',  app_advertisement.addAppAdvertisement)
+router.get('/fetchAppAdvertisement',  app_advertisement.fetchAppAdvertisement)
+router.post('/updateStatus/:id',  app_advertisement.updateStatus)
 
 
 module.exports = router;

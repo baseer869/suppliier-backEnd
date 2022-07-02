@@ -1,43 +1,42 @@
 const { Op } = require("sequelize");
 const models = require("../../../database/sequelize/sequelize");
 const sendResponse = require("../../utility/functon/sendResponse");
-const cloudinary = require('cloudinary').v2;
-const dotenv = require('dotenv');
+const cloudinary = require("cloudinary").v2;
+const dotenv = require("dotenv");
 dotenv.config();
 
-
-
 cloudinary.config({
-  cloud_name : process.env.CLOUDINARY_NAME,
-  api_key : process.env.CLOUDINARY_API_KEY,
-  api_secret : process.env.CLOUDINARY_API_SECRET
-})
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 module.exports = {
-  
   addCategory: async (req, res, next) => {
     try {
       let category;
-      let  image = req.files.attachement ? req.files.attachement.tempFilePath : "" 
-       cloudinary.uploader.upload(image, { folder :'/uploads' }).then( async (result)=>{
-        req.body.attachement = result.url
-        category = await models.categories.create(req.body);
-        if (category) {
-          return res.status(200).json({
-            status: 200,
-            message: "category created successfully",
-            data: category,
-          });
-        } else {
-          return res.status(400).json({
-            status: 400,
-            message: "Unable to create category",
-            data: [],
-          });
-        }
-       
-      })
-     
+      let image = req.files.attachement
+        ? req.files.attachement.tempFilePath
+        : "";
+      cloudinary.uploader
+        .upload(image, { folder: "/uploads" })
+        .then(async (result) => {
+          req.body.attachement = result.url;
+          category = await models.categories.create(req.body);
+          if (category) {
+            return res.status(200).json({
+              status: 200,
+              message: "category created successfully",
+              data: category,
+            });
+          } else {
+            return res.status(400).json({
+              status: 400,
+              message: "Unable to create category",
+              data: [],
+            });
+          }
+        });
     } catch (error) {
       sendResponse.error(error);
     }
@@ -47,10 +46,9 @@ module.exports = {
     try {
       let list;
       let findQuery = {
-        where :{
-          status : '1'
-
-        }
+        where: {
+          status: "1",
+        },
       };
       list = await models.categories.findAll(findQuery);
       if (list) {
@@ -73,32 +71,36 @@ module.exports = {
 
   addProduct: async (req, res, next) => {
     try {
-      let productBody = {...req.body};
+      let productBody = { ...req.body };
       let item;
-      let  image = req.files.attachment ? req.files.attachment.tempFilePath : "" 
-      cloudinary.uploader.upload(image, { folder :'/uploads' }).then(async (result)=>{
+      let image = req.files.attachment ? req.files.attachment.tempFilePath : "";
+      var imageUrlList = [];
+      for (var i = 0; i < req.files.attachment.length; i++) {
+        var locaFilePath = req.files.attachment[i].tempFilePath;
+       await cloudinary.uploader
+          .upload(locaFilePath, { folder: "/uploads" })
+          .then(async (result) => {
+            imageUrlList.push(result.url);
+          });
+      }
 
-        productBody.attachment = result.url
-      
-        console.log('product is save=======', productBody)
-
+      if (imageUrlList !== []) {
+        productBody.attachment = JSON.stringify(imageUrlList); 
         item = await models.products.create(productBody);
-        
-       if (item) {
-         return res.status(200).send({
-           status: 200,
-           message: "Product added successfully",
-           data: item,
-         });
-       } else {
-         return res.status(400).send({
-           status: 400,
-           message: "Db Error",
-           data: [],
-         });
-       }
-      })
-
+        if (item) {
+          return res.status(200).send({
+            status: 200,
+            message: "Product added successfully",
+            data: item,
+          });
+        } else {
+          return res.status(400).send({
+            status: 400,
+            message: "Db Error",
+            data: [],
+          });
+        }
+      }
     } catch (error) {
       sendResponse.error(error);
     }
@@ -108,18 +110,21 @@ module.exports = {
       let { search } = req.query;
       let findQuery = {
         where: [],
-        include:[ {
-          model: models.store,
-          as :"stores",
-          where:[{
-            status :'1'
-          } ],
-          attributes :['id', 'name',]
-
-        }]
+        include: [
+          {
+            model: models.store,
+            as: "stores",
+            where: [
+              {
+                status: "1",
+              },
+            ],
+            attributes: ["id", "name"],
+          },
+        ],
       };
       if (search) {
-          findQuery.where.push({ name: { [Op.like]: '%' + search + '%' } });
+        findQuery.where.push({ name: { [Op.like]: "%" + search + "%" } });
       }
       let list = await models.products.findAll(findQuery);
       if (!list) {
@@ -169,7 +174,7 @@ module.exports = {
   categoryProduct: async (req, res, next) => {
     try {
       let findQuery = {
-        where: { category_id: req.query.category_id  },
+        where: { category_id: req.query.category_id },
       };
       // if (search) {
       //     findQuery.where.push({ name: { [Op.like]: '%' + search + '%' } });
