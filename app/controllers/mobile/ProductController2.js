@@ -107,7 +107,7 @@ module.exports = {
   },
   listProduct: async (req, res, next) => {
     try {
-      let { search } = req.query;
+      let { search , filterType} = req.query;
       let findQuery = {
         where: [],
         include: [
@@ -125,6 +125,10 @@ module.exports = {
       };
       if (search) {
         findQuery.where.push({ name: { [Op.like]: "%" + search + "%" } });
+      }
+      if(filterType){
+        findQuery.where.push({ productType: { [Op.like]: "%" + filterType + "%" } });
+
       }
       let list = await models.products.findAll(findQuery);
       if (!list) {
