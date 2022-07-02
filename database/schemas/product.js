@@ -49,6 +49,13 @@ module.exports = function (sequelize, Sequelizew) {
         key: "id",
       },
     },
+    saleBanner_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "app_advertisements",
+        key: "id",
+      },
+    },
     store_id: {
       type: DataTypes.INTEGER,
       references: {
