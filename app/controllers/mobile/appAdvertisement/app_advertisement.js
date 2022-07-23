@@ -21,7 +21,7 @@ module.exports = {
       let image = req.files.attachement;
       let bodyData = { ...req.body };
       await cloudinary.uploader
-        .upload(image.tempFilePath, { folder: "/uploads" })
+        .upload(image.tempFilePath, { folder: "" })
         .then(async (result) => {
           bodyData.attachement = result.url;
           if (result.url) {
@@ -48,6 +48,7 @@ module.exports = {
 
   fetchAppAdvertisement: async (req, res, next) => {
     try {
+      console.log('loggg')
       let banner;
       let findQuery = {
         where: { status: "1" },

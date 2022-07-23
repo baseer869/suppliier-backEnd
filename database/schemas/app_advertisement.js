@@ -21,6 +21,11 @@ module.exports = function (sequelize, Sequelizew) {
       values: ["0", "1"],
       defaultValues: "0",
     },
+    // 
+    banner_type: {
+      type: Sequelize.ENUM,
+      values: ['sale','advertisements','offer','super deals','new'],
+    },
     coupen_code: {
       type: DataTypes.STRING,
     },
@@ -40,6 +45,9 @@ module.exports = function (sequelize, Sequelizew) {
     },
     updatedAt: {
       field: "updated_at",
+      type: Sequelize.DATE,
+    },
+    deleted_at: {
       type: Sequelize.DATE,
     },
   });

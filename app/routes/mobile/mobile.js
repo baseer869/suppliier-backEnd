@@ -10,6 +10,7 @@ const cartController = require('../../controllers/mobile/cartController');
 const ProductController2 = require('../../controllers/mobile/ProductController2');
 const InqueryController = require('../../controllers/mobile/InqueryController');
 const userController = require('../../controllers/mobile/user/userController');
+const app_advertisement = require('../../controllers/mobile/appAdvertisement/app_advertisement');
 
 
 
@@ -88,6 +89,8 @@ router.post('/updateUserAddress', authenticate(),  userController.updateUserAddr
 
 router.get('/listProduct', ProductController2.listProduct); // new
 
+//-- //
+router.get('/fetchAppAdvertisement',  app_advertisement.fetchAppAdvertisement)
 
 
 
