@@ -48,11 +48,16 @@ module.exports = {
 
   fetchAppAdvertisement: async (req, res, next) => {
     try {
-      console.log('loggg')
       let banner;
       let findQuery = {
-        where: { status: "1" },
+        where: [],
       };
+      
+      if(req.query.filter ){
+        findQuery.where.push({ banner_type: req.query.filter, status: '1' })
+      } else {
+        findQuery.where.push({  status: '1' })
+      }
       banner = await models.app_advertisement.findAll(findQuery);
       if (banner) {
         return res.status(200).json({
