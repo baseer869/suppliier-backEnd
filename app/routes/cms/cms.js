@@ -60,7 +60,7 @@ var upload   = multer({  storage: storage,
 router.post('/signUp', authController.signUp );
 router.post('/login', authController.login );
 
-/********************* cms ***************************/
+/*********************   ***************************/
 // router.post('/addCategory', upload.single('attachement'), ProductController2.addCategory)
 router.post('/addProduct',   ProductController2.addProduct);
 router.get('/listProduct',   ProductController2.listProduct);
