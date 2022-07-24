@@ -323,23 +323,41 @@ module.exports = {
       let orderDetail = { ...req.body };
       orderDetail.userId = req.userId;
       orderDetail.orderDate = Date.now();
-      orderDetail.orderDate = Date.now();
       orderDetail.orderNumber = Math.floor(100000 + Math.random() * 900000);
       let order = new models.order(orderDetail);
       let isOrderPlaced = await order.save(order);
 
       if (isOrderPlaced) {
+
+        // for sinle order 
         let orderDetails = [];
-        for (let index = 0; index < req.body.product.length; index++) {
-          orderDetails.push({
-            orderId: isOrderPlaced.id,
-            productId: req.body.product[index].id,
-            quantity: req.body.product[index].quantity,
-            price: req.body.product[index].price,
-            discount: req.body.product[index].discount,
-            orderNumber: isOrderPlaced.dataValues.orderNumber,
-            total: req.body.totalAmount
-          });
+
+        if(req.body.isCartItem == true ){
+          for (let index = 0; index < req.body.product.length; index++) {
+            orderDetails.push({
+              orderId: isOrderPlaced.id,
+              productId: req.body.product[index].productId,
+              quantity: req.body.product[index].quantity,
+              price: req.body.product[index].totalPrice,
+              discount: req.body.product[index].discount,
+              orderNumber: isOrderPlaced.dataValues.orderNumber,
+              total: req.body.totalAmount
+            });
+          }
+           
+        } else {
+          for (let index = 0; index < req.body.product.length; index++) {
+            orderDetails.push({
+              orderId: isOrderPlaced.id,
+              productId: req.body.product[index].id,
+              quantity: req.body.product[index].quantity,
+              price: req.body.product[index].price,
+              discount: req.body.product[index].discount,
+              orderNumber: isOrderPlaced.dataValues.orderNumber,
+              total: req.body.totalAmount
+            });
+          }
+            
         }
         let isPlaced = await models.orderDetail.bulkCreate(orderDetails);
         if (isPlaced) {
