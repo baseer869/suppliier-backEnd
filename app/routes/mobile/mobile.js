@@ -31,7 +31,7 @@ router.post('/changeProductStatus/:id', authenticate(),  productController.chang
 router.get('/listStoreCategory/:id', authenticate(),  productController.listStoreCategory);
 router.get('/listStoreProduct/:id', productController.listStoreProduct); //add authroization
 
-//updated router
+//updated router /********************************************************************************* */
 
 router.get('/listCategory', ProductController2.listCategory);
 // router.get('/listProduct',   ProductController2.listProduct);
