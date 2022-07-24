@@ -230,7 +230,7 @@ module.exports = {
           message: "No Record",
           data: null,
         });
-      } else if (list.length >0) {
+      } else if (list.length > 0) {
         const initialValue = 69;
         totalAmount = list.reduce(
           (previousValue, currentValue) =>
@@ -328,11 +328,10 @@ module.exports = {
       let isOrderPlaced = await order.save(order);
 
       if (isOrderPlaced) {
-
-        // for sinle order 
+        // for sinle order
         let orderDetails = [];
 
-        if(req.body.isCartItem == true ){
+        if (req.body.isCartItem == true) {
           for (let index = 0; index < req.body.product.length; index++) {
             orderDetails.push({
               orderId: isOrderPlaced.id,
@@ -341,10 +340,9 @@ module.exports = {
               price: req.body.product[index].totalPrice,
               discount: req.body.product[index].discount,
               orderNumber: isOrderPlaced.dataValues.orderNumber,
-              total: req.body.totalAmount
+              total: req.body.totalAmount,
             });
           }
-           
         } else {
           for (let index = 0; index < req.body.product.length; index++) {
             orderDetails.push({
@@ -354,10 +352,9 @@ module.exports = {
               price: req.body.product[index].price,
               discount: req.body.product[index].discount,
               orderNumber: isOrderPlaced.dataValues.orderNumber,
-              total: req.body.totalAmount
+              total: req.body.totalAmount,
             });
           }
-            
         }
         let isPlaced = await models.orderDetail.bulkCreate(orderDetails);
         if (isPlaced) {
@@ -393,4 +390,42 @@ module.exports = {
       sendResponse.error(error);
     }
   },
+
+  listUserOrder: async (req, res, next) => {
+    try {
+      let findQuery = {
+        where: { userId: req.userId },
+        include: [
+          {
+            model: models.orderDetail,
+            as: "orderDetails",
+            attributes:['id','orderId','productId','orderNumber','price','quantity','total'],
+            include: [
+              {
+                model: models.products,
+                attributes:['id','name','attachment','originalPrice','price',],
+              },
+            ],
+          },
+        ],
+      };
+      let [orders, error] = await models.order.findAll(findQuery);
+      if (!orders) {
+        return res.status(202).json({
+          status: 202,
+          message: "No Record",
+          data: null,
+        });
+      }
+      return res.status(200).json({
+        status: 200,
+        message: "fetch successfully",
+        data: orders,
+      });
+    } catch (error) {
+      sendResponse.error(error);
+    }
+  },
 };
+
+
