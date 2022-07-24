@@ -41,4 +41,39 @@ module.exports = function (db) {
         as:'cart_items',
         foreignKey:"productId",
     });
+
+
+    //  order  -> user
+    db.users.hasMany(db.order, {
+        as:"orders",
+        foreignKey: "userId"
+    });
+    db.order.belongsTo(db.users, {
+        as: "users_order",
+        foreignKey: "userId"
+
+    })
+
+    //
+    db.order.hasMany(db.orderDetail, {
+        // as:"orderDetails",
+        foreignKey:"orderId"    
+    });
+    db.orderDetail.belongsTo(db.users, {
+        // as:"orderDetails",
+        foreignKey:"orderId"   
+    })
+ 
+
+    // order  product  association 
+
+    db.products.hasMany(db.orderDetail, {
+        // as:"ordered_products",
+        foreignKey:"productId"
+    })
+    db.orderDetail.belongsTo(db.products,{
+        // as:"products",
+        foreignKey:"productId"
+    })
+
 }
