@@ -408,7 +408,7 @@ module.exports = {
           },
         ],
       };
-      let orders, error = await models.order.findAll(findQuery);
+      let orders = await models.order.findAll(findQuery);
       if (!orders) {
         return res.status(202).json({
           status: 202,
