@@ -343,18 +343,21 @@ module.exports = {
               total: req.body.totalAmount,
             });
           }
-        } else {
+        } else if(req.body.isCartItem == false) {
           for (let index = 0; index < req.body.product.length; index++) {
             orderDetails.push({
               orderId: isOrderPlaced.id,
               productId: req.body.product[index].id,
               quantity: req.body.product[index].quantity,
               price: req.body.product[index].price,
-              discount: req.body.product[index].discount,
+              // discount: req.body.product[index].discount,
               orderNumber: isOrderPlaced.dataValues.orderNumber,
               total: req.body.totalAmount,
             });
+        console.log("orderDetails", orderDetails )
+
           }
+
         }
         let isPlaced = await models.orderDetail.bulkCreate(orderDetails);
         if (isPlaced) {
