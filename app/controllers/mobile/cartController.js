@@ -361,20 +361,16 @@ module.exports = {
         }
         let isPlaced = await models.orderDetail.bulkCreate(orderDetails);
         if (isPlaced) {
-          let removeCartItem = await models.cart.destroy(findQuery);
-          if (removeCartItem) {
+          if(req.body.isCartItem == true){
+            let removeCartItem = await models.cart.destroy(findQuery);
+
+          }
             return res.status(200).send({
               status: 200,
               message: "order successfully placed!",
               order: isOrderPlaced,
             });
-          } else {
-            return res.status(200).send({
-              status: 200,
-              message: "Unable to remove cart",
-              order: [],
-            });
-          }
+         
         } else {
           return res.status(200).send({
             status: 200,
