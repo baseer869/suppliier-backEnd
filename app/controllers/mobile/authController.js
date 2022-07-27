@@ -5,39 +5,83 @@ const User = require('../../../database/schemas/user');
 
 module.exports = {
 
-    signUp: async (req, res, next) => {
+    // signUp: async (req, res, next) => {
 
+    //     try {
+    //         let {  email } = req.body;
+    //         let findQuery = {
+    //             where: { email: email }
+    //         }
+           
+           
+    //         let  [user, error] = await models.users.findOne(findQuery);
+    //         console.log('error', user)
+    //          if(user){
+    //              return res.status(400).json({
+    //                  status: 400,
+    //                  message: `User already exists with this email ${email} address`,
+    //                  user
+    //              })
+    //          }  
+    //         //  if(bodyData.userType === 'user'){
+    //         //      bodyData.role_id = 3
+    //         //  } 
+    //         //  if(bodyData.userType === 'reseller'){
+    //         //     bodyData.role_id = 2
+    //         //  }
+    //         // user = new models.users(bodyData);
+           
+    //         // user.generatePassword(bodyData.password);
+    //         // let isSave = await user.save();
+    //         // if (isSave) {
+    //         //     return res.status(200).send({
+    //         //         status: 200,
+    //         //         message: 'User Created successfully',
+    //         //         data: isSave
+    //         //     });
+    //         // } else {
+    //         //     return res.status(400).send({
+    //         //         status: 400,
+    //         //         message: 'DB Error'
+    //         //     });
+    //         // }
+    //     } catch (error) {
+    //         return res.status(404).send({
+    //             status: 404,
+    //             message: "DB error",
+    //             error
+    //         });      
+    //       }
+    // },
+    signUp: async (req, res, next) => {
         try {
-            let bodyData = {...req.body};
-            let user ;
-           
+            let { password, email } = req.body;
             let findQuery = {
-                where: {
-                    email : bodyData.email
-                }
+                where: { email: email }
             }
-              user = await models.users.findOne(findQuery);
-             if(user){
-                 return res.status(400).send({
-                     status: 400,
-                     message: `User already exists with this email ${email} address`
-                 })
-             }  
-             if(bodyData.userType === 'user'){
-                 bodyData.role_id = 3
+            let user = await models.users.findOne(findQuery);
+            if(user){
+                return res.status(202).json({
+                    status: 202,
+                    message:"Email Already Exist !!",
+                    data : null
+                })
+            }
+               if(req.body.userType === 'user'){
+                req.body.role_id = 3
              } 
-             if(bodyData.userType === 'reseller'){
-                bodyData.role_id = 2
+             if(req.body.userType === 'reseller'){
+                req.body.role_id = 2
              }
-            user = new models.users(bodyData);
+            user = new models.users(req.body);
            
-            user.generatePassword(bodyData.password);
-            let isSave = await user.save();
-            if (isSave) {
+            user.generatePassword(req.body.password);
+            let userCreated = await user.save();
+            if (userCreated) {
                 return res.status(200).send({
                     status: 200,
                     message: 'User Created successfully',
-                    data: isSave
+                    data: userCreated
                 });
             } else {
                 return res.status(400).send({
@@ -45,15 +89,12 @@ module.exports = {
                     message: 'DB Error'
                 });
             }
-        } catch (error) {
-            res.status(404).send({
-                code: 404,
-                message: 'error',
-                error
-            });
-        }
-    },
 
+        } catch (error) {
+            sendResponse.error(error);
+        }
+
+    },
     login: async (req, res, next) => {
         try {
             let { password, email } = req.body;
