@@ -50,6 +50,7 @@ module.exports = function (sequelize, Sequelizew) {
       type: Sequelize.DATE,
     },
     createdAt: {
+      
       field: "created_at",
       type: Sequelize.DATE,
     },
