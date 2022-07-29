@@ -72,28 +72,48 @@ module.exports = {
   addProduct: async (req, res, next) => {
     try {
       let productBody = { ...req.body };
+      let  images
       let item;
-      let image = req.files.attachment ? req.files.attachment.tempFilePath : "";
+      // let image = req.files.attachment ? req.files.attachment.tempFilePath : "";
       var imageUrlList = [];
+
       for (var i = 0; i < req.files.attachment.length; i++) {
         var locaFilePath = req.files.attachment[i].tempFilePath;
-        console.log("locaFilePath", locaFilePath)
        await cloudinary.uploader
           .upload(locaFilePath, { folder: "" })
           .then(async (result) => {
             imageUrlList.push(result.url);
           });
       }
-
-      if (imageUrlList !== []) {
-        productBody.attachment = JSON.stringify(imageUrlList); 
+     
+        productBody.attachment = null 
         item = await models.products.create(productBody);
         if (item) {
-          return res.status(200).send({
-            status: 200,
-            message: "Product added successfully",
-            data: item,
-          });
+          for (let index = 0; index < imageUrlList.length; index++) {
+            const element = imageUrlList[index];
+            let imagesBody = {
+              status:"1",
+              images : element,
+              productId: item?.dataValues?.id
+
+            }
+          
+            images  = await models.product_images.create(imagesBody);
+           
+          }
+          if(images){
+            return res.status(200).send({
+              status: 200,
+              message: "Product added successfully",
+              data: item,
+            });
+          } else {
+            return res.status(404).send({
+              status: 404,
+              message: "Unable to add product",
+              data: item,
+            });
+          }
         } else {
           return res.status(400).send({
             status: 400,
@@ -101,7 +121,6 @@ module.exports = {
             data: [],
           });
         }
-      }
     } catch (error) {
       sendResponse.error(error);
     }

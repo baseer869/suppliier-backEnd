@@ -18,7 +18,9 @@ let db = {
  orderDetail : (require('../schemas/orderDetail'))(instance, Sequelize),
  Inquery : (require('../schemas/Inquery'))(instance, Sequelize),
 //
-app_advertisement : (require('../schemas/app_advertisement'))(instance, Sequelize)
+app_advertisement : (require('../schemas/app_advertisement'))(instance, Sequelize),
+product_images : (require('../schemas/product_images'))(instance, Sequelize)
+
 
 };
 
