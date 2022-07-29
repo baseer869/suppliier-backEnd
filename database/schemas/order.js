@@ -43,6 +43,12 @@ module.exports = function (sequelize, Sequelizew) {
       type: Sequelize.ENUM,
       values: ["0", "1"],
     },
+    margin: {
+      type: Sequelize.INTEGER,
+    },
+    estimatedDeliveryDate:{
+      type: Sequelize.DATE,
+    },
     createdAt: {
       field: "created_at",
       type: Sequelize.DATE,
