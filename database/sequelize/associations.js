@@ -75,5 +75,12 @@ module.exports = function (db) {
         // as:"products",
         foreignKey:"productId"
     })
-
+    db.products.hasMany(db.product_images, {
+        as:"product_images",
+        foreignKey:"productId"
+    })
+    db.product_images.belongsTo(db.products,{
+        as:"product_images",
+        foreignKey:"productId"
+    })
 }

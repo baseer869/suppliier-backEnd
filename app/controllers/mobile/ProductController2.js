@@ -141,6 +141,10 @@ module.exports = {
             ],
             attributes: ["id", "name"],
           },
+          {
+            model: models.product_images,
+            as:"product_images"
+          }
         ],
       };
       if (search) {
