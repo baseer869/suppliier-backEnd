@@ -19,7 +19,9 @@ let db = {
  Inquery : (require('../schemas/Inquery'))(instance, Sequelize),
 //
 app_advertisement : (require('../schemas/app_advertisement'))(instance, Sequelize),
-product_images : (require('../schemas/product_images'))(instance, Sequelize)
+product_images : (require('../schemas/product_images'))(instance, Sequelize),
+products_shipping_charges : (require('../schemas/products_shipping_charges'))(instance, Sequelize),
+
 
 
 };
