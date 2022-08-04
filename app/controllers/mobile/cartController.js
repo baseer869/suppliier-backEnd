@@ -196,7 +196,7 @@ module.exports = {
   listCart: async (req, res, next) => {
     try {
       let totalAmount;
-      let shippingFee = 69;
+      let shippingFee = 0;
       let findQuery = {
         where: { userId: req.userId },
 
@@ -218,10 +218,16 @@ module.exports = {
           {
             model: models.products,
             as: "products",
+            include :{
+              attributes :['id', 'images','productId'],
+              model : models.product_images,
+              as:'product_images',
+            }
           },
 
-          //
+        
         ],
+        order: [['productId', 'DESC']]
       };
       let list = await models.cart.findAll(findQuery);
       if (!list || list.length == []) {
@@ -231,7 +237,7 @@ module.exports = {
           data: null,
         });
       } else if (list.length > 0) {
-        const initialValue = 69;
+        const initialValue = 0;
         totalAmount = list.reduce(
           (previousValue, currentValue) =>
             previousValue + currentValue.dataValues.totalPrice,

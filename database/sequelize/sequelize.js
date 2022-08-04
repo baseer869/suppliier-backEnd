@@ -26,5 +26,5 @@ products_shipping_charges : (require('../schemas/products_shipping_charges'))(in
 
 };
 
-(require("./associations"))(db);
+(require("./associations"))(db,sequelize);
 module.exports = db;
