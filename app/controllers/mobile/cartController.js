@@ -196,7 +196,7 @@ module.exports = {
   listCart: async (req, res, next) => {
     try {
       let totalAmount;
-      let shippingFee = 69;
+      let shippingFee = 0;
       let findQuery = {
         where: { userId: req.userId },
 
@@ -237,7 +237,7 @@ module.exports = {
           data: null,
         });
       } else if (list.length > 0) {
-        const initialValue = 69;
+        const initialValue = 0;
         totalAmount = list.reduce(
           (previousValue, currentValue) =>
             previousValue + currentValue.dataValues.totalPrice,
