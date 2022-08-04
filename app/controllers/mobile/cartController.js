@@ -218,10 +218,16 @@ module.exports = {
           {
             model: models.products,
             as: "products",
+            include :{
+              attributes :['id', 'images','productId'],
+              model : models.product_images,
+              as:'product_images',
+            }
           },
 
-          //
+        
         ],
+        order: [['productId', 'DESC']]
       };
       let list = await models.cart.findAll(findQuery);
       if (!list || list.length == []) {
