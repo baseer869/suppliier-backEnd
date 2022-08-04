@@ -51,7 +51,7 @@ module.exports = function (sequelize, Sequelizew) {
       type: Sequelize.STRING,
     },
     password: {
-      type: Sequelize.STRING,
+      type: Sequelize.NUMBER,
       trim: true,
     },
     city: {
