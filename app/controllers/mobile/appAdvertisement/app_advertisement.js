@@ -19,14 +19,15 @@ module.exports = {
     try {
       let banner;
       let image = req.files.attachement;
+
       let bodyData = { ...req.body };
-      await cloudinary.uploader
-        .upload(image.tempFilePath, { folder: "" })
-        .then(async (result) => {
-          bodyData.attachement = result.url;
-          if (result.url) {
+      console.log('image---', req.files)
+
+     let response =  await cloudinary.uploader
+        .upload(image.tempFilePath, {  folder:"/f_auto,q_auto",})
+      
+            bodyData.attachement = response.url;
             banner = await models.app_advertisement.create(bodyData);
-          }
           if (banner) {
             return res.status(200).json({
               status: 200,
@@ -40,7 +41,6 @@ module.exports = {
               data: null,
             });
           }
-        });
     } catch (error) {
       sendResponse.error(error);
     }
