@@ -1,126 +1,189 @@
 const crypto = require("crypto");
-const Sequelize = require("sequelize");
-
-module.exports = function (sequelize, Sequelizew) {
-  const User = sequelize.define("user", {
-    id: {
-      type: Sequelize.BIGINT(20),
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    role_id: {
-      type: Sequelize.INTEGER,
-      references: {
-        model: "roles",
-        key: "id",
+module.exports = function (sequelize, Sequelize) {
+  let Model = sequelize.define(
+    "users",
+    {
+      id: {
+        type: Sequelize.BIGINT(20),
+        primaryKey: true,
+        autoIncrement: true,
       },
-    },
-    email: {
-      type: Sequelize.STRING,
-      unique: true,
-      validate: {
-        isEmail: true,
+      role_id: {
+        type: Sequelize.BIGINT(20),
+        allowNull: true,
+        references: {
+          model: "roles",
+          key: "id",
+        },
       },
-    },
-    active: {
-      type: Sequelize.BOOLEAN,
-      default: true,
-    },
-    default: {
-      type: Sequelize.BOOLEAN,
-      default: false,
-    },
-   addressTitle:{
-    type:  Sequelize.ENUM,
-    values: ['home', 'office',],
-    defaultValues: "home",
-   } ,
-    username: {
-      type: Sequelize.STRING,
-    },
-    customerName: {
-      type: Sequelize.STRING,
-    },
-    shopName: {
-      type: Sequelize.STRING,
-    },
-    shopAddress: {
-      type: Sequelize.STRING,
-    },
-    cnicNumber: {
-      type: Sequelize.STRING,
-    },
-    password: {
-      type: Sequelize.STRING,
-      trim: true,
-    },
-    city: {
-      type: Sequelize.STRING,
-    },
-    state: {
-      type: Sequelize.STRING,
-    },
-    zip: {
-      type: Sequelize.INTEGER,
-    },
-    phone: {
-      type: Sequelize.INTEGER,
-    },
-    address: {
-      type: Sequelize.STRING,
-    },
-    token: {
-      type: Sequelize.STRING,
-      trim: true,
-    },
-  });
+      shipping_id: {
+        type: Sequelize.BIGINT(20),
+        allowNull: true,
+        references: {
+          model: "shipping_details",
+          key: "id",
+        },
+      },
+      username: {
+        type: String,
+        trim: true,
+        allowNull: true,
+        defaultValue: null,
+      },
+      email: {
+        type: String,
+        trim: true,
+        allowNull: true,
+        defaultValue: null,
+      },
+      // subscriptionEmail: {
+      //   type: String,
+      //   trim: true,
+      //   allowNull: true,
+      //   defaultValue: null,
+      // },
+      // phone: {
+      //   type: Sequelize.BIGINT(20),
+      //   allowNull: true,
+      //   defaultValue: null,
+      // },
+      // gender: {
+      //     type: Sequelize.ENUM,
+      //     values: ['male', 'female'],
+      //     defaultValue: null
+      // },
 
-  User.prototype.toJSON = function () {
-    let attributes = this.get();
-    delete attributes.createdAt;
-    delete attributes.updatedAt;
-    attributes.username == "" || attributes.username == null
-      ? (attributes.username = "Annonyoums")
-      : "";
-    if (attributes.role_id === 1) {
-      delete attributes.password;
-      delete attributes.email,
-        delete attributes.zip,
-        delete attributes.address,
-        delete attributes.state,
-        delete attributes.city,
-        delete attributes.token,
-        delete attributes.state,
-        (attributes.role = "admin");
-    }
-    if (attributes.role_id === 2) {
-      attributes.role = "vendor";
-    }
-    if (attributes.role_id === 3) {
-      (attributes.role = "user"), 
-      delete attributes.password;
-      delete attributes.role_id;
-    }
+      // DOB: {
+      //   //type: Sequelize.DATE,
+      //   type: Date,  // changed by usman because of date format
+      //   defaultValue: null,
+      // },
+      verify_code: {
+        type: Sequelize.NUMBER,
+        defaultValue: null,
+      },
+      password: {
+        type: String,
+        trim: true,
+      },
+      // device_token: {
+      //   type: String,
+      //   trim: true,
+      //   defaultValue: null,
+      // },
+      // device_type: {
+      //   type: Sequelize.ENUM,
+      //   values: ["ios", "android"],
+      //   defaultValue: null,
+      // },
+      // rating: {
+      //   type: Sequelize.FLOAT,
+      //   defaultValue: 0.0,
+      // },
+      // lang: {
+      //   type: Sequelize.ENUM,
+      //   values: ["en", "ar"],
+      //   defaultValue: "en",
+      // },
+      // allowPush: {
+      //   type: Sequelize.BOOLEAN,
+      //   defaultValue: true,
+      // },
+      last_login: {
+        type: String,
+        trim: true,
+        defaultValue: null,
+      },
+      reset_token: {
+        type: String,
+        trim: true,
+        defaultValue: null,
+      },
+      verified: {
+        type: Sequelize.ENUM,
+        values: ["0", "1", "2"],
+        defaultValue: "0",
+      },
+      status: {
+        type: Sequelize.ENUM,
+        values: ["0", "1", "2"],
+        defaultValue: "0",
+      },
+      createdAt: {
+        field: "created_at",
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        field: "updated_at",
+        type: Sequelize.DATE,
+      },
+    }, {
+    indexes: [
+      {
+        unique: true,
+        fields: ['email', 'role_id', 'shipping_id']
+      }
+    ]
+  }, {
+    tableName: "users",
+    getterMethods: {
+      username: function (field) {
+        return String(this.getDataValue(field) || "").trim();
+      },
+      // DOB: function (field) {
+      //   return String(this.getDataValue(field) || "").trim();
+      // },
+      phone: function (field) {
+        return String(this.getDataValue(field) || "").trim();
+      },
+      email: function (field) {
+        return String(this.getDataValue(field) || "").trim();
+      },
+      // gender: function (field) {
+      //     return String(this.getDataValue(field) || "").trim();
+      // },
+      // nationality: function (field) {
+      //   return String(this.getDataValue(field) || "").trim();
+      // },
+    },
+  }
+  );
+  Model.prototype.toJSON = function () {
+    let attributes = Object.assign({}, this.get());
+    delete attributes.password;
+    delete attributes.password_reset_token;
+    delete attributes.sub_status_code;
+    // delete attributes.status;
+    // if (attributes.role_id == 1) {
+    //   attributes.userType = "user";
+    // } else if (attributes.role_id == 2) {
+    //   attributes.userType = "artist";
+    // } else if( attributes.role_id == 3 ){
+    //   attributes.userType = 'entertainer'
+    // }
+    // delete attributes.role_id;
+    // delete attributes.verify_code;
+    // delete attributes.app_version;
+    // delete attributes.createdAt;
+    // delete attributes.updatedAt;
     return attributes;
   };
-  User.prototype.generatePassword = function (password, option) {
+  Model.prototype.generateAuthKey = function (length) {
+    length = parseInt(length) || 40;
+    this.auth_key =
+      this.id + "___" + crypto.randomBytes(length).toString("hex");
+  };
+  Model.prototype.generatePassword = function (password) {
     password = String(password).trim();
     this.password = crypto.createHash("sha1").update(password).digest("hex");
   };
-
-  User.prototype.validatePassword = function (password, hashed) {
-    password = String(password).trim();
+  Model.prototype.validatePassword = function (password, hashed) {
     hashed = String(hashed).trim();
-    let validate =
-      !password ||
-      !hashed ||
-      password === "" ||
-      hashed === null ||
-      password === null;
-    if (validate) {
+    password = String(password).trim();
+    if (!hashed || !password || hashed === "" || password === "") {
       return false;
     }
     return crypto.createHash("sha1").update(password).digest("hex") === hashed;
   };
-  return User;
+  return Model;
 };

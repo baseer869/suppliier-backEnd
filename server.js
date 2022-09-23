@@ -16,8 +16,8 @@ app.use(fileUpload({
     useTempFiles : true,
   }));
 // Routes
-app.use('/cir/api/v1/cms', require('./app/routes/cms/cms'));
-app.use('/cir/api/v1/mobile', require('./app/routes/mobile/mobile'));
+app.use('/resello/api/v1/cms', require('./app/routes/cms/cms'));
+app.use('/resello/api/v1/mobile', require('./app/routes/mobile/mobile'));
 
 router.get('/test', (req, res, err)=>{
     res.render('hello world.')

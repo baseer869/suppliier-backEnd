@@ -16,8 +16,8 @@ const app_advertisement = require('../../controllers/mobile/appAdvertisement/app
 
 
 /******************** Auth  ****************************/
-router.post('/signUp', authController.signUp);
-router.post('/login', authController.login)
+router.post("/signup", authController.signup);
+router.post("/login", authController.login);
 router.get('/listUser', authenticate(), authorization(), authController.listUser);
 router.get('/authenticateUser', authenticate(),  authController.authenticateUser);
 
@@ -76,8 +76,8 @@ router.post('/addUpdateCart', authenticate(), cartController.addUpdateCart )
 //***************************** RESELLO APP UPDATED API */
 
 /******************** Auth  ****************************/
-router.post('/signUp', authController.signUp);
-router.post('/login', authController.login)
+// router.post('/signUp', authController.signUp);
+// router.post('/login', authController.login)
 router.get('/listUser', authenticate(), authorization(), authController.listUser);
 router.get('/authenticateUser', authenticate(),  authController.authenticateUser);
 

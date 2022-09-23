@@ -7,7 +7,7 @@ let db = {
  Sequelize: Sequelize,
  users : (require('../schemas/user'))(instance, Sequelize),
  products: (require('../schemas/product'))(instance, Sequelize),
- auth_key: (require('../schemas/auth_key'))(instance, Sequelize),
+ authKey: (require('../schemas/auth_key'))(instance, Sequelize),
  categories: (require('../schemas/categories'))(instance, Sequelize),
  store: (require('../schemas/store'))(instance, Sequelize),
  store_categories: (require('../schemas/store_categories'))(instance, Sequelize),

@@ -3,8 +3,8 @@ const Sequelize = require("sequelize");
 module.exports.sequelize = Sequelize;
 module.exports.instance = function () {
   let sequelize;
-  if (process.env.ENV === 'development') {
-    sequelize = new Sequelize("suppliier", "root", "root", {
+  if (process.env.ENV === 'localhost') {
+    sequelize = new Sequelize("resello", "root", "root", {
       host: "localhost",
       dialect: "mysql",
     });

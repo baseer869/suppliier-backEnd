@@ -57,7 +57,7 @@ var upload   = multer({  storage: storage,
 
  
 /******************** Auth  ****************************/
-router.post('/signUp', authController.signUp );
+// router.post('/signUp', authController.signUp );
 router.post('/login', authController.login );
 
 /*********************   ***************************/
