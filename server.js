@@ -32,14 +32,23 @@ app.use((req, res) => {
 
 const sequelize = require('./database/sequelize/sequelize');
 
-app.listen(process.env.PORT|| 3000, () => {
+const server = app.listen(process.env.PORT|| 3000,  async (error) => {
+    if(error){console.log("App Error", error);}
+    {
     console.log(`server is running on http://localhost:${process.env.PORT}`);
     sequelize.instance.authenticate().then(function(){
         console.log("DB Connection Successful");
     }).catch(function(error){
         console.log("Unable to connect to database", error);
     });
+}
+
 });
+
+/*******************************************************/
+server.timeout = 80 * 1000;
+/*******************************************************/
+module.exports = server;
 
 
 
