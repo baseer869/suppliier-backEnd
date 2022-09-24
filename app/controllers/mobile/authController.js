@@ -238,6 +238,26 @@ module.exports = {
       sendResponse.error(error, next, res);
     }
   },
+  logout: async (req, res, next) => {
+		try {
+			let whereauthkey = {
+				user_id: req.userId,
+			};
+			let auth_key = await database.findOne(models.authKey, whereauthkey);
+			if (auth_key) {
+				auth_key.auth_key = null;
+				let result = await database.save(auth_key);
+			}
+			res.status(200).json({
+				status: 200,
+				message: "Logged out successfully",
+				data: null,
+			});
+		} catch (error) {
+			console.log(error);
+			sendResponse.error(error, next, res);
+		}
+	},
     listUser: async function (req, res, next) {
         try {
             let list;
