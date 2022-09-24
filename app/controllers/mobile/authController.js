@@ -257,6 +257,27 @@ module.exports = {
 			sendResponse.error(error, next, res);
 		}
 	},
+
+	getProfile: async (req, res, next) => {
+		try {
+			const userId = req.userId;
+			const where = {
+				id: userId,
+			};
+			const user = await database.findOne(models.users, where);
+			res.status(200).json({
+				status: 200,
+				message: "User Profile found",
+				data: user,
+			});
+		} catch (error) {
+			console.log(error);
+			sendResponse.error(error, next, res);
+		}
+	},
+
+
+  //
     listUser: async function (req, res, next) {
         try {
             let list;

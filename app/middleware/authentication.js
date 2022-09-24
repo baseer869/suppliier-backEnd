@@ -12,7 +12,6 @@ module.exports = function(type){
     return async function(req, res, next){
         try{
             const token = req.headers.authorization;
-            console.log("token --<", token)
             if(!token || (token === "") || (token === false) || (token === null)){
                 next({
                     status: 401,
