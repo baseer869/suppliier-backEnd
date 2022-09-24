@@ -103,13 +103,14 @@ module.exports = {
 				// }
 
 				let result = await database.save(User);
-
+         
 				if (result) {
 					let token = jwt.sign({ id: result.email }, "secretString", {
 						expiresIn: 86400, // 24 hours
 					});
+          console.log("loggg user-->", result)
 					whereForAuthKey = {
-						user_id: result.id,
+						user_id: result.id || 1,
 					};
 					let authkey = await database.findOne(models.authKey, whereForAuthKey);
 					if (!authkey) {
