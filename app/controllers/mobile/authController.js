@@ -58,9 +58,9 @@ module.exports = {
     // },
     signup: async (req, res, next) => {
 		try {
-			if (req.body.user_type == "reseller") {
+			if (req.body.user_type === "reseller") {
 				req.body.role_id = "1";
-			} else if (req.body.user_type == "user") {
+			} else if (req.body.user_type === "user") {
 				req.body.role_id = "2";
 			}else {
 				return res.status(400).json({
