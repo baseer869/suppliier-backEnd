@@ -120,7 +120,7 @@ module.exports = {
 					// 	let result1 = await database.save(Authkey);
 					// } else if (authkey) {
 						authkey.auth_key = token;
-						let result = await database.save(authkey);
+						 result = await database.save(authkey);
 					// }
 					// if (result.role_id == 1 || result.role_id == 3) {
 					// 	let instance = new models.artist_info({});
