@@ -108,20 +108,20 @@ module.exports = {
 					let token = jwt.sign({ id: result.email }, "secretString", {
 						expiresIn: 86400, // 24 hours
 					});
-					whereForAuthKey = {
-						user_id: result.id,
-					};
-					let authkey = await database.findOne(models.authKey, whereForAuthKey);
-					if (!authkey) {
-						let Authkey = new models.authKey({});
-						Authkey.user_id = parseInt(result.id);
-						Authkey.auth_key = token;
+					// whereForAuthKey = {
+					// 	user_id: result.id,
+					// };
+					// let authkey = await database.findOne(models.authKey, whereForAuthKey);
+					// if (!authkey) {
+					// 	let Authkey = new models.authKey({});
+					// 	Authkey.user_id = parseInt(result.id);
+					// 	Authkey.auth_key = token;
 						
-						let result1 = await database.save(Authkey);
-					} else if (authkey) {
+					// 	let result1 = await database.save(Authkey);
+					// } else if (authkey) {
 						authkey.auth_key = token;
 						let result = await database.save(authkey);
-					}
+					// }
 					// if (result.role_id == 1 || result.role_id == 3) {
 					// 	let instance = new models.artist_info({});
 					// 	instance.user_id = result.id;
