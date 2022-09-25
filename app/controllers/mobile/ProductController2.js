@@ -91,9 +91,9 @@ module.exports = {
             sendResponse.error(error)
           });
       }
-      // let code = Math.floor(Math.random() * (99999 - 10000) + 10000 + 20000);
+      let code = Math.floor(Math.random() * (99999 - 10000) + 10000 + 20000);
       productBody.attachment = null;
-      productBody.product_code = `re${22}`
+      productBody.product_code = `re${code}`
       item = await models.products.create(productBody);
       if (item) {
         // let shippingChargesBody = {
