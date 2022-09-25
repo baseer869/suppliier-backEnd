@@ -22,6 +22,10 @@ module.exports = function (sequelize, Sequelizew) {
     attachment: {
       type: DataTypes.STRING,
     },
+    product_code:{
+       type: DataTypes.STRING,
+      
+    },
     moq: {
       type: DataTypes.FLOAT,
     },
