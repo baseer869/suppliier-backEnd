@@ -2,6 +2,7 @@ const { Op } = require("sequelize");
 const models = require("../../../database/sequelize/sequelize");
 const sendResponse = require("../../utility/functon/sendResponse");
 const cloudinary = require("cloudinary").v2;
+const database = require("../../utility/calls/databaseRequest");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -69,34 +70,42 @@ module.exports = {
     }
   },
 
+  //
   addProduct: async (req, res, next) => {
     try {
       let productBody = { ...req.body };
       let images;
       let item;
       var imageUrlList = [];
+      console.log("req.files.attachment[i].tempFilePath", req.files.attachment[i])
       for (var i = 0; i < req.files.attachment.length; i++) {
+        console.log('req.files.attachment', req.files.attachment)
         var locaFilePath = req.files.attachment[i].tempFilePath;
         await cloudinary.uploader
           .upload(locaFilePath, { folder: "" })
           .then(async (result) => {
+            console.log("result", result)
             imageUrlList.push(result.url);
+          }).catch((error) => {
+            console.log("error", error)
+            sendResponse.error(error)
           });
-        }
-
+      }
+      let code = Math.floor(Math.random() * (99999 - 10000) + 10000 + 20000);
       productBody.attachment = null;
+      productBody.product_code = `re${code}`
       item = await models.products.create(productBody);
       if (item) {
-        let shippingChargesBody = {
-          productId: item?.dataValues?.id,
-          is_shipping_charges: req.body.is_shipping_charges,
-          charges: parseInt(req.body.charges) 
-        }
-     
-        await models.products_shipping_charges.create(
-          shippingChargesBody
-        );
-       
+        // let shippingChargesBody = {
+        //   productId: item?.dataValues?.id,
+        //   is_shipping_charges: req.body.is_shipping_charges,
+        //   charges: parseInt(req.body.charges) 
+        // }
+
+        // await models.products_shipping_charges.create(
+        //   shippingChargesBody
+        // );
+
         for (let index = 0; index < imageUrlList.length; index++) {
           const element = imageUrlList[index];
           let imagesBody = {
@@ -106,31 +115,86 @@ module.exports = {
           };
 
           images = await models.product_images.create(imagesBody);
-        }      
-          if (images) {
-            return res.status(200).send({
-              status: 200,
-              message: "Product added successfully",
-              data: item,
-            });          
-          } else {
+        }
+        if (images) {
+          return res.status(200).json({
+            status: 200,
+            message: `Product added successfully`,
+            data: {
+              item: item,
+            },
+          });
+          //
+        } else {
           return res.status(404).send({
             status: 404,
             message: "Unable to add product",
-            data: item,
-            });
-           }
+            data: {
+              item: null
+            },
+          });
+        }
       } else {
         return res.status(400).send({
           status: 400,
           message: "Db Error",
-          data: [],
+          data: null,
         });
       }
     } catch (error) {
-      sendResponse.error(error);
+      console.log(error);
+      sendResponse.error(error, next, res);
     }
   },
+  searchProduct: async (req, res, next) => {
+    try {
+      let {  code } = req.body;
+       let product_code = `re${code}`
+      if (!req.body.code) {
+        return res.status(400).json({
+          status: 400,
+          message: `Product code is required to buy`,
+          data: null
+        });
+      }
+      let where = {
+        product_code:product_code.trim(),
+      };
+      let product = await  database.findOne(models.products, where);
+      if(product){
+        res.status(200).json({
+          status: 200,
+          message: "Product Found",
+          data: {
+            product: product
+          },
+        });
+      }
+       else if (!product) {
+        const response = {
+          status: 401,
+          message: "Product not found.",
+          data: {
+            product: null,
+          },
+        };
+        return res.status(401).json(response);
+      }  else {
+        sendResponse.success(
+          500,
+          result,
+          "Failed to communicate with server.",
+          req,
+          res
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      sendResponse.error(error, next, res);
+    }
+  },
+
+  //
   listProduct: async (req, res, next) => {
     try {
       let { search, filterType } = req.query;
@@ -152,7 +216,7 @@ module.exports = {
             as: "product_images",
           },
           {
-            attributes:['id', 'charges', 'is_shipping_charges'],
+            attributes: ['id', 'charges', 'is_shipping_charges'],
             model: models.products_shipping_charges,
             as: "products_shipping_charges",
           },

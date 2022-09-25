@@ -14,8 +14,7 @@ const app_advertisement = require('../../controllers/mobile/appAdvertisement/app
 
 
 
-
-/******************** Auth  ****************************/
+//--//
 router.post("/signup", authController.signup);
 router.post("/login", authController.login);
 router.post("/logout", authenticate("mobile"), authController.logout);
@@ -23,7 +22,7 @@ router.get("/getProfile", authenticate("mobile"), authController.getProfile);
 
 
 
-
+//
 router.get('/listUser', authenticate(), authorization(), authController.listUser);
 router.get('/authenticateUser', authenticate(),  authController.authenticateUser);
 
