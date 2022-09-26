@@ -24,7 +24,9 @@ router.get('/searchProduct',   ProductController2.searchProduct);
 //--//
 router.post('/addToCart', authenticate("mobile"), cartController.addToCart)
 router.post('/removeFromCart', authenticate("mobile"), cartController.removeFromCart)
+router.post('/addAddress', authenticate("mobile"), cartController.addAddress)
 router.post('/checkout2', authenticate("mobile"), cartController.checkout2)
+
 
 
 

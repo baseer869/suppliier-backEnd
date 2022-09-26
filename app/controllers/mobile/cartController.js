@@ -221,7 +221,7 @@ module.exports = {
   //   }
   // },
 
-
+  //--//
   listCart: async (req, res, next) => {
     try {
       let totalAmount;
@@ -287,6 +287,7 @@ module.exports = {
     }
   },
 
+  //--//
   removeFromCart: async (req, res, next) => {
     try {
       let cart;
@@ -343,7 +344,7 @@ module.exports = {
             },
           });
         } else {
-          return  sendResponse.dbError(result, req, res);
+          return sendResponse.dbError(result, req, res);
         }
       }
     } catch (error) {
@@ -351,6 +352,33 @@ module.exports = {
       sendResponse.error(error, next, res);
     }
   },
+  //--//
+
+
+  addAddress: async (req, res, next) => {
+    try {
+      let Detail = { ...req.body };
+      Detail.userId = req.userId;
+      let address = await models.shipping_details.create(Detail);
+      if (address) {
+        return res.status(200).json({
+          status: 200,
+          message: "Address added successfully",
+          data: {
+            address: address
+          },
+        });
+      }
+      else {
+        return sendResponse.dbError(result, req, res);
+      }
+    } catch (error) {
+      console.log(error);
+      sendResponse.error(error, next, res);
+    }
+  },
+  //--//
+
   checkout2: async (req, res, next) => {
     try {
       let findQuery = {
@@ -374,14 +402,14 @@ module.exports = {
           discount: req.body.discount || 0,
           orderNumber: isOrderPlaced.dataValues.orderNumber,
           total: req.body.totalAmount,
-        }    
+        }
         let orderPlaced = await models.orderDetail.create(orderDetail);
         if (orderPlaced) {
-        
+
 
           // remove the cart item aginst 
-           await  models.cart.destroy( { where: { userId: req.userId } } ) 
-          return  res.status(200).json({
+          await models.cart.destroy({ where: { userId: req.userId } })
+          return res.status(200).json({
             status: 200,
             message: "Congratulation, Order is been placed.",
             data: {
