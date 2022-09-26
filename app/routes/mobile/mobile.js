@@ -20,7 +20,7 @@ router.post("/login", authController.login);
 router.post("/logout", authenticate("mobile"), authController.logout);
 router.get("/getProfile", authenticate("mobile"), authController.getProfile);
 //--//
-router.get('/searchProduct',   ProductController2.searchProduct);
+router.post('/searchProduct',   ProductController2.searchProduct);
 //--//
 router.post('/addToCart', authenticate("mobile"), cartController.addToCart)
 router.post('/removeFromCart', authenticate("mobile"), cartController.removeFromCart)
