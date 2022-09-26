@@ -19,9 +19,21 @@ router.post("/signup", authController.signup);
 router.post("/login", authController.login);
 router.post("/logout", authenticate("mobile"), authController.logout);
 router.get("/getProfile", authenticate("mobile"), authController.getProfile);
+//--//
+router.get('/searchProduct',   ProductController2.searchProduct);
+//--//
+router.post('/addToCart', authenticate("mobile"), cartController.addToCart)
+router.post('/removeFromCart', authenticate("mobile"), cartController.removeFromCart)
+router.post('/addAddress', authenticate("mobile"), cartController.addAddress)
+router.post('/checkout2', authenticate("mobile"), cartController.checkout2)
 
 
 
+
+
+
+
+// old
 //
 router.get('/listUser', authenticate(), authorization(), authController.listUser);
 router.get('/authenticateUser', authenticate(),  authController.authenticateUser);
@@ -73,7 +85,7 @@ router.get('/listShopCategory/:id',  productController.listShopCategory)
 router.get('/storeChoiceProduct', productController.storeChoiceProduct )
 
 // CART 
-router.post('/addUpdateCart', authenticate(), cartController.addUpdateCart )
+// router.post('/addUpdateCart', authenticate(), cartController.addUpdateCart )
 
 
 // 

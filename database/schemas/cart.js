@@ -33,9 +33,6 @@ module.exports = function (sequelize, Sequelizew) {
       values: ['0', '1'],  // 0 for active 1 for inactive
       defaultValues: '0'  
     },
-    active: {
-      type: DataTypes.BOOLEAN, // if user
-    },
     userId: {
       type: DataTypes.INTEGER,
       references: {

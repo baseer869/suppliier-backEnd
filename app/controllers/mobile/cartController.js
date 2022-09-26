@@ -6,121 +6,6 @@ const sendResponse = require("../../utility/functon/sendResponse");
 /********************** CART ************************************* */
 
 module.exports = {
-  addUpdateCart: async (req, res, next) => {
-    try {
-      let cart;
-      let cartDetail = {
-        userId: parseInt(req.body.userId),
-        status: req.body.status.trim(),
-      };
-      let findQuery = {
-        where: { userId: req.body.userId },
-      };
-      let isUser = await models.cart.findOne(findQuery);
-
-      if (isUser) {
-        let isProductAlreadyInCart = await models.cart_items.findOne({
-          where: {
-            cartId: isUser.dataValues.id,
-            productId: req.body.productId,
-          },
-        });
-        if (isProductAlreadyInCart) {
-          isProductAlreadyInCart.dataValues.totalPrice += req.body.price;
-          isProductAlreadyInCart.dataValues.quantity + 1;
-          let cartUpdated;
-          cartUpdated = await models.cart_items.update(
-            {
-              totalPrice: isProductAlreadyInCart.dataValues.totalPrice,
-              quantity: (isProductAlreadyInCart.dataValues.quantity += 1),
-            },
-            {
-              where: {
-                cartId: isProductAlreadyInCart.dataValues.cartId,
-                productId: isProductAlreadyInCart.dataValues.productId,
-              },
-            }
-          );
-          if (cartUpdated) {
-            return res.status(200).send({
-              status: 200,
-              message: "Item updated",
-              item: cartUpdated,
-            });
-          } else {
-            return res.status(200).send({
-              status: 200,
-              message: "not updated",
-              item: cartUpdated,
-            });
-          }
-        } else if (!isProductAlreadyInCart) {
-          let cartItemDetail = {
-            cartId: isUser.id,
-            productId: parseInt(req.body.productId),
-            totalPrice: req.body.firstPrice,
-            quantity: req.body.quantity,
-          };
-          let cartItem = new models.cart_items(cartItemDetail);
-          let itemAdded = await cartItem.save(cartItem);
-
-          if (itemAdded) {
-            return res.status(200).send({
-              status: 200,
-              message: "Item added to cat",
-              data: cart,
-            });
-          } else {
-            return res.status(200).send({
-              status: 200,
-              message: "DB Error",
-              data: cart,
-            });
-          }
-        } else {
-          return res.status(400).send({
-            status: 400,
-            message: "Something went wrong",
-          });
-        }
-      } else if (!isUser) {
-        cart = new models.cart(cartDetail);
-        cart = await cart.save(cart);
-        if (cart) {
-          let cartItemDetail = {
-            cartId: cart.id,
-            productId: parseInt(req.body.productId),
-            totalPrice: req.body.firstPrice,
-            quantity: req.body.quantity,
-          };
-          let cartItem = new models.cart_items(cartItemDetail);
-          let itemAdded = await cartItem.save(cartItem);
-
-          if (itemAdded) {
-            return res.status(200).send({
-              status: 200,
-              message: "Item added to cat",
-              data: cart,
-            });
-          } else {
-            return res.status(200).send({
-              status: 200,
-              message: "DB Error",
-              data: cart,
-            });
-          }
-        } else {
-          return res.status(400).send({
-            status: 400,
-            message: "Something went wrong",
-          });
-        }
-      }
-    } catch (error) {
-      sendResponse.error(error);
-    }
-  },
-
   //
   addUpdateCart2: async (req, res, next) => {
     try {
@@ -193,6 +78,150 @@ module.exports = {
     }
   },
 
+  //--//
+
+  addToCart: async (req, res, next) => {
+    try {
+      console.log('Here')
+      let findQuery;
+      findQuery = {
+        where: {
+          [Op.and]: [
+            { productId: parseInt(req.body.id) },
+            { userId: req.userId },
+          ],
+        },
+      };
+      let itemInCart = await models.cart.findOne(findQuery);
+
+      //--//
+      if (itemInCart) {
+        itemInCart.dataValues.totalPrice += req.body.firstPrice;
+        itemInCart.dataValues.quantity + 1;
+        let cartUpdated;
+        cartUpdated = await models.cart.update(
+          {
+            totalPrice: itemInCart.dataValues.totalPrice,
+            quantity: (itemInCart.dataValues.quantity += 1),
+          },
+          {
+            where: {
+              id: itemInCart.dataValues.id,
+              productId: itemInCart.dataValues.productId,
+            },
+          }
+        );
+        if (cartUpdated) {
+          return res.status(200).json({
+            status: 200,
+            message: "Cart Updated",
+            data: {
+              cart: cartUpdated
+            },
+          });
+        } else {
+          return res.status(200).json({
+            status: 200,
+            message: "Unable to update cart",
+            data: {
+              cart: cartUpdated
+            },
+          });
+        }
+      } else if (!itemInCart) {
+        let cartDetail = {
+          productId: parseInt(req.body.id),
+          totalPrice: req.body.firstPrice,
+          quantity: req.body.quantity,
+          userId: req.userId,
+        };
+        let cartItem = new models.cart(cartDetail);
+        let itemAdded = await cartItem.save(cartItem);
+        if (itemAdded) {
+          return res.status(200).json({
+            status: 200,
+            message: "Item added To Cart",
+            data: {
+              cart: itemAdded
+            },
+          });
+        } else {
+          return sendResponse.dbError(result, req, res);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      sendResponse.error(error, next, res);
+    }
+  },
+
+
+  // removeFromCart: async (req, res, next) => {
+  //   try {
+  //     console.log('Here')
+  //     let findQuery;
+  //     findQuery = {
+  //       where: {
+  //         [Op.and]: [
+  //           { productId: parseInt(req.body.id) },
+  //           { userId: req.userId },
+  //         ],
+  //       },
+  //     };
+  //     let itemInCart = await models.cart.findOne(findQuery);
+
+  //     //--//
+  //     if (itemInCart) {
+  //       itemInCart.dataValues.totalPrice -= req.body.firstPrice;
+  //       itemInCart.dataValues.quantity - 1;
+  //       let cartUpdated;
+  //       cartUpdated = await models.cart.update(
+  //         {
+  //           totalPrice: itemInCart.dataValues.totalPrice,
+  //           quantity: (itemInCart.dataValues.quantity -= 1),
+  //         },
+  //         {
+  //           where: {
+  //             id: itemInCart.dataValues.id,
+  //             productId: itemInCart.dataValues.productId,
+  //           },
+  //         }
+  //       );
+  //       if (cartUpdated) {
+  //         return res.status(200).json({
+  //           status: 200,
+  //           message: "Cart Updated",
+  //           data: {
+  //             cart: cartUpdated
+  //           },
+  //         });
+  //       } else {
+  //         return res.status(200).json({
+  //           status: 200,
+  //           message: "Unable to update cart",
+  //           data: {
+  //             cart: cartUpdated
+  //           },
+  //         });
+  //       }
+  //     } else if (itemAdded) {
+  //         return res.status(200).json({
+  //           status: 200,
+  //           message: "Item Not Found",
+  //           data: {
+  //             cart: null
+  //           },
+  //         });
+  //       } else {
+  //         return sendResponse.dbError(result, req, res);
+  //       }
+  //   } catch (error) {
+  //     console.log(error);
+  //     sendResponse.error(error, next, res);
+  //   }
+  // },
+
+  //--//
   listCart: async (req, res, next) => {
     try {
       let totalAmount;
@@ -218,14 +247,14 @@ module.exports = {
           {
             model: models.products,
             as: "products",
-            include :{
-              attributes :['id', 'images','productId'],
-              model : models.product_images,
-              as:'product_images',
+            include: {
+              attributes: ['id', 'images', 'productId'],
+              model: models.product_images,
+              as: 'product_images',
             }
           },
 
-        
+
         ],
         order: [['productId', 'DESC']]
       };
@@ -258,13 +287,14 @@ module.exports = {
     }
   },
 
+  //--//
   removeFromCart: async (req, res, next) => {
     try {
       let cart;
       let findQuery = {
         where: {
           [Op.and]: [
-            { productId: parseInt(req.body.productId) },
+            { productId: parseInt(req.body.id) },
             { userId: req.userId },
           ],
         },
@@ -287,39 +317,133 @@ module.exports = {
           }
         );
         if (cartUpdated) {
-          return res.status(200).send({
+          return res.status(200).json({
             status: 200,
-            message: "Item updated",
-            item: cartUpdated,
+            message: "Cart Updated",
+            data: {
+              cart: cartUpdated
+            },
           });
         } else {
-          return res.status(201).send({
-            status: 201,
-            message: "DB Error",
-            item: cartUpdated,
+          return res.status(200).json({
+            status: 200,
+            message: "Unable to update cart",
+            data: {
+              cart: cartUpdated
+            },
           });
         }
       } else {
         let removeFromCart = await models.cart.destroy(findQuery);
         if (removeFromCart) {
-          return res.status(200).send({
+          return res.status(200).json({
             status: 200,
-            message: "Successfully removed from cart",
-            data: cart,
+            message: "Removed Success",
+            data: {
+              cart: removeFromCart
+            },
           });
         } else {
-          return res.status(200).send({
+          return sendResponse.dbError(result, req, res);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      sendResponse.error(error, next, res);
+    }
+  },
+  //--//
+
+
+  addAddress: async (req, res, next) => {
+    try {
+      let Detail = { ...req.body };
+      Detail.userId = req.userId;
+      let address = await models.shipping_details.create(Detail);
+      if (address) {
+        return res.status(200).json({
+          status: 200,
+          message: "Address added successfully",
+          data: {
+            address: address
+          },
+        });
+      }
+      else {
+        return sendResponse.dbError(result, req, res);
+      }
+    } catch (error) {
+      console.log(error);
+      sendResponse.error(error, next, res);
+    }
+  },
+  //--//
+
+  checkout2: async (req, res, next) => {
+    try {
+      let findQuery = {
+        where: { userId: req.userId },
+      };
+      // let t = db.Sequelize.transaction;
+      let orderDetail = { ...req.body };
+      orderDetail.userId = req.userId;
+      orderDetail.orderDate = Date.now();
+      orderDetail.orderNumber = Math.floor(100000 + Math.random() * 900000);
+      let order = new models.order(orderDetail);
+      let isOrderPlaced = await order.save(order);
+
+      if (isOrderPlaced) {
+        // for sinle order   
+        let orderDetail = {
+          orderId: isOrderPlaced.id,
+          productId: req.body.productId,
+          quantity: req.body.quantity,
+          price: req.body.totalPrice,
+          discount: req.body.discount || 0,
+          orderNumber: isOrderPlaced.dataValues.orderNumber,
+          total: req.body.totalAmount,
+        }
+        let orderPlaced = await models.orderDetail.create(orderDetail);
+        if (orderPlaced) {
+
+
+          // remove the cart item aginst 
+          await models.cart.destroy({ where: { userId: req.userId } })
+          return res.status(200).json({
             status: 200,
-            message: "DB Error",
-            data: cart,
+            message: "Congratulation, Order is been placed.",
+            data: {
+              order: orderPlaced
+            },
+          });
+
+        } else {
+          return res.status(200).json({
+            status: 200,
+            message: "Unable to place your order.",
+            data: {
+              order: null
+            },
           });
         }
+      } else {
+        return res.status(400).json({
+          status: 400,
+          message: "Can't save your order, Try again",
+          data: {
+            order: null
+          },
+        });
       }
     } catch (error) {
       sendResponse.error(error);
     }
   },
 
+
+
+
+  //--//
   checkout: async (req, res, next) => {
     try {
       let findQuery = {
@@ -349,7 +473,7 @@ module.exports = {
               total: req.body.totalAmount,
             });
           }
-        } else if(req.body.isCartItem == false) {
+        } else if (req.body.isCartItem == false) {
           for (let index = 0; index < req.body.product.length; index++) {
             orderDetails.push({
               orderId: isOrderPlaced.id,
@@ -360,23 +484,23 @@ module.exports = {
               orderNumber: isOrderPlaced.dataValues.orderNumber,
               total: req.body.totalAmount,
             });
-        console.log("orderDetails", orderDetails )
+            console.log("orderDetails", orderDetails)
 
           }
 
         }
         let isPlaced = await models.orderDetail.bulkCreate(orderDetails);
         if (isPlaced) {
-          if(req.body.isCartItem == true){
+          if (req.body.isCartItem == true) {
             let removeCartItem = await models.cart.destroy(findQuery);
 
           }
-            return res.status(200).send({
-              status: 200,
-              message: "order successfully placed!",
-              order: isOrderPlaced,
-            });
-         
+          return res.status(200).send({
+            status: 200,
+            message: "order successfully placed!",
+            order: isOrderPlaced,
+          });
+
         } else {
           return res.status(200).send({
             status: 200,
@@ -396,6 +520,9 @@ module.exports = {
     }
   },
 
+
+
+
   listUserOrder: async (req, res, next) => {
     try {
       let findQuery = {
@@ -404,15 +531,15 @@ module.exports = {
           {
             model: models.orderDetail,
             as: "orderDetails",
-            attributes:['id','orderId','productId','orderNumber','price','quantity','total'],
+            attributes: ['id', 'orderId', 'productId', 'orderNumber', 'price', 'quantity', 'total'],
             include: [
               {
                 model: models.products,
-                attributes:['id','name','attachment','originalPrice','price',],
-                include :{
-                  attributes :['id', 'images','productId'],
-                  model : models.product_images,
-                  as:'product_images',
+                attributes: ['id', 'name', 'attachment', 'originalPrice', 'price',],
+                include: {
+                  attributes: ['id', 'images', 'productId'],
+                  model: models.product_images,
+                  as: 'product_images',
                 }
               },
             ],
