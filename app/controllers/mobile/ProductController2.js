@@ -148,8 +148,8 @@ module.exports = {
   },
   searchProduct: async (req, res, next) => {
     try {
-      let {  code } = req.body;
-       let product_code = `re${code}`
+      let { code } = req.body;
+      let product_code = `re${code}`
       if (!req.body.code) {
         return res.status(400).json({
           status: 400,
@@ -158,10 +158,15 @@ module.exports = {
         });
       }
       let where = {
-        product_code:product_code.trim(),
+        product_code: product_code.trim(),
+        include: [{
+          modal: models.cart,
+          as: "carts"
+        }
+        ]
       };
-      let product = await  database.findOne(models.products, where);
-      if(product){
+      let product = await database.findOne(models.products, where);
+      if (product) {
         res.status(200).json({
           status: 200,
           message: "Product Found",
@@ -170,7 +175,7 @@ module.exports = {
           },
         });
       }
-       else if (!product) {
+      else if (!product) {
         const response = {
           status: 401,
           message: "Product not found.",
@@ -179,7 +184,7 @@ module.exports = {
           },
         };
         return res.status(401).json(response);
-      }  else {
+      } else {
         sendResponse.success(
           500,
           result,
