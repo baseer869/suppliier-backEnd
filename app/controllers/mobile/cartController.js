@@ -399,7 +399,7 @@ module.exports = {
         });
       }
       else {
-        return sendResponse.dbError(result, req, res);
+        return sendResponse.dbError(address, req, res);
       }
     } catch (error) {
       console.log(error);
@@ -416,7 +416,7 @@ module.exports = {
         userId: req.userId,
       }
     }
-    let address = await models.shipping_details.findOne(findQuery);
+    let address = await models.shipping_details.findAll(findQuery);
     if (address) {
       return res.status(200).json({
         status: 200,
