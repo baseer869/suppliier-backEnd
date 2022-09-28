@@ -159,11 +159,6 @@ module.exports = {
       }
       let where = {
         product_code: product_code.trim(),
-        include: [{
-          modal: models.cart,
-          as: "carts"
-        }
-        ]
       };
       let product = await database.findOne(models.products, where);
       if (product) {
