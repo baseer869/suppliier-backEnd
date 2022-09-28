@@ -377,6 +377,64 @@ module.exports = {
       sendResponse.error(error, next, res);
     }
   },
+
+  //--//
+
+  getAddress: async (req, res, next) => {
+    try {
+      let findQuery = {
+        where: {
+          userId: req.userId,
+          default: "1"
+        }
+      }
+      let address = await models.shipping_details.findOne(findQuery);
+      if (address) {
+        return res.status(200).json({
+          status: 200,
+          message: "Address found",
+          data: {
+            address: address
+          },
+        });
+      }
+      else {
+        return sendResponse.dbError(result, req, res);
+      }
+    } catch (error) {
+      console.log(error);
+      sendResponse.error(error, next, res);
+    }
+  },
+
+ //--//
+
+ listAddress: async (req, res, next) => {
+  try {
+    let findQuery = {
+      where: {
+        userId: req.userId,
+      }
+    }
+    let address = await models.shipping_details.findOne(findQuery);
+    if (address) {
+      return res.status(200).json({
+        status: 200,
+        message: "Address found",
+        data: {
+          address: address
+        },
+      });
+    }
+    else {
+      return sendResponse.dbError(result, req, res);
+    }
+  } catch (error) {
+    console.log(error);
+    sendResponse.error(error, next, res);
+  }
+},
+
   //--//
 
   checkout2: async (req, res, next) => {
