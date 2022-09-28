@@ -389,6 +389,7 @@ module.exports = {
         }
       }
       let address = await models.shipping_details.findOne(findQuery);
+      console.log('addtesss', address)
       if (address) {
         return res.status(200).json({
           status: 200,
@@ -397,9 +398,17 @@ module.exports = {
             address: address
           },
         });
+      } else if(!address) {
+        return res.status(202).json({
+          status: 202,
+          message: "No Default Address found",
+          data: {
+            address: null
+          },
+        });
       }
       else {
-        return sendResponse.dbError(result, req, res);
+        return sendResponse.dbError(address, req, res);
       }
     } catch (error) {
       console.log(error);
