@@ -389,7 +389,6 @@ module.exports = {
         }
       }
       let address = await models.shipping_details.findOne(findQuery);
-      console.log('addtesss', address)
       if (address) {
         return res.status(200).json({
           status: 200,
@@ -430,6 +429,36 @@ module.exports = {
       return res.status(200).json({
         status: 200,
         message: "Address found",
+        data: {
+          address: address
+        },
+      });
+    }
+    else {
+      return sendResponse.dbError(result, req, res);
+    }
+  } catch (error) {
+    console.log(error);
+    sendResponse.error(error, next, res);
+  }
+},
+
+
+
+
+eidtAddress: async (req, res, next) => {
+  try {
+    let findQuery = {
+      where: {
+        userId: req.userId,
+        id: req.body.id
+      }
+    }
+    let address = await models.shipping_details.update(req.body, findQuery);
+    if (address) {
+      return res.status(200).json({
+        status: 200,
+        message: "Address updated",
         data: {
           address: address
         },

@@ -31,6 +31,7 @@ router.post('/checkout2', authenticate("mobile"), cartController.checkout2)
 router.post('/addAddress', authenticate("mobile"), cartController.addAddress)
 router.get('/getAddress', authenticate("mobile"), cartController.getAddress)
 router.get('/listAddress', authenticate("mobile"), cartController.listAddress)
+router.post('/editAddress', authenticate("mobile"), cartController.eidtAddress)
 
 
 
