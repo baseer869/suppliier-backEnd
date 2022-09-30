@@ -15,7 +15,7 @@ module.exports.instance = function () {
       "wzgoarci35f5rib6",
       "pdzj40i91dc64gel",
       {
-        host: "bv2rebwf6zzsv341.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+        host: "au77784bkjx6ipju.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
         dialect: "mysql",
       }
     );
