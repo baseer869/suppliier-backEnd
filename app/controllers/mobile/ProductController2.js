@@ -77,9 +77,7 @@ module.exports = {
       let images;
       let item;
       var imageUrlList = [];
-      console.log("req.files.attachment[i].tempFilePath", req.files.attachment[i])
       for (var i = 0; i < req.files.attachment.length; i++) {
-        console.log('req.files.attachment', req.files.attachment)
         var locaFilePath = req.files.attachment[i].tempFilePath;
         await cloudinary.uploader
           .upload(locaFilePath, { folder: "" })
@@ -303,4 +301,36 @@ module.exports = {
       sendResponse.error(error);
     }
   },
+
+
+
+  //--//
+
+  changeOrderStatus: async (req, res, next) => {
+    try {  
+      let { transactionStatus, id } = req.body
+         let  order = await models.order.update({  transactionStatus: transactionStatus }, {where: { id: id } })
+         if (order) {
+          return res.status(200).send({
+            status: 200,
+            message: "Status Updated",
+            data: {
+              list: order,
+            },
+          });
+        } else {
+          return res.status(404).send({
+            status: 404,
+            message: "Unable to Update Status",
+            data: {
+              order: null,
+            },
+          });
+        }
+    } catch (error) {
+      console.log(error);
+      sendResponse.error(error, next, res);
+    }
+  },
+
 };

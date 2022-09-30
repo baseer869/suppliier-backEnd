@@ -33,7 +33,17 @@ module.exports = function (sequelize, Sequelizew) {
     },
     transactionStatus: {
       type: Sequelize.ENUM,
-      values: ["waiting", "accepted", "onprogress", "rejected", "completed"],
+      values: ["Pending",
+        "Awaiting_Payment",
+        "Awaiting_Pullfiment",
+        "Awaiting_Shipment",
+        "Awaiting_Pickup",
+        "Partially_Shipped"
+        , "Completed", "Shipped"
+        , "Cancelled", "Declined"
+        , 'Refunded', 'Disputed',
+        'Manual_Verification_Required',
+        'Partially_Refunded'],
     },
     status: {
       type: Sequelize.ENUM,
@@ -46,11 +56,11 @@ module.exports = function (sequelize, Sequelizew) {
     margin: {
       type: Sequelize.INTEGER,
     },
-    estimatedDeliveryDate:{
+    estimatedDeliveryDate: {
       type: Sequelize.DATE,
     },
     createdAt: {
-      
+
       field: "created_at",
       type: Sequelize.DATE,
     },

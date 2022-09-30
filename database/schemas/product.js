@@ -19,19 +19,22 @@ module.exports = function (sequelize, Sequelizew) {
     price: {
       type: DataTypes.FLOAT,
     },
+    profit: {
+      type: DataTypes.FLOAT,
+    },
     attachment: {
       type: DataTypes.STRING,
     },
-    product_code:{
-       type: DataTypes.STRING,
-      
+    product_code: {
+      type: DataTypes.STRING,
+
     },
     moq: {
       type: DataTypes.FLOAT,
     },
-    productType:{
+    productType: {
       type: DataTypes.ENUM,
-      values:['normal', 'sale', 'offer', 'groupBuy', 'launchingSoon', 'zotoChoice'],
+      values: ['normal', 'sale', 'offer', 'groupBuy', 'launchingSoon', 'zotoChoice'],
       defaultValues: "normal",
     },
     status: {

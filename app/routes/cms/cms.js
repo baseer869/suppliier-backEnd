@@ -13,6 +13,7 @@ const ProductController2 = require('../../controllers/mobile/ProductController2'
 const InqueryController = require('../../controllers/mobile/InqueryController');
 const StoreController = require('../../controllers/mobile/StoreController');
 const app_advertisement = require('../../controllers/mobile/appAdvertisement/app_advertisement');
+const authentication = require('../../middleware/authentication');
 
 /*******************************************************/
 dotenv.config();
@@ -65,6 +66,8 @@ router.post('/login', authController.login );
 router.post('/addProduct',   ProductController2.addProduct);
 router.get('/searchProduct',   ProductController2.searchProduct);
 
+//--//
+router.post('/changeOrderStatus', authentication("cms"),  ProductController2.changeOrderStatus);
 
 
 

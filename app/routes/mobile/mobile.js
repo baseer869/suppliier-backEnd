@@ -25,6 +25,7 @@ router.post('/searchProduct',   ProductController2.searchProduct);
 router.post('/addToCart', authenticate("mobile"), cartController.addToCart)
 router.post('/removeFromCart', authenticate("mobile"), cartController.removeFromCart)
 router.post('/checkout2', authenticate("mobile"), cartController.checkout2)
+router.get('/listOrder', authenticate("mobile"), cartController.listOrder );
 
 
 //--//
@@ -68,7 +69,7 @@ router.post('/addUpdateCart2', authenticate(), cartController.addUpdateCart2)
 router.post('/removeFromCart/:id', authenticate(), cartController.removeFromCart)
 router.get('/listCart', authenticate(), cartController.listCart )
 router.post('/checkout', authenticate(), cartController.checkout );
-router.get('/listUserOrder', authenticate(), cartController.listUserOrder );
+// router.get('/listUserOrder', authenticate(), cartController.listUserOrder );
 
 
 //INQUERY 
