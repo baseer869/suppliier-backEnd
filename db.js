@@ -11,9 +11,9 @@ module.exports.instance = function () {
    
   } else if(process.env.ENV === 'staging') {
     sequelize = new Sequelize(
-      "kclpzjl4k26ckd6e",
-      "knloqgrr1hzptv94",
-      "w8x5bwxam1e56hqd",
+      "i2ackjpo5ojw488d",
+      "wzgoarci35f5rib6",
+      "pdzj40i91dc64gel",
       {
         host: "bv2rebwf6zzsv341.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
         dialect: "mysql",
