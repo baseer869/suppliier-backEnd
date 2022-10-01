@@ -532,7 +532,7 @@ eidtAddress: async (req, res, next) => {
         });
       }
     } catch (error) {
-      sendResponse.error(error);
+      sendResponse.error(error, next, res);
     }
   },
 
