@@ -514,8 +514,8 @@ eidtAddress: async (req, res, next) => {
           });
 
         } else {
-          return res.status(200).json({
-            status: 200,
+          return res.status(400).json({
+            status: 400,
             message: "Unable to place your order.",
             data: {
               order: null
@@ -523,8 +523,8 @@ eidtAddress: async (req, res, next) => {
           });
         }
       } else {
-        return res.status(400).json({
-          status: 400,
+        return res.status(402).json({
+          status: 402,
           message: "Can't save your order, Try again",
           data: {
             order: null
@@ -586,7 +586,8 @@ eidtAddress: async (req, res, next) => {
         },
       });
     } catch (error) {
-      sendResponse.error(error);
+      sendResponse.error(error, next, res);
+
     }
   },
 
