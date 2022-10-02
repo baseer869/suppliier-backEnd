@@ -68,27 +68,27 @@ module.exports = function (db) {
     // order  product  association 
 
     db.products.hasMany(db.orderDetail, {
-        as:"ordered_products",
+        // as:"ordered_products",
         foreignKey:"productId"
     })
     db.orderDetail.belongsTo(db.products,{
-        as:"products",
+        // as:"products",
         foreignKey:"productId"
     })
     db.products.hasMany(db.product_images, {
-        as:"product_images",
+        // as:"product_images",
         foreignKey:"productId"
     })
     db.product_images.belongsTo(db.products,{
-        as:"product_images",
+        // as:"product_images",
         foreignKey:"productId"
     })
     db.products.hasMany(db.products_shipping_charges, {
-        as:"products_shipping_charges",
+        // as:"products_shipping_charges",
         foreignKey:"productId"
     })
     db.products_shipping_charges.belongsTo(db.products,{
-        as:"product_charges",
+        // as:"product_charges",
         foreignKey:"productId"
     })
 }
