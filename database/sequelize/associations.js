@@ -56,11 +56,11 @@ module.exports = function (db) {
 
     //
     db.order.hasMany(db.orderDetail, {
-        // as:"orderDetails",
+        as:"orderDetails",
         foreignKey:"orderId"    
     });
     db.orderDetail.belongsTo(db.users, {
-        // as:"orderDetails",
+        as:"orderDetails",
         foreignKey:"orderId"   
     })
  
