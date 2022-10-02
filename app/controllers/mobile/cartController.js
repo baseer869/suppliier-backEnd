@@ -544,24 +544,24 @@ eidtAddress: async (req, res, next) => {
           userId: req.userId,
           transactionStatus: OrderStatus
         },
-        include: [
-          {
-            model: models.orderDetail,
-            as: "orderDetails",
-            attributes: ['id', 'orderId', 'productId', 'orderNumber', 'price', 'quantity', 'total'],
-            // include: [
-            //   {
-            //     model: models.products,
-            //     attributes: ['id', 'name', 'attachment', 'originalPrice', 'price',],
-            //     include: {
-            //       attributes: ['id', 'images', 'productId'],
-            //       model: models.product_images,
-            //       as: 'product_images',
-            //     }
-            //   },
-            // ],
-          },
-        ],
+        // include: [
+        //   {
+        //     model: models.orderDetail,
+        //     as: "orderDetails",
+        //     attributes: ['id', 'orderId', 'productId', 'orderNumber', 'price', 'quantity', 'total'],
+        //     // include: [
+        //     //   {
+        //     //     model: models.products,
+        //     //     attributes: ['id', 'name', 'attachment', 'originalPrice', 'price',],
+        //     //     include: {
+        //     //       attributes: ['id', 'images', 'productId'],
+        //     //       model: models.product_images,
+        //     //       as: 'product_images',
+        //     //     }
+        //     //   },
+        //     // ],
+        //   },
+        // ],
       };
       //
       if(req.query.transStatus){
