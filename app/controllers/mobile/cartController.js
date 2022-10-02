@@ -556,7 +556,7 @@ eidtAddress: async (req, res, next) => {
                 include: {
                   attributes: ['id', 'images', 'productId'],
                   model: models.product_images,
-                  as: 'product_images',
+                  // as: 'product_images',
                 }
               },
             ],
