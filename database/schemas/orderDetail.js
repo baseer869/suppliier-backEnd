@@ -1,7 +1,7 @@
 const { DataTypes, Sequelize } = require("sequelize");
 
 module.exports = function (sequelize, Sequelizew) {
-  const Model = sequelize.define("orderDetail", {
+  const Model = sequelize.define("orderdetails", {
     id: {
       type: DataTypes.BIGINT(20),
       primaryKey: true,
