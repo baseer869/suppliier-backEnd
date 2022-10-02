@@ -59,7 +59,7 @@ module.exports = function (db) {
         // as:"orderDetails",
         foreignKey:"orderId"    
     });
-    db.orderDetail.belongsTo(db.users, {
+    db.orderDetail.belongsTo(db.order, {
         // as:"orderDetails",
         foreignKey:"orderId"   
     })
