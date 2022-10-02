@@ -68,11 +68,11 @@ module.exports = function (db) {
     // order  product  association 
 
     db.products.hasMany(db.orderDetail, {
-        // as:"ordered_products",
+        as:"ordered_products",
         foreignKey:"productId"
     })
     db.orderDetail.belongsTo(db.products,{
-        // as:"products",
+        as:"products",
         foreignKey:"productId"
     })
     db.products.hasMany(db.product_images, {
