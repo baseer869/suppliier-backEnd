@@ -11,11 +11,11 @@ module.exports.instance = function () {
    
   } else if(process.env.ENV === 'staging') {
     sequelize = new Sequelize(
-      "resello_staging",
+      "resello",
       "admin",
       "resello123",
       {
-        host: "database-1.cnbseomd77zp.us-east-1.rds.amazonaws.com",
+        host: "resello.cnbseomd77zp.us-east-1.rds.amazonaws.com",
         dialect: "mysql",
       }
     );
