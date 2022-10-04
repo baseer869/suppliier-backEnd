@@ -11,11 +11,11 @@ module.exports.instance = function () {
    
   } else if(process.env.ENV === 'staging') {
     sequelize = new Sequelize(
-      "kclpzjl4k26ckd6e",
-      "knloqgrr1hzptv94",
-      "w8x5bwxam1e56hqd",
+      "database-12",
+      "admin",
+      "admin123",
       {
-        host: "bv2rebwf6zzsv341.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+        host: "database-12.cnbseomd77zp.us-east-1.rds.amazonaws.com",
         dialect: "mysql",
       }
     );
