@@ -158,8 +158,22 @@ module.exports = {
       let where = {
         product_code: product_code.trim(),
       };
+
+
       let product = await database.findOne(models.products, where);
       if (product) {
+        //--//
+        //recenet searches 
+        let search = await models.recentSearches.findOne({ where: { product_id: product.dataValues.id } })
+        if (!search) {
+          let = { deviceId, } = req.body;
+          let searchedBody = {
+            deviceId: deviceId,
+            status: "1",
+            product_id: product.dataValues.id,
+          }
+          await models.recentSearches.create(searchedBody)
+        }
         res.status(200).json({
           status: 200,
           message: "Product Found",
@@ -307,26 +321,26 @@ module.exports = {
   //--//
 
   changeOrderStatus: async (req, res, next) => {
-    try {  
+    try {
       let { transactionStatus, id } = req.body
-         let  order = await models.order.update({  transactionStatus: transactionStatus }, {where: { id: id } })
-         if (order) {
-          return res.status(200).send({
-            status: 200,
-            message: "Status Updated",
-            data: {
-              list: order,
-            },
-          });
-        } else {
-          return res.status(404).send({
-            status: 404,
-            message: "Unable to Update Status",
-            data: {
-              order: null,
-            },
-          });
-        }
+      let order = await models.order.update({ transactionStatus: transactionStatus }, { where: { id: id } })
+      if (order) {
+        return res.status(200).send({
+          status: 200,
+          message: "Status Updated",
+          data: {
+            list: order,
+          },
+        });
+      } else {
+        return res.status(404).send({
+          status: 404,
+          message: "Unable to Update Status",
+          data: {
+            order: null,
+          },
+        });
+      }
     } catch (error) {
       console.log(error);
       sendResponse.error(error, next, res);

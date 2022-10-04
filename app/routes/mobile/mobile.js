@@ -34,6 +34,8 @@ router.get('/getAddress', authenticate("mobile"), cartController.getAddress)
 router.get('/listAddress',  cartController.listAddress)
 router.post('/editAddress', authenticate("mobile"), cartController.eidtAddress)
 
+//--//
+router.get('/listRecentSearches',  cartController.listRecentSearches)
 
 
 

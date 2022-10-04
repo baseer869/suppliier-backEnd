@@ -397,7 +397,7 @@ module.exports = {
             address: address
           },
         });
-      } else if(!address) {
+      } else if (!address) {
         return res.status(202).json({
           status: 202,
           message: "No Default Address found",
@@ -415,8 +415,9 @@ module.exports = {
     }
   },
 
- //--//
+  //--//
 
+<<<<<<< HEAD
  listAddress: async (req, res, next) => {
   try {
     let findQuery = {
@@ -452,26 +453,108 @@ eidtAddress: async (req, res, next) => {
       where: {
         userId: req.userId,
         id: req.body.id
+=======
+  listAddress: async (req, res, next) => {
+    try {
+      let findQuery = {
+        where: {
+          userId: req.userId,
+        }
       }
+      let address = await models.shipping_details.findOne(findQuery);
+      if (address) {
+        return res.status(200).json({
+          status: 200,
+          message: "Address found",
+          data: {
+            address: address
+          },
+        });
+>>>>>>> 542f82e63239b3f4567dc7b31df1d5ec4b94fba3
+      }
+      else {
+        return sendResponse.dbError(result, req, res);
+      }
+    } catch (error) {
+      console.log(error);
+      sendResponse.error(error, next, res);
     }
-    let address = await models.shipping_details.update(req.body, findQuery);
-    if (address) {
-      return res.status(200).json({
-        status: 200,
-        message: "Address updated",
-        data: {
-          address: address
+  },
+
+
+  listRecentSearches: async (req, res, next) => {
+    try {
+      let findQuery = {
+        where: {
+          deviceId: req.body.deviceId,
         },
-      });
+        include :{
+          model: models.products,
+          attributes:['id', 'name', 'price', 'profit','product_code',],
+          include :{
+            model: models.product_images,
+            as:"product_images",
+            attributes:['id', 'images']
+          }
+        },
+        order: [
+          ['id', 'DESC'],
+      ],
+        
+      }
+      let searches = await models.recentSearches.findAll(findQuery);
+      if (searches) {
+        return res.status(200).json({
+          status: 200,
+          message: "searches found",
+          data: {
+            searches: searches
+          },
+        });
+      } else if (!searches) {
+        res.status(200).json({
+          status: 200,
+          message: "You didn't made any search",
+          data: {
+            searches: searches
+          },
+        });
+      }
+      else {
+        return sendResponse.dbError(result, req, res);
+      }
+    } catch (error) {
+      console.log(error);
+      sendResponse.error(error, next, res);
     }
-    else {
-      return sendResponse.dbError(result, req, res);
+  },
+
+  eidtAddress: async (req, res, next) => {
+    try {
+      let findQuery = {
+        where: {
+          userId: req.userId,
+          id: req.body.id
+        }
+      }
+      let address = await models.shipping_details.update(req.body, findQuery);
+      if (address) {
+        return res.status(200).json({
+          status: 200,
+          message: "Address updated",
+          data: {
+            address: address
+          },
+        });
+      }
+      else {
+        return sendResponse.dbError(result, req, res);
+      }
+    } catch (error) {
+      console.log(error);
+      sendResponse.error(error, next, res);
     }
-  } catch (error) {
-    console.log(error);
-    sendResponse.error(error, next, res);
-  }
-},
+  },
 
   //--//
 
@@ -540,7 +623,7 @@ eidtAddress: async (req, res, next) => {
     try {
       var OrderStatus = "Pending"
       let findQuery = {
-        where: { 
+        where: {
           userId: req.userId,
           transactionStatus: OrderStatus
         },
@@ -564,9 +647,9 @@ eidtAddress: async (req, res, next) => {
         ],
       };
       //
-      if(req.query.transStatus){
+      if (req.query.transStatus) {
         OrderStatus = req.query.transStatus;
-        findQuery.where.transactionStatus = OrderStatus  
+        findQuery.where.transactionStatus = OrderStatus
       }
       let orders = await models.order.findAll(findQuery);
       if (!orders || orders.length == []) {
@@ -672,7 +755,7 @@ eidtAddress: async (req, res, next) => {
 
 
 
-  
+
 };
 
 
