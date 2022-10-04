@@ -31,7 +31,7 @@ router.get('/listOrder', authenticate("mobile"), cartController.listOrder );
 //--//
 router.post('/addAddress', authenticate("mobile"), cartController.addAddress)
 router.get('/getAddress', authenticate("mobile"), cartController.getAddress)
-router.get('/listAddress', authenticate("mobile"), cartController.listAddress)
+router.get('/listAddress',  cartController.listAddress)
 router.post('/editAddress', authenticate("mobile"), cartController.eidtAddress)
 
 

@@ -421,7 +421,7 @@ module.exports = {
   try {
     let findQuery = {
       where: {
-        userId: req.userId,
+        userId: '2',
       }
     }
     let address = await models.shipping_details.findAll(findQuery);
