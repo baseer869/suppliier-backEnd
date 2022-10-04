@@ -158,17 +158,22 @@ module.exports = {
       let where = {
         product_code: product_code.trim(),
       };
+
+
       let product = await database.findOne(models.products, where);
       if (product) {
         //--//
         //recenet searches 
-        let = { deviceId, } = req.body;
-        let searchedBody = {
-          deviceId: deviceId,
-          status: "1",
-          product_id: product.dataValues.id,
+        let search = await models.recentSearches.findOne({ where: { product_id: product.dataValues.id } })
+        if (!search) {
+          let = { deviceId, } = req.body;
+          let searchedBody = {
+            deviceId: deviceId,
+            status: "1",
+            product_id: product.dataValues.id,
+          }
+          await models.recentSearches.create(searchedBody)
         }
-        await models.recentSearches.create(searchedBody)
         res.status(200).json({
           status: 200,
           message: "Product Found",

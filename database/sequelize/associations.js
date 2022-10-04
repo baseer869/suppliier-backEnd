@@ -91,4 +91,18 @@ module.exports = function (db) {
         as:"product_charges",
         foreignKey:"productId"
     })
+
+
+
+    //--//
+    db.products.hasMany(db.recentSearches, {
+        // as:"recentSearches",
+        foreignKey:"product_id"
+    })
+    db.recentSearches.belongsTo(db.products,{
+        // as:"productSearch",
+        foreignKey:"product_id"
+    })
+
+
 }
