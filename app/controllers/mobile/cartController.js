@@ -417,43 +417,6 @@ module.exports = {
 
   //--//
 
-<<<<<<< HEAD
- listAddress: async (req, res, next) => {
-  try {
-    let findQuery = {
-      where: {
-        userId: '2',
-      }
-    }
-    let address = await models.shipping_details.findAll(findQuery);
-    if (address) {
-      return res.status(200).json({
-        status: 200,
-        message: "Address found",
-        data: {
-          address: address
-        },
-      });
-    }
-    else {
-      return sendResponse.dbError(result, req, res);
-    }
-  } catch (error) {
-    console.log(error);
-    sendResponse.error(error, next, res);
-  }
-},
-
-
-
-
-eidtAddress: async (req, res, next) => {
-  try {
-    let findQuery = {
-      where: {
-        userId: req.userId,
-        id: req.body.id
-=======
   listAddress: async (req, res, next) => {
     try {
       let findQuery = {
@@ -470,7 +433,6 @@ eidtAddress: async (req, res, next) => {
             address: address
           },
         });
->>>>>>> 542f82e63239b3f4567dc7b31df1d5ec4b94fba3
       }
       else {
         return sendResponse.dbError(result, req, res);
