@@ -347,4 +347,67 @@ module.exports = {
     }
   },
 
+
+  addAppAdvertisement: async (req, res, next) => {
+    try {
+      let banner;
+      let image = req.files.attachement;
+
+      let bodyData = { ...req.body };
+      console.log('image---', req.files)
+
+     let response =  await cloudinary.uploader
+        .upload(image.tempFilePath, {  folder:"/f_auto,q_auto",})
+      
+            bodyData.attachement = response.url;
+            banner = await models.app_advertisement.create(bodyData);
+          if (banner) {
+            return res.status(200).json({
+              status: 200,
+              message: `Banner added successfully`,
+              data: {
+                banner: banner,
+              },
+            });
+          } else {
+            return es.status(400).json({
+              status: 400,
+              message: `DB Error`,
+              data: {
+                banner: null,
+              },
+            });
+          }
+    } catch (error) {
+      sendResponse.error(error, next, res);
+    }
+  },
+
+  fetchAppAdvertisement: async (req, res, next) => {
+    try {
+      let banner;
+      let findQuery={}
+      banner = await models.app_advertisement.findAll(findQuery);
+      if (banner) {
+        return res.status(200).json({
+          status: 200,
+          message: `Banner added successfully`,
+          data: {
+            banner: banner,
+          },
+        });
+      } else if(!banner) {
+        returnres.status(202).json({
+          status: 202,
+          message: `No Content`,
+          data: {
+            banner: null,
+          },
+        });
+      }
+    } catch (error) {
+           sendResponse.error(error, next, res);
+
+    }
+  },
 };
