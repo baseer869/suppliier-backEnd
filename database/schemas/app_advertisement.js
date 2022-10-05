@@ -22,23 +22,23 @@ module.exports = function (sequelize, Sequelizew) {
       defaultValues: "0",
     },
     // 
-    banner_type: {
-      type: Sequelize.ENUM,
-      values: ['sale','advertisements','offer','super deals','new'],
-    },
-    coupen_code: {
-      type: DataTypes.STRING,
-    },
-    total_off: {
-      type: DataTypes.FLOAT,
-    },
-    store_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "store",
-        key: "id",
-      },
-    },
+    // banner_type: {
+    //   type: Sequelize.ENUM,
+    //   values: ['sale','advertisements','offer','super deals','new'],
+    // },
+    // coupen_code: {
+    //   type: DataTypes.STRING,
+    // },
+    // total_off: {
+    //   type: DataTypes.FLOAT,
+    // },
+    // store_id: {
+    //   type: DataTypes.INTEGER,
+    //   references: {
+    //     model: "store",
+    //     key: "id",
+    //   },
+    // },
     createdAt: {
       field: "created_at",
       type: Sequelize.DATE,

@@ -118,7 +118,7 @@ router.post('/updateUserAddress', authenticate(),  userController.updateUserAddr
 router.get('/listProduct', ProductController2.listProduct); // new
 
 //-- //
-router.get('/fetchAppAdvertisement',  app_advertisement.fetchAppAdvertisement)
+router.get('/fetchAppAdvertisement',  ProductController2.fetchAppAdvertisement)
 
 
 

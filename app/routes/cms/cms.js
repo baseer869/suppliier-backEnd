@@ -70,7 +70,12 @@ router.get('/searchProduct',   ProductController2.searchProduct);
 router.post('/changeOrderStatus', authentication("cms"),  ProductController2.changeOrderStatus);
 
 
+//--//
 
+
+router.post('/addAppAdvertisement',  ProductController2.addAppAdvertisement)
+router.get('/fetchAppAdvertisement',  ProductController2.fetchAppAdvertisement)
+// router.post('/updateStatus/:id',  app_advertisement.updateStatus)
 
 
 
@@ -111,8 +116,6 @@ router.get('/listStore',  StoreController.listStore)
 
 // addAppAdvertisement
 
-router.post('/addAppAdvertisement',  app_advertisement.addAppAdvertisement)
-router.get('/fetchAppAdvertisement',  app_advertisement.fetchAppAdvertisement)
 router.post('/updateStatus/:id',  app_advertisement.updateStatus)
 
 

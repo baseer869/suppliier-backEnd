@@ -15,67 +15,9 @@ cloudinary.config({
 });
 
 module.exports = {
-  addAppAdvertisement: async (req, res, next) => {
-    try {
-      let banner;
-      let image = req.files.attachement;
+ 
 
-      let bodyData = { ...req.body };
-      console.log('image---', req.files)
-
-     let response =  await cloudinary.uploader
-        .upload(image.tempFilePath, {  folder:"/f_auto,q_auto",})
-      
-            bodyData.attachement = response.url;
-            banner = await models.app_advertisement.create(bodyData);
-          if (banner) {
-            return res.status(200).json({
-              status: 200,
-              message: "banner created successfully",
-              data: banner,
-            });
-          } else {
-            return res.status(400).json({
-              status: 400,
-              message: "Unable to create banner",
-              data: null,
-            });
-          }
-    } catch (error) {
-      sendResponse.error(error);
-    }
-  },
-
-  fetchAppAdvertisement: async (req, res, next) => {
-    try {
-      let banner;
-      let findQuery = {
-        where: [],
-      };
-      
-      if(req.query.filter ){
-        findQuery.where.push({ banner_type: req.query.filter, status: '1' })
-      } else {
-        findQuery.where.push({  status: '1' })
-      }
-      banner = await models.app_advertisement.findAll(findQuery);
-      if (banner) {
-        return res.status(200).json({
-          status: 200,
-          message: "Fetch successfully",
-          data: banner,
-        });
-      } else if(!banner) {
-        return res.status(202).json({
-          status: 202,
-          message: "No Content",
-          data: null,
-        });
-      }
-    } catch (error) {
-      sendResponse.error(error);
-    }
-  },
+  
   updateStatus: async (req, res, next) => {
     try {
       let banner;
