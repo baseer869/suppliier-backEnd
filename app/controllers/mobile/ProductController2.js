@@ -214,24 +214,14 @@ module.exports = {
         where: [],
         include: [
           {
-            model: models.store,
-            as: "stores",
-            where: [
-              {
-                status: "1",
-              },
-            ],
-            attributes: ["id", "name"],
-          },
-          {
             model: models.product_images,
             as: "product_images",
           },
-          {
-            attributes: ['id', 'charges', 'is_shipping_charges'],
-            model: models.products_shipping_charges,
-            as: "products_shipping_charges",
-          },
+          // {
+          //   attributes: ['id', 'charges', 'is_shipping_charges'],
+          //   model: models.products_shipping_charges,
+          //   as: "products_shipping_charges",
+          // },
         ],
       };
       if (search) {

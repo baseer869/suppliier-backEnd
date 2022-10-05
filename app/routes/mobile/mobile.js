@@ -37,6 +37,8 @@ router.post('/editAddress', authenticate("mobile"), cartController.eidtAddress)
 //--//
 router.get('/listRecentSearches',  cartController.listRecentSearches)
 
+//--//
+router.get('/listProduct', ProductController2.listProduct); // new
 
 
 
@@ -115,7 +117,6 @@ router.post('/updateUserAddress', authenticate(),  userController.updateUserAddr
 //********************** product listing/App ****************/
 
 
-router.get('/listProduct', ProductController2.listProduct); // new
 
 //-- //
 router.get('/fetchAppAdvertisement',  ProductController2.fetchAppAdvertisement)
