@@ -224,21 +224,31 @@ module.exports = {
           // },
         ],
       };
-      // if (search) {
-      //   findQuery.where.push([
-      //     { name: { [Op.like]: "%" + search + "%" } },
-      //   ]);
+
+      if(search){
+        findQuery.where = {
+                      [Op.or]: [
+                          { name: { [Op.like]: "%" + search + "%" } },
+                          { productType: { [Op.like]: "%" + search + "%" } },
+                          // { city: { [Op.like]: "%" + search + "%" } },
+                          // { description: { [Op.like]: "%" + search + "%" } },
+                          // { guidelines_instructions: { [Op.like]: "%" + search + "%" } },
+                          // { notes: { [Op.like]: "%" + search + "%" } }
+                          { productType: { [Op.like]: "%" + search + "%" }},
+                          { category_id:  search  }
+                      ]
+                  };
+      }
+
+      // if (req.query.category_id) {
+      //   findQuery.where = { category_id:  req.query.category_id  };
       // }
 
-      if (req.query.category_id) {
-        findQuery.where = { category_id:  req.query.category_id  };
-      }
-
-      if (filterType) {
-        findQuery.where.push({
-          productType: { [Op.like]: "%" + filterType + "%" },
-        });
-      }
+      // if (filterType) {
+      //   findQuery.where.push({
+      //     productType: { [Op.like]: "%" + filterType + "%" },
+      //   });
+      // }
       let list = await models.products.findAll(findQuery);
       if (!list) {
         return res.status(202).send({
