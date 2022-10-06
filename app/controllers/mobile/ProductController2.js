@@ -211,7 +211,7 @@ module.exports = {
     try {
       let { search, filterType } = req.query;
       let findQuery = {
-        where: [],
+        where: {},
         include: [
           {
             model: models.product_images,
@@ -224,9 +224,16 @@ module.exports = {
           // },
         ],
       };
-      if (search) {
-        findQuery.where.push({ name: { [Op.like]: "%" + search + "%" } });
+      // if (search) {
+      //   findQuery.where.push([
+      //     { name: { [Op.like]: "%" + search + "%" } },
+      //   ]);
+      // }
+
+      if (req.query.category_id) {
+        findQuery.where = { category_id:  req.query.category_id  };
       }
+
       if (filterType) {
         findQuery.where.push({
           productType: { [Op.like]: "%" + filterType + "%" },
@@ -248,7 +255,9 @@ module.exports = {
         },
       });
     } catch (error) {
-      sendResponse.error(error);
+      console.log('error', error)
+      sendResponse.error(error, next, res);
+
     }
   },
 
@@ -346,28 +355,28 @@ module.exports = {
       let bodyData = { ...req.body };
       console.log('image---', req.files)
 
-     let response =  await cloudinary.uploader
-        .upload(image.tempFilePath, {  folder:"/f_auto,q_auto",})
-      
-            bodyData.attachement = response.url;
-            banner = await models.app_advertisement.create(bodyData);
-          if (banner) {
-            return res.status(200).json({
-              status: 200,
-              message: `Banner added successfully`,
-              data: {
-                banner: banner,
-              },
-            });
-          } else {
-            return es.status(400).json({
-              status: 400,
-              message: `DB Error`,
-              data: {
-                banner: null,
-              },
-            });
-          }
+      let response = await cloudinary.uploader
+        .upload(image.tempFilePath, { folder: "/f_auto,q_auto", })
+
+      bodyData.attachement = response.url;
+      banner = await models.app_advertisement.create(bodyData);
+      if (banner) {
+        return res.status(200).json({
+          status: 200,
+          message: `Banner added successfully`,
+          data: {
+            banner: banner,
+          },
+        });
+      } else {
+        return es.status(400).json({
+          status: 400,
+          message: `DB Error`,
+          data: {
+            banner: null,
+          },
+        });
+      }
     } catch (error) {
       sendResponse.error(error, next, res);
     }
@@ -376,7 +385,7 @@ module.exports = {
   fetchAppAdvertisement: async (req, res, next) => {
     try {
       let banner;
-      let findQuery={}
+      let findQuery = {}
       banner = await models.app_advertisement.findAll(findQuery);
       if (banner) {
         return res.status(200).json({
@@ -386,7 +395,7 @@ module.exports = {
             banner: banner,
           },
         });
-      } else if(!banner) {
+      } else if (!banner) {
         returnres.status(202).json({
           status: 202,
           message: `No Content`,
@@ -396,7 +405,7 @@ module.exports = {
         });
       }
     } catch (error) {
-           sendResponse.error(error, next, res);
+      sendResponse.error(error, next, res);
 
     }
   },
