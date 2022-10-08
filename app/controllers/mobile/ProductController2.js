@@ -225,19 +225,19 @@ module.exports = {
         ],
       };
 
-      if(search){
+      if (search) {
         findQuery.where = {
-                      [Op.or]: [
-                          { name: { [Op.like]: "%" + search + "%" } },
-                          { productType: { [Op.like]: "%" + search + "%" } },
-                          // { city: { [Op.like]: "%" + search + "%" } },
-                          // { description: { [Op.like]: "%" + search + "%" } },
-                          // { guidelines_instructions: { [Op.like]: "%" + search + "%" } },
-                          // { notes: { [Op.like]: "%" + search + "%" } }
-                          { productType: { [Op.like]: "%" + search + "%" }},
-                          { category_id:  search  }
-                      ]
-                  };
+          [Op.or]: [
+            { name: { [Op.like]: "%" + search + "%" } },
+            { productType: { [Op.like]: "%" + search + "%" } },
+            // { city: { [Op.like]: "%" + search + "%" } },
+            // { description: { [Op.like]: "%" + search + "%" } },
+            // { guidelines_instructions: { [Op.like]: "%" + search + "%" } },
+            // { notes: { [Op.like]: "%" + search + "%" } }
+            { productType: { [Op.like]: "%" + search + "%" } },
+            { category_id: search }
+          ]
+        };
       }
 
       // if (req.query.category_id) {
@@ -275,25 +275,31 @@ module.exports = {
     try {
       let findQuery = {
         where: { id: req.params.id },
+        include: {
+          model: models.product_images,
+          as: "product_images"
+        }
       };
-      let list = await models.products.findOne(findQuery);
-      if (!list) {
-        return res.status(200).send({
-          status: 200,
-          messsage: "No record",
-          data: [],
+      let product = await models.products.findOne(findQuery);
+      if (!product) {
+        return res.status(202).send({
+          status: 202,
+          message: "No Content",
+          data: {
+            product: product,
+          },
         });
-      } else if (list) {
+      } else if (product) {
         return res.status(200).send({
           status: 200,
           message: "fetch successfull",
           data: {
-            list: list,
+            product: product,
           },
         });
       }
     } catch (error) {
-      sendResponse.error(error);
+      sendResponse.error(error, next, res);
     }
   },
   categoryProduct: async (req, res, next) => {
