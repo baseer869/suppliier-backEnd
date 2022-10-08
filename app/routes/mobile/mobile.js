@@ -39,6 +39,7 @@ router.get('/listRecentSearches',  cartController.listRecentSearches)
 
 //--//
 router.get('/listProduct', ProductController2.listProduct); // new
+router.get('/ProductDetail/:id',   ProductController2.productDetail )
 
 
 
@@ -64,7 +65,6 @@ router.get('/listStoreProduct/:id', productController.listStoreProduct); //add a
 
 router.get('/listCategory', ProductController2.listCategory);
 // router.get('/listProduct',   ProductController2.listProduct);
-router.get('/getProductDetail/:id',   ProductController2.productDetail )
 router.get('/categoryProduct', ProductController2.categoryProduct )
 
 //CART
