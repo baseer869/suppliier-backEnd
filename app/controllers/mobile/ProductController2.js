@@ -147,8 +147,27 @@ module.exports = {
   searchProduct: async (req, res, next) => {
     try {
       let { search, } = req.query;
+      if(!search || search == (null || "" ) ){
+        res.status(400).json({
+          status: 400,
+          message: "Please Something in search",
+          data: null
+        });  
+      }
       let findQuery ={
-        where:{}
+        where:{
+          include: [
+            {
+              model: models.product_images,
+              as: "product_images",
+            },
+            // {
+            //   attributes: ['id', 'charges', 'is_shipping_charges'],
+            //   model: models.products_shipping_charges,
+            //   as: "products_shipping_charges",
+            // },
+          ],
+        }
       };
       findQuery.where = {
         [Op.or]: [
