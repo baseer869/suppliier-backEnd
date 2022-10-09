@@ -155,19 +155,18 @@ module.exports = {
         });  
       }
       let findQuery ={
-        where:{
-          include: [
-            {
-              model: models.product_images,
-              as: "product_images",
-            },
-            // {
-            //   attributes: ['id', 'charges', 'is_shipping_charges'],
-            //   model: models.products_shipping_charges,
-            //   as: "products_shipping_charges",
-            // },
-          ],
-        }
+        where:{},
+        include: [
+          {
+            model: models.product_images,
+            as: "product_images",
+          },
+          // {
+          //   attributes: ['id', 'charges', 'is_shipping_charges'],
+          //   model: models.products_shipping_charges,
+          //   as: "products_shipping_charges",
+          // },
+        ],
       };
       findQuery.where = {
         [Op.or]: [
