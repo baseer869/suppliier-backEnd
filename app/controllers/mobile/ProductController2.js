@@ -153,9 +153,7 @@ module.exports = {
       findQuery.where = {
         [Op.or]: [
           { name: { [Op.like]: "%" + String(search).trim()  + "%" } },
-          // { product_code: `re${search}`},
           { product_code: { [Op.like]: "%" + `re${search}`  + "%" } },
-
         ]
       };
       let product = await models.products.findAll(findQuery);
