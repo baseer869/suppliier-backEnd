@@ -167,6 +167,9 @@ module.exports = {
           //   as: "products_shipping_charges",
           // },
         ],
+        order: [
+          ['id', 'DESC'],
+      ],
       };
       findQuery.where = {
         [Op.or]: [
@@ -237,6 +240,9 @@ module.exports = {
           //   as: "products_shipping_charges",
           // },
         ],
+        order: [
+          ['id', 'DESC'],
+      ],
       };
 
       if (search) {
