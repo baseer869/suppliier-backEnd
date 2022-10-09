@@ -40,6 +40,7 @@ router.post('/listRecentSearches',  cartController.listRecentSearches)
 //--//
 router.get('/listProduct', ProductController2.listProduct); // new
 router.get('/ProductDetail/:id',   ProductController2.productDetail )
+router.get('/categoryList/:id',   ProductController2.categoryList )
 
 
 

@@ -322,6 +322,44 @@ module.exports = {
       sendResponse.error(error, next, res);
     }
   },
+
+
+  categoryList: async (req, res, next) => {
+    try {
+      let findQuery = {
+        where: { group_categories_id: req.params.id },
+      //   order: [
+      //     ['id', 'DESC'],
+      // ],
+      };
+      let list = await models.categories.findAll(findQuery);
+      if (!list || list?.length == 0) {
+        return res.status(202).send({
+          status: 202,
+          message: "No Content",
+          data: {
+            categories: null,
+          },
+        });
+      } else if (list && list.length >0) {
+        return res.status(200).send({
+          status: 200,
+          message: "fetch successfull",
+          data: {
+            categories: list,
+          },
+        });
+      }
+    } catch (error) {
+      sendResponse.error(error, next, res);
+    }
+  },
+
+
+
+
+
+  /////////////////////////////////////////////
   categoryProduct: async (req, res, next) => {
     try {
       let findQuery = {
