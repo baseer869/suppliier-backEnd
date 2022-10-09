@@ -158,7 +158,7 @@ module.exports = {
       };
       let product = await models.products.findAll(findQuery);
       // console.log('product', product);
-      // if (product && product.length >0 ) {
+      if (product && product.length >0 ) {
       //   //--//
       //   // recenet searches 
       //   let search = await models.recentSearches.findOne({ where: { product_id: product.dataValues.id } })
@@ -171,16 +171,14 @@ module.exports = {
       //     }
       //     await models.recentSearches.create(searchedBody)
       //   }
-      //   res.status(200).json({
-      //     status: 200,
-      //     message: "Product Found",
-      //     data: {
-      //       product: product
-      //     },
-      //   });
-      // }
-      // else 
-      if (!product || product.length == 0) {
+        res.status(200).json({
+          status: 200,
+          message: "Product Found",
+          data: {
+            product: product
+          },
+        });
+      } else if (!product || product.length == 0) {
         const response = {
           status: 401,
           message: "Product not found.",
