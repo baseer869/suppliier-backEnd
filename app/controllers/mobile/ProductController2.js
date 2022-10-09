@@ -146,43 +146,43 @@ module.exports = {
   },
   searchProduct: async (req, res, next) => {
     try {
-      let { code } = req.body;
-      let product_code = `re${code}`
-      if (!req.body.code) {
-        return res.status(400).json({
-          status: 400,
-          message: `Product code is required to buy`,
-          data: null
-        });
-      }
-      let where = {
-        product_code: product_code.trim(),
+      let { search, } = req.query;
+      let findQuery ={
+        where:{}
       };
+      findQuery.where = {
+        [Op.or]: [
+          { name: { [Op.like]: "%" + String(search).trim()  + "%" } },
+          // { product_code: `re${search}`},
+          { product_code: { [Op.like]: "%" + `re${search}`  + "%" } },
 
-
-      let product = await database.findOne(models.products, where);
-      if (product) {
-        //--//
-        //recenet searches 
-        let search = await models.recentSearches.findOne({ where: { product_id: product.dataValues.id } })
-        if (!search) {
-          let = { deviceId, } = req.body;
-          let searchedBody = {
-            deviceId: deviceId,
-            status: "1",
-            product_id: product.dataValues.id,
-          }
-          await models.recentSearches.create(searchedBody)
-        }
-        res.status(200).json({
-          status: 200,
-          message: "Product Found",
-          data: {
-            product: product
-          },
-        });
-      }
-      else if (!product) {
+        ]
+      };
+      let product = await models.products.findAll(findQuery);
+      // console.log('product', product);
+      // if (product && product.length >0 ) {
+      //   //--//
+      //   // recenet searches 
+      //   let search = await models.recentSearches.findOne({ where: { product_id: product.dataValues.id } })
+      //   if (!search) {
+      //     let = { deviceId, } = req.body;
+      //     let searchedBody = {
+      //       deviceId: deviceId,
+      //       status: "1",
+      //       product_id: product.dataValues.id,
+      //     }
+      //     await models.recentSearches.create(searchedBody)
+      //   }
+      //   res.status(200).json({
+      //     status: 200,
+      //     message: "Product Found",
+      //     data: {
+      //       product: product
+      //     },
+      //   });
+      // }
+      // else 
+      if (!product || product.length == 0) {
         const response = {
           status: 401,
           message: "Product not found.",
@@ -194,7 +194,7 @@ module.exports = {
       } else {
         sendResponse.success(
           500,
-          result,
+          product,
           "Failed to communicate with server.",
           req,
           res
