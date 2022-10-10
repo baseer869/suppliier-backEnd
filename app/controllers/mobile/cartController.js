@@ -21,7 +21,7 @@ module.exports = {
       };
       let itemInCart = await models.cart.findOne(findQuery);
       if (itemInCart) {
-        itemInCart.dataValues.totalPrice += req.body.firstPrice;
+        itemInCart.dataValues.totalPrice += req.body.price;
         itemInCart.dataValues.quantity + 1;
         let cartUpdated;
         cartUpdated = await models.cart.update(
@@ -52,7 +52,7 @@ module.exports = {
       } else if (!itemInCart) {
         let cartDetail = {
           productId: parseInt(req.body.productId),
-          totalPrice: req.body.firstPrice,
+          totalPrice: req.body.price,
           quantity: req.body.quantity,
           userId: req.userId,
         };
@@ -301,7 +301,7 @@ module.exports = {
       };
       let itemInCart = await models.cart.findOne(findQuery);
       if (itemInCart && itemInCart.dataValues.quantity > 1) {
-        itemInCart.dataValues.totalPrice -= req.body.firstPrice;
+        itemInCart.dataValues.totalPrice -= req.body.price;
         itemInCart.dataValues.quantity - 1;
         let cartUpdated;
         cartUpdated = await models.cart.update(
