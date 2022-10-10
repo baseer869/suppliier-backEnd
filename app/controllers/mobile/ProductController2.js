@@ -80,7 +80,7 @@ module.exports = {
       for (var i = 0; i < req.files.attachment.length; i++) {
         var locaFilePath = req.files.attachment[i].tempFilePath;
         await cloudinary.uploader
-          .upload(locaFilePath, { folder: "" })
+          .upload(locaFilePath, { folder: "/w_500,q_auto,f_auto" })
           .then(async (result) => {
             console.log("result", result)
             imageUrlList.push(result.url);
