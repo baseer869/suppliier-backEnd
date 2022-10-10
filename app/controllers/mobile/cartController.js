@@ -96,7 +96,7 @@ module.exports = {
 
       //--//
       if (itemInCart) {
-        itemInCart.dataValues.totalPrice += req.body.firstPrice;
+        itemInCart.dataValues.totalPrice += req.body.price;
         itemInCart.dataValues.quantity + 1;
         let cartUpdated;
         cartUpdated = await models.cart.update(
@@ -131,7 +131,7 @@ module.exports = {
       } else if (!itemInCart) {
         let cartDetail = {
           productId: parseInt(req.body.id),
-          totalPrice: req.body.firstPrice,
+          totalPrice: req.body.price,
           quantity: req.body.quantity,
           userId: req.userId,
         };
