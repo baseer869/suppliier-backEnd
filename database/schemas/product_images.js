@@ -14,7 +14,7 @@ module.exports = function (sequelize, Sequelizew) {
         key: "id",
       },
     },
-    images:{
+    uri:{
         type: Sequelize.STRING,
     },
     status: {
