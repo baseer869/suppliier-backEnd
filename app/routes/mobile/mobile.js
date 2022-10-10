@@ -23,7 +23,11 @@ router.get("/getProfile", authenticate("mobile"), authController.getProfile);
 router.get('/searchProduct',   ProductController2.searchProduct);
 //--//
 router.post('/addToCart', authenticate("mobile"), cartController.addToCart)
-router.post('/removeFromCart', authenticate("mobile"), cartController.removeFromCart)
+router.post('/removeFromCart', authenticate("mobile"), cartController.removeFromCart);
+router.get('/listCart', authenticate("mobile"), cartController.listCart);
+router.get('/countCart', authenticate("mobile"), cartController.countCart);
+
+
 router.post('/checkout2', authenticate("mobile"), cartController.checkout2)
 router.get('/listOrder', authenticate("mobile"), cartController.listOrder );
 

@@ -229,41 +229,40 @@ module.exports = {
       let findQuery = {
         where: { userId: req.userId },
 
-        include: [
-          {
-            model: models.users,
-            as: "users",
-            attributes: [
-              "id",
-              "username",
-              "city",
-              "state",
-              "zip",
-              "address",
-              "phone",
-            ],
-            required: true,
-          },
-          {
-            model: models.products,
-            as: "products",
-            include: {
-              attributes: ['id', 'images', 'productId'],
-              model: models.product_images,
-              as: 'product_images',
-            }
-          },
-
-
-        ],
-        order: [['productId', 'DESC']]
+          include: [
+            // {
+            //   model: models.users,
+            //   as: "users",
+            //   attributes: [
+            //     "id",
+            //     "username",
+            //     "state",
+            //     "zip",
+            //     "address",
+            //     "phone",
+            //   ],
+            //   required: true,
+            // },
+            {
+              model: models.products,
+              as: "products",
+              include: {
+                attributes: ['id', 'uri', 'productId'],
+                model: models.product_images,
+                as: 'product_images',
+              }
+            },
+          ],
+          order: [['productId', 'DESC']]
       };
       let list = await models.cart.findAll(findQuery);
       if (!list || list.length == []) {
-        return res.status(202).json({
+        return res.status(202).send({
           status: 202,
-          message: "No Record",
-          data: null,
+          message: "No Items in cart",
+          data: {
+            list: null,
+          },
         });
       } else if (list.length > 0) {
         const initialValue = 0;
@@ -272,20 +271,50 @@ module.exports = {
             previousValue + currentValue.dataValues.totalPrice,
           initialValue
         );
-        return res.status(200).json({
+        return res.status(200).send({
           status: 200,
-          message: "fetch succesfully",
+          message: "fetch successfull",
           data: {
-            shippingFee: shippingFee,
+            // shippingFee: shippingFee,
             totalAmount: totalAmount,
             list: list,
           },
         });
       }
     } catch (error) {
-      sendResponse.error(error);
+      sendResponse.error(error, next, res);
     }
   },
+
+  countCart: async (req, res, next) => {
+    try {
+      let findQuery = {
+        where: { userId: req.userId },
+      };
+      let cart = await models.cart.findAndCountAll(findQuery);
+      if (!cart || cart == 0) {
+        return res.status(202).send({
+          status: 202,
+          message: "No Items in cart",
+          data: {
+            CartCount: null,
+          },
+        });
+      } else if (cart) {
+        return res.status(200).send({
+          status: 200,
+          message: "fetch successfull",
+          data: {
+            CartCount: cart.count
+          },
+        });
+      }
+    } catch (error) {
+      sendResponse.error(error, next, res);
+    }
+  },
+
+
 
   //--//
   removeFromCart: async (req, res, next) => {
