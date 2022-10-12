@@ -120,8 +120,8 @@ module.exports = {
             },
           });
         } else {
-          return res.status(200).json({
-            status: 200,
+          return res.status(202).json({
+            status: 202,
             message: "Unable to update cart",
             data: {
               cart: cartUpdated
@@ -677,21 +677,22 @@ module.exports = {
       orderDetail.userId = req.userId;
       orderDetail.orderDate = Date.now();
       orderDetail.orderNumber = Math.floor(100000 + Math.random() * 900000);
+
       let order = new models.order(orderDetail);
       let isOrderPlaced = await order.save(order);
+      
 
       if (isOrderPlaced) {
         // for sinle order
         let orderDetails = [];
-
         if (req.body.isCartItem == true) {
-          for (let index = 0; index < req.body.product.length; index++) {
+          for (let index = 0; index < orderDetail.product.length; index++) {
             orderDetails.push({
               orderId: isOrderPlaced.id,
               productId: req.body.product[index].productId,
               quantity: req.body.product[index].quantity,
               price: req.body.product[index].totalPrice,
-              discount: req.body.product[index].discount,
+              // discount: req.body.product[index].discount,
               orderNumber: isOrderPlaced.dataValues.orderNumber,
               total: req.body.totalAmount,
             });
@@ -707,39 +708,33 @@ module.exports = {
               orderNumber: isOrderPlaced.dataValues.orderNumber,
               total: req.body.totalAmount,
             });
-            console.log("orderDetails", orderDetails)
 
           }
 
         }
+
         let isPlaced = await models.orderDetail.bulkCreate(orderDetails);
         if (isPlaced) {
           if (req.body.isCartItem == true) {
-            let removeCartItem = await models.cart.destroy(findQuery);
-
+             await models.cart.destroy(findQuery);
           }
-          return res.status(200).send({
+          res.status(200).json({
             status: 200,
-            message: "order successfully placed!",
-            order: isOrderPlaced,
+            message: "Order successfully placed",
+            data: {
+              order: isOrderPlaced
+            },
           });
-
         } else {
-          return res.status(200).send({
-            status: 200,
+          return res.status(404).send({
+            status: 404,
             message: "DB error while saving order",
-            order: null,
+            data: null,
           });
         }
-      } else {
-        return res.status(200).send({
-          status: 200,
-          message: "DB error while saving set order",
-          order: null,
-        });
       }
     } catch (error) {
-      sendResponse.error(error);
+      sendResponse.error(error, next, res);
     }
   },
 

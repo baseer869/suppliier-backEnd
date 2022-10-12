@@ -30,6 +30,8 @@ router.get('/countCart', authenticate("mobile"), cartController.countCart);
 
 router.post('/checkout2', authenticate("mobile"), cartController.checkout2)
 router.get('/listOrder', authenticate("mobile"), cartController.listOrder );
+//--//
+router.post('/checkout', authenticate("mobile"), cartController.checkout );
 
 
 //--//
@@ -77,7 +79,6 @@ router.get('/categoryProduct', ProductController2.categoryProduct )
 router.post('/addUpdateCart2', authenticate(), cartController.addUpdateCart2)
 router.post('/removeFromCart/:id', authenticate(), cartController.removeFromCart)
 router.get('/listCart', authenticate(), cartController.listCart )
-router.post('/checkout', authenticate(), cartController.checkout );
 // router.get('/listUserOrder', authenticate(), cartController.listUserOrder );
 
 

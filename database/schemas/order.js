@@ -49,6 +49,10 @@ module.exports = function (sequelize, Sequelizew) {
       type: Sequelize.ENUM,
       values: ["0", "1"], // 0 for order not delived , 1 for delivred
     },
+    reviewStatus: {
+      type: Sequelize.ENUM,
+      values: ["0", "1"],
+    },
     paid: {
       type: Sequelize.ENUM,
       values: ["0", "1"],
