@@ -628,7 +628,7 @@ module.exports = {
                 model: models.products,
                 attributes: ['id', 'name', 'attachment', 'product_code', 'originalPrice', 'price',],
                 include: {
-                  attributes: ['id', 'url', 'productId'],
+                  attributes: ['id', 'uri', 'productId'],
                   model: models.product_images,
                   // as: 'product_images',
                 }
