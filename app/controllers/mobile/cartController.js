@@ -665,6 +665,62 @@ module.exports = {
     }
   },
 
+//--//
+listOrder2: async (req, res, next) => {
+  try {
+    var OrderStatus = "Pending"
+    let findQuery = {
+      where: {
+       
+      },
+      include: [
+        {
+          model: models.orderDetail,
+          // as: "orderDetails",
+          attributes: ['id', 'orderId', 'productId', 'orderNumber', 'price', 'quantity', 'total'],
+          include: [
+            {
+              model: models.products,
+              attributes: ['id', 'name', 'attachment', 'product_code', 'originalPrice', 'price',],
+              include: {
+                attributes: ['id', 'uri', 'productId'],
+                model: models.product_images,
+                // as: 'product_images',
+              }
+            },
+          ],
+        },
+      ],
+    };
+    //
+    if (req.query.transStatus) {
+      OrderStatus = req.query.transStatus;
+      findQuery.where.transactionStatus = OrderStatus
+    }
+    let orders = await models.order.findAll(findQuery);
+    if (!orders || orders.length == []) {
+      return res.status(202).json({
+        status: 202,
+        message: "You have no orders",
+        data: {
+          order: null
+        },
+      });
+    }
+    return res.status(200).json({
+      status: 200,
+      message: "Fetch successfull",
+      data: {
+        order: orders
+      },
+    });
+  } catch (error) {
+    sendResponse.error(error, next, res);
+
+  }
+},
+
+
 
   //--//
   checkout: async (req, res, next) => {
