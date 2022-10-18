@@ -73,5 +73,15 @@ module.exports = function (sequelize, Sequelizew) {
       type: Sequelize.DATE,
     },
   });
+  Model.prototype.toJSON = function () {
+    let attributes = Object.assign({}, this.get());
+    // delete attributes.status;
+    if (attributes.paid == '1') {
+      attributes.paid = "Yes";
+    } else if (attributes.paid == "0") {
+      attributes.paid = "No";
+    } 
+    return attributes;
+  };
   return Model;
 };
