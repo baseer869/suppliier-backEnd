@@ -92,8 +92,8 @@ module.exports = {
       let code = Math.floor(Math.random() * (99999 - 10000) + 10000 + 20000);
       productBody.attachment = null;
       productBody.product_code = `re${code}`
-       parseInt(productBody.originalPrice);
-       parseInt(productBody.price)
+      parseInt(productBody.originalPrice);
+      parseInt(productBody.price)
       item = await models.products.create(productBody);
       if (item) {
         // let shippingChargesBody = {
@@ -149,15 +149,15 @@ module.exports = {
   searchProduct: async (req, res, next) => {
     try {
       let { search, } = req.query;
-      if(!search || search == (null || "" ) ){
+      if (!search || search == (null || "")) {
         res.status(400).json({
           status: 400,
           message: "Please Something in search",
           data: null
-        });  
+        });
       }
-      let findQuery ={
-        where:{},
+      let findQuery = {
+        where: {},
         include: [
           {
             model: models.product_images,
@@ -171,29 +171,29 @@ module.exports = {
         ],
         order: [
           ['id', 'DESC'],
-      ],
+        ],
       };
       findQuery.where = {
         [Op.or]: [
-          { name: { [Op.like]: "%" + String(search).trim()  + "%" } },
-          { product_code: { [Op.like]: "%" + `re${search}`  + "%" } },
+          { name: { [Op.like]: "%" + String(search).trim() + "%" } },
+          { product_code: { [Op.like]: "%" + `re${search}` + "%" } },
         ]
       };
       let product = await models.products.findAll(findQuery);
       // console.log('product', product);
-      if (product && product.length >0 ) {
-      //   //--//
-      //   // recenet searches 
-      //   let search = await models.recentSearches.findOne({ where: { product_id: product.dataValues.id } })
-      //   if (!search) {
-      //     let = { deviceId, } = req.body;
-      //     let searchedBody = {
-      //       deviceId: deviceId,
-      //       status: "1",
-      //       product_id: product.dataValues.id,
-      //     }
-      //     await models.recentSearches.create(searchedBody)
-      //   }
+      if (product && product.length > 0) {
+        //   //--//
+        //   // recenet searches 
+        //   let search = await models.recentSearches.findOne({ where: { product_id: product.dataValues.id } })
+        //   if (!search) {
+        //     let = { deviceId, } = req.body;
+        //     let searchedBody = {
+        //       deviceId: deviceId,
+        //       status: "1",
+        //       product_id: product.dataValues.id,
+        //     }
+        //     await models.recentSearches.create(searchedBody)
+        //   }
         res.status(200).json({
           status: 200,
           message: "Product Found",
@@ -244,7 +244,7 @@ module.exports = {
         ],
         order: [
           ['id', 'DESC'],
-      ],
+        ],
       };
 
       if (search) {
@@ -330,9 +330,9 @@ module.exports = {
     try {
       let findQuery = {
         where: { group_categories_id: req.params.id },
-      //   order: [
-      //     ['id', 'DESC'],
-      // ],
+        //   order: [
+        //     ['id', 'DESC'],
+        // ],
       };
       let list = await models.categories.findAll(findQuery);
       if (!list || list?.length == 0) {
@@ -343,7 +343,7 @@ module.exports = {
             categories: null,
           },
         });
-      } else if (list && list.length >0) {
+      } else if (list && list.length > 0) {
         return res.status(200).send({
           status: 200,
           message: "fetch successfull",
@@ -398,7 +398,40 @@ module.exports = {
   changeOrderStatus: async (req, res, next) => {
     try {
       let { transactionStatus, id } = req.body
-      let order = await models.order.update({ transactionStatus: transactionStatus }, { where: { id: id } })
+      //CHECK transcation status 
+
+      // if already in updated or not 
+      let isUpdated = await models.order.findOne({ where: { id: id } });
+      if (isUpdated && isUpdated.dataValues.transactionStatus === "Completed") {
+        return res.status(404).send({
+          status: 404,
+          message: "Order is already completed",
+          data:null
+        });
+      }
+      if (transactionStatus == "Completed") {
+        // find the order 
+        let order = await models.order.update({ transactionStatus: transactionStatus, paid: '1' }, { where: { id: id } })
+
+        order = await models.order.findOne({ where: { id: id } });
+        let profit = order.dataValues.margin;
+        let logs = {
+          user_id: order.dataValues.userId,
+          order_id: order.dataValues.id,
+          amount: profit,
+          type: req.body.type,
+          processed_by: req.body.processed_by,
+        }
+        let transactionLogs = await models.transcation_logs.create(logs);
+        if (transactionLogs) {
+          //update the user wallet. 
+          let user = await models.users.findOne({ where: { id: order.dataValues.userId } });
+          let currentBalance = user.dataValues.balance
+          currentBalance += profit;
+          await models.users.update({ balance: currentBalance, }, { where: { id: order.dataValues.userId } })
+        }
+      }
+      let order = await models.order.update({ transactionStatus: transactionStatus, }, { where: { id: id } })
       if (order) {
         return res.status(200).send({
           status: 200,
