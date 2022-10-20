@@ -20,6 +20,8 @@ router.post("/login", authController.login);
 router.post("/logout", authenticate("mobile"), authController.logout);
 router.get("/getProfile", authenticate("mobile"), authController.getProfile);
 //--//
+router.get('/UserWallet', authenticate("mobile"), cartController.UserWallet );
+//--//
 router.get('/searchProduct',   ProductController2.searchProduct);
 //--//
 router.post('/addToCart', authenticate("mobile"), cartController.addToCart)
@@ -32,6 +34,8 @@ router.post('/checkout2', authenticate("mobile"), cartController.checkout2)
 router.get('/listOrder', authenticate("mobile"), cartController.listOrder );
 //--//
 router.post('/checkout', authenticate("mobile"), cartController.checkout );
+
+//--//
 
 
 //--//

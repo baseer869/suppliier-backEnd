@@ -229,31 +229,31 @@ module.exports = {
       let findQuery = {
         where: { userId: req.userId },
 
-          include: [
-            // {
-            //   model: models.users,
-            //   as: "users",
-            //   attributes: [
-            //     "id",
-            //     "username",
-            //     "state",
-            //     "zip",
-            //     "address",
-            //     "phone",
-            //   ],
-            //   required: true,
-            // },
-            {
-              model: models.products,
-              as: "products",
-              include: {
-                attributes: ['id', 'uri', 'productId'],
-                model: models.product_images,
-                as: 'product_images',
-              }
-            },
-          ],
-          order: [['productId', 'DESC']]
+        include: [
+          // {
+          //   model: models.users,
+          //   as: "users",
+          //   attributes: [
+          //     "id",
+          //     "username",
+          //     "state",
+          //     "zip",
+          //     "address",
+          //     "phone",
+          //   ],
+          //   required: true,
+          // },
+          {
+            model: models.products,
+            as: "products",
+            include: {
+              attributes: ['id', 'uri', 'productId'],
+              model: models.product_images,
+              as: 'product_images',
+            }
+          },
+        ],
+        order: [['productId', 'DESC']]
       };
       let list = await models.cart.findAll(findQuery);
       if (!list || list.length == []) {
@@ -479,19 +479,19 @@ module.exports = {
         where: {
           deviceId: req.body.deviceId,
         },
-        include :{
+        include: {
           model: models.products,
-          attributes:['id', 'name', 'price', 'profit','product_code',],
-          include :{
+          attributes: ['id', 'name', 'price', 'profit', 'product_code',],
+          include: {
             model: models.product_images,
-            as:"product_images",
-            attributes:['id', 'url']
+            as: "product_images",
+            attributes: ['id', 'url']
           }
         },
         order: [
           ['id', 'DESC'],
-      ],
-        
+        ],
+
       }
       let searches = await models.recentSearches.findAll(findQuery);
       if (searches) {
@@ -665,60 +665,60 @@ module.exports = {
     }
   },
 
-//--//
-listOrder2: async (req, res, next) => {
-  try {
-    var OrderStatus = "Pending"
-    let findQuery = {
-      where: {
-       
-      },
-      include: [
-        {
-          model: models.orderDetail,
-          // as: "orderDetails",
-          attributes: ['id', 'orderId', 'productId', 'orderNumber', 'price', 'quantity', 'total'],
-          include: [
-            {
-              model: models.products,
-              attributes: ['id', 'name', 'attachment', 'product_code', 'originalPrice', 'price',],
-              include: {
-                attributes: ['id', 'uri', 'productId'],
-                model: models.product_images,
-                // as: 'product_images',
-              }
-            },
-          ],
+  //--//
+  listOrder2: async (req, res, next) => {
+    try {
+      var OrderStatus = "Pending"
+      let findQuery = {
+        where: {
+
         },
-      ],
-    };
-    //
-    if (req.query.transStatus) {
-      OrderStatus = req.query.transStatus;
-      findQuery.where.transactionStatus = OrderStatus
-    }
-    let orders = await models.order.findAll(findQuery);
-    if (!orders || orders.length == []) {
-      return res.status(202).json({
-        status: 202,
-        message: "You have no orders",
+        include: [
+          {
+            model: models.orderDetail,
+            // as: "orderDetails",
+            attributes: ['id', 'orderId', 'productId', 'orderNumber', 'price', 'quantity', 'total'],
+            include: [
+              {
+                model: models.products,
+                attributes: ['id', 'name', 'attachment', 'product_code', 'originalPrice', 'price',],
+                include: {
+                  attributes: ['id', 'uri', 'productId'],
+                  model: models.product_images,
+                  // as: 'product_images',
+                }
+              },
+            ],
+          },
+        ],
+      };
+      //
+      if (req.query.transStatus) {
+        OrderStatus = req.query.transStatus;
+        findQuery.where.transactionStatus = OrderStatus
+      }
+      let orders = await models.order.findAll(findQuery);
+      if (!orders || orders.length == []) {
+        return res.status(202).json({
+          status: 202,
+          message: "You have no orders",
+          data: {
+            order: null
+          },
+        });
+      }
+      return res.status(200).json({
+        status: 200,
+        message: "Fetch successfull",
         data: {
-          order: null
+          order: orders
         },
       });
-    }
-    return res.status(200).json({
-      status: 200,
-      message: "Fetch successfull",
-      data: {
-        order: orders
-      },
-    });
-  } catch (error) {
-    sendResponse.error(error, next, res);
+    } catch (error) {
+      sendResponse.error(error, next, res);
 
-  }
-},
+    }
+  },
 
 
 
@@ -736,7 +736,7 @@ listOrder2: async (req, res, next) => {
 
       let order = new models.order(orderDetail);
       let isOrderPlaced = await order.save(order);
-      
+
 
       if (isOrderPlaced) {
         // for sinle order
@@ -772,7 +772,7 @@ listOrder2: async (req, res, next) => {
         let isPlaced = await models.orderDetail.bulkCreate(orderDetails);
         if (isPlaced) {
           if (req.body.isCartItem == true) {
-             await models.cart.destroy(findQuery);
+            await models.cart.destroy(findQuery);
           }
           res.status(200).json({
             status: 200,
@@ -795,136 +795,167 @@ listOrder2: async (req, res, next) => {
   },
 
 
-//--//
-transcationRequest: async (req, res, next) => {
-  try {
-    // let findQuery = {
-    //   where: {
-       
-    //   },
-    
-    // };
-    let user = await models.users.findOne({   where: { id: req.userId } });
-    if(!user){
-      return res.status(202).json({
-        status: 202,
-        message: "Could found !",
-        data: null
-      });
-    }
-    if(user && user.dataValues.balance > req.body.debitAmount){
-      // found user and create the trans_request // debit request 
-      if( req.body.debitAmount <  500  ){
+  //--//
+  transcationRequest: async (req, res, next) => {
+    try {
+      // let findQuery = {
+      //   where: {
+
+      //   },
+
+      // };
+      let user = await models.users.findOne({ where: { id: req.userId } });
+      if (!user) {
         return res.status(202).json({
           status: 202,
-          message: "Sorry, The minimum amount is to transferred is 500\nAfter one week an amount will be automatically transferred to your account.",
+          message: "Could found !",
           data: null
         });
       }
-      req.body.user_id = req.userId
-      let transcationRequest  = await models.transcation_requests.create(req.body)
-      if(transcationRequest){
-        return res.status(200).json({
-          status: 200,
-          message: "your request is submitted\nAn amount will be transferred to your account once verified. ",
-          data:  {
-            transcationRequest: transcationRequest
-          }
-        });   
-      } else {
+      if (user && user.dataValues.balance > req.body.debitAmount) {
+        // found user and create the trans_request // debit request 
+        if (req.body.debitAmount < 500) {
+          return res.status(202).json({
+            status: 202,
+            message: "Sorry, The minimum amount is to transferred is 500\nAfter one week an amount will be automatically transferred to your account.",
+            data: null
+          });
+        }
+        req.body.user_id = req.userId
+        let transcationRequest = await models.transcation_requests.create(req.body)
+        if (transcationRequest) {
+          return res.status(200).json({
+            status: 200,
+            message: "your request is submitted\nAn amount will be transferred to your account once verified. ",
+            data: {
+              transcationRequest: transcationRequest
+            }
+          });
+        } else {
+          return res.status(202).json({
+            status: 202,
+            message: "Unable to prcesses your request, try again",
+            data: null
+          });
+        }
+      }
+
+    } catch (error) {
+      sendResponse.error(error, next, res);
+
+    }
+  },
+
+
+
+  //--//
+  listUser: async (req, res, next) => {
+    try {
+      let user = await models.users.findAll();
+      if (!user || user.length == []) {
         return res.status(202).json({
           status: 202,
-          message: "Unable to prcesses your request, try again",
-          data: null
+          message: "No user",
+          data: {
+            user: null
+          },
         });
       }
-    }
-   
-  } catch (error) {
-    sendResponse.error(error, next, res);
-
-  }
-},
-
-
-
-//--//
-listUser: async (req, res, next) => {
-  try {
-    let user = await models.users.findAll();
-    if (!user || user.length == []) {
-      return res.status(202).json({
-        status: 202,
-        message: "No user",
-        data: {
-          user: null
-        },
-      });
-    }
-    return res.status(200).json({
-      status: 200,
-      message: "Fetch successfully",
-      data: {
-        users: user
-      },
-    });
-  } catch (error) {
-    sendResponse.error(error, next, res);
-
-  }
-},
-
-//--//
-getUser: async (req, res, next) => {
-  try {
-    let {  id } = req.params
-    let user = await models.users.findOne({ where:{ id: id } });
-    if (!user || user.length == []) {
-      return res.status(202).json({
-        status: 202,
-        message: "No user",
-        data: {
-          user: null
-        },
-      });
-    }
-    return res.status(200).json({
-      status: 200,
-      message: "Fetch successfully",
-      data: {
-        user: user
-      },
-    });
-  } catch (error) {
-    sendResponse.error(error, next, res);
-
-  }
-},
-
-
-//--//
-updateUserWallet: async (req, res, next) => {
-  try {
-     let { balance,id, debitAmount,  } = req.body
-     let updatedBalance = balance-debitAmount;
-
-     let [isUpdated] = await models.users.update({ balance: updatedBalance, },{ where: { id: id} });
-    
-     if(isUpdated){
-      //save trans logs 
       return res.status(200).json({
         status: 200,
-        message: "Amount updated",
+        message: "Fetch successfully",
         data: {
-          user: isUpdated
+          users: user
         },
       });
-     }
-  } catch (error) {
-    sendResponse.error(error, next, res);
+    } catch (error) {
+      sendResponse.error(error, next, res);
 
-  }
-},
+    }
+  },
+
+  //--//
+  getUser: async (req, res, next) => {
+    try {
+      let { id } = req.params
+      let user = await models.users.findOne({ where: { id: id } });
+      if (!user || user.length == []) {
+        return res.status(202).json({
+          status: 202,
+          message: "No user",
+          data: {
+            user: null
+          },
+        });
+      }
+      return res.status(200).json({
+        status: 200,
+        message: "Fetch successfully",
+        data: {
+          user: user
+        },
+      });
+    } catch (error) {
+      sendResponse.error(error, next, res);
+
+    }
+  },
+
+
+  //--//
+  updateUserWallet: async (req, res, next) => {
+    try {
+      let { balance, id, debitAmount, } = req.body
+      let updatedBalance = balance - debitAmount;
+
+      let [isUpdated] = await models.users.update({ balance: updatedBalance, }, { where: { id: id } });
+
+      if (isUpdated) {
+        //save trans logs 
+        return res.status(200).json({
+          status: 200,
+          message: "Amount updated",
+          data: {
+            user: isUpdated
+          },
+        });
+      }
+    } catch (error) {
+      sendResponse.error(error, next, res);
+
+    }
+  },
+
+
+  //--//
+  UserWallet: async (req, res, next) => {
+    try {
+
+      let findQuery = {
+        where: { id: req.userId }
+      }
+      let user = await models.users.findOne(findQuery);
+
+      if (user) {
+        return res.status(200).json({
+          status: 200,
+          message: "Fetch Successful",
+          data: {
+            user: user
+          },
+        });
+      } else {
+        return res.status(404).json({
+          status: 404,
+          message: "Data base error, try again",
+          data: null
+        });
+      }
+    } catch (error) {
+      sendResponse.error(error, next, res);
+
+    }
+  },
 
 };
 
