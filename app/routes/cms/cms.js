@@ -68,11 +68,15 @@ router.post('/addProduct',   ProductController2.addProduct);
 router.get('/searchProduct',   ProductController2.searchProduct);
 
 //--//
-router.post('/changeOrderStatus', authentication("cms"),  ProductController2.changeOrderStatus);
+router.post('/changeOrderStatus',   ProductController2.changeOrderStatus);
 
 
 //--//
 router.get('/listOrder',  cartController.listOrder2 );
+router.get('/usersList',  cartController.listUser );
+router.get('/getUser/:id',  cartController.getUser );
+
+router.post('/updateUserWallet',  cartController.updateUserWallet );
 
 
 router.post('/addAppAdvertisement',  ProductController2.addAppAdvertisement)

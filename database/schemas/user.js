@@ -109,6 +109,11 @@ module.exports = function (sequelize, Sequelize) {
         values: ["0", "1", "2"],
         defaultValue: "0",
       },
+      balance:{
+        type: Sequelize.INTEGER,
+        defaultValue: null,
+        
+      },
       createdAt: {
         field: "created_at",
         type: Sequelize.DATE,

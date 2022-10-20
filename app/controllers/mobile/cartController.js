@@ -795,8 +795,136 @@ listOrder2: async (req, res, next) => {
   },
 
 
+//--//
+transcationRequest: async (req, res, next) => {
+  try {
+    // let findQuery = {
+    //   where: {
+       
+    //   },
+    
+    // };
+    let user = await models.users.findOne({   where: { id: req.userId } });
+    if(!user){
+      return res.status(202).json({
+        status: 202,
+        message: "Could found !",
+        data: null
+      });
+    }
+    if(user && user.dataValues.balance > req.body.debitAmount){
+      // found user and create the trans_request // debit request 
+      if( req.body.debitAmount <  500  ){
+        return res.status(202).json({
+          status: 202,
+          message: "Sorry, The minimum amount is to transferred is 500\nAfter one week an amount will be automatically transferred to your account.",
+          data: null
+        });
+      }
+      req.body.user_id = req.userId
+      let transcationRequest  = await models.transcation_requests.create(req.body)
+      if(transcationRequest){
+        return res.status(200).json({
+          status: 200,
+          message: "your request is submitted\nAn amount will be transferred to your account once verified. ",
+          data:  {
+            transcationRequest: transcationRequest
+          }
+        });   
+      } else {
+        return res.status(202).json({
+          status: 202,
+          message: "Unable to prcesses your request, try again",
+          data: null
+        });
+      }
+    }
+   
+  } catch (error) {
+    sendResponse.error(error, next, res);
+
+  }
+},
 
 
+
+//--//
+listUser: async (req, res, next) => {
+  try {
+    let user = await models.users.findAll();
+    if (!user || user.length == []) {
+      return res.status(202).json({
+        status: 202,
+        message: "No user",
+        data: {
+          user: null
+        },
+      });
+    }
+    return res.status(200).json({
+      status: 200,
+      message: "Fetch successfully",
+      data: {
+        users: user
+      },
+    });
+  } catch (error) {
+    sendResponse.error(error, next, res);
+
+  }
+},
+
+//--//
+getUser: async (req, res, next) => {
+  try {
+    let {  id } = req.params
+    let user = await models.users.findOne({ where:{ id: id } });
+    if (!user || user.length == []) {
+      return res.status(202).json({
+        status: 202,
+        message: "No user",
+        data: {
+          user: null
+        },
+      });
+    }
+    return res.status(200).json({
+      status: 200,
+      message: "Fetch successfully",
+      data: {
+        user: user
+      },
+    });
+  } catch (error) {
+    sendResponse.error(error, next, res);
+
+  }
+},
+
+
+//--//
+updateUserWallet: async (req, res, next) => {
+  try {
+     let { balance,id, debitAmount,  } = req.body
+     let updatedBalance = balance-debitAmount;
+
+     let [isUpdated] = await models.users.update({ balance: updatedBalance, },{ where: { id: id} });
+    
+     if(isUpdated){
+      //save trans logs 
+      return res.status(200).json({
+        status: 200,
+        message: "Amount updated",
+        data: {
+          user: isUpdated
+        },
+      });
+     }
+  } catch (error) {
+    sendResponse.error(error, next, res);
+
+  }
+},
 
 };
 

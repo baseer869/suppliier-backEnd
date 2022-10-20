@@ -23,6 +23,11 @@ product_images : (require('../schemas/product_images'))(instance, Sequelize),
 products_shipping_charges : (require('../schemas/products_shipping_charges'))(instance, Sequelize),
 shipping_details : (require('../schemas/shipping_details'))(instance, Sequelize),
 recentSearches : (require('../schemas/recentSearches'))(instance, Sequelize),
+//--//
+
+transcation_logs : (require('../schemas/transcation_logs'))(instance, Sequelize),
+transcation_requests : (require('../schemas/transcation_requests'))(instance, Sequelize),
+
 
 
 
