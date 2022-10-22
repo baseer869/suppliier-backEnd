@@ -159,18 +159,16 @@ module.exports = function (sequelize, Sequelize) {
     delete attributes.password_reset_token;
     delete attributes.sub_status_code;
     // delete attributes.status;
-    // if (attributes.role_id == 1) {
-    //   attributes.userType = "user";
-    // } else if (attributes.role_id == 2) {
-    //   attributes.userType = "artist";
-    // } else if( attributes.role_id == 3 ){
-    //   attributes.userType = 'entertainer'
-    // }
-    // delete attributes.role_id;
-    // delete attributes.verify_code;
-    // delete attributes.app_version;
-    // delete attributes.createdAt;
-    // delete attributes.updatedAt;
+    if (attributes.role_id == 1) {
+      attributes.userType = "seller";
+    } else if (attributes.role_id == 2) {
+      attributes.userType = "user";
+    } 
+    if (attributes.status == "0") {
+      attributes.status = "Inactive";
+    } else if (attributes.status == "1") {
+      attributes.status = "Active";
+    } 
     return attributes;
   };
   Model.prototype.generateAuthKey = function (length) {
