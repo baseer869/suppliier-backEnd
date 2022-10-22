@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
 app.use(bodyParser.urlencoded({ extended: true }));
 require('dotenv').config()
-// app.options('*', cors())
+app.options('*', cors())
 app.use(cors({ optionsSuccessStatus: 200 }));
 app.options("*", cors({ optionsSuccessStatus: 200 }));
 
