@@ -756,13 +756,25 @@ module.exports = {
           },
         });
       } else if (orders || orders.length > 0) {
-        let user = await models.users.findOne({ where: { id: orders[0]?.userId } });
+        let findQuery = {
+          where: {
+            id: orders[0]?.userId
+          },
+          attributes: ['id', 'username',],
+          include: [{
+            where:{default:"1"},
+            attributes: ['id','userId', 'customer_name',  'phone', 'address', 'state', 'city'],
+            model: models.shipping_details,
+            as: "shipping_details"
+          }]
+        }
+        let user = await models.users.findOne(findQuery);
         return res.status(200).json({
           status: 200,
           message: "Fetch successfull",
           data: {
-            user: user,
             details: orders,
+            user: user,
           },
         });
 
