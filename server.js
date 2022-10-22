@@ -1,4 +1,4 @@
-
+const cors = require('cors');
 const express = require('express');
 const morgan = require('morgan')
 const router = express.Router();
@@ -9,8 +9,10 @@ app.use(express.json());
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
 app.use(bodyParser.urlencoded({ extended: true }));
 require('dotenv').config()
-const cors = require('cors');
-app.options('*', cors())
+// app.options('*', cors())
+app.use(cors({ optionsSuccessStatus: 200 }));
+app.options("*", cors({ optionsSuccessStatus: 200 }));
+
 const fileUpload = require('express-fileupload');
 app.use(fileUpload({
     useTempFiles : true,
