@@ -73,6 +73,8 @@ router.post('/changeOrderStatus',   ProductController2.changeOrderStatus);
 
 //--//
 router.get('/listOrder',  cartController.listOrder2 );
+router.get('/orderDetail/:id',  cartController.orderDetail );
+
 router.get('/usersList',  cartController.listUser );
 router.get('/getUser/:id',  cartController.getUser );
 

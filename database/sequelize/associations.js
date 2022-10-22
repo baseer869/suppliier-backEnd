@@ -42,14 +42,13 @@ module.exports = function (db) {
         foreignKey:"productId",
     });
 
-
-    //  order  -> user
+//--//
     db.users.hasMany(db.order, {
         as:"orders",
         foreignKey: "userId"
     });
     db.order.belongsTo(db.users, {
-        as: "users_order",
+        as:"users_orders",
         foreignKey: "userId"
 
     })

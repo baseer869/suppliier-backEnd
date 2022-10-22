@@ -720,7 +720,58 @@ module.exports = {
     }
   },
 
+  orderDetail: async (req, res, next) => {
+    try {
+      let findQuery = {
+        where: {
+          id: req.params.id
+        },
 
+        include: [
+          {
+
+            model: models.orderDetail,
+            attributes: ['id', 'orderId', 'productId', 'orderNumber', 'price', 'quantity', 'total'],
+            include: [
+              {
+                model: models.products,
+                attributes: ['id', 'name', 'attachment', 'product_code', 'originalPrice', 'price',],
+                include: {
+                  attributes: ['id', 'uri', 'productId'],
+                  model: models.product_images,
+                  // as: 'product_images',
+                }
+              },
+            ],
+          },
+        ],
+      };
+      let orders = await models.order.findAll(findQuery);
+      if (!orders || orders.length == []) {
+        return res.status(202).json({
+          status: 202,
+          message: "You have no orders",
+          data: {
+            order: null
+          },
+        });
+      } else if (orders || orders.length > 0) {
+        let user = await models.users.findOne({ where: { id: orders[0]?.userId } });
+        return res.status(200).json({
+          status: 200,
+          message: "Fetch successfull",
+          data: {
+            user: user,
+            details: orders,
+          },
+        });
+
+      }
+    } catch (error) {
+      sendResponse.error(error, next, res);
+
+    }
+  },
 
   //--//
   checkout: async (req, res, next) => {
