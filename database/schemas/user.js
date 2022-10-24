@@ -160,9 +160,9 @@ module.exports = function (sequelize, Sequelize) {
     delete attributes.sub_status_code;
     // delete attributes.status;
     if (attributes.role_id == 1) {
-      attributes.userType = "seller";
+      attributes.role_id = "seller";
     } else if (attributes.role_id == 2) {
-      attributes.userType = "user";
+      attributes.role_id = "user";
     } 
     if (attributes.status == "0") {
       attributes.status = "Inactive";
