@@ -1,6 +1,6 @@
 const { Op, Sequelize } = require("sequelize");
 const db = require("../../../database/sequelize/sequelize");
-const Pagination = require("../../../app/utility/calls/Pagination");
+const Pagination = require("../../../app/utility/calls/pagination");
 
 const models = require("../../../database/sequelize/sequelize");
 const sendResponse = require("../../utility/functon/sendResponse");
