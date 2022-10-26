@@ -4,7 +4,7 @@ const sendResponse = require("../../utility/functon/sendResponse");
 const cloudinary = require("cloudinary").v2;
 const database = require("../../utility/calls/databaseRequest");
 const dotenv = require("dotenv");
-const Pagination = require("../../../app/utility/calls/Pagination");
+const Pagination = require("../../../app/utility/calls/pagination");
 
 dotenv.config();
 
