@@ -1,5 +1,7 @@
 const { Op, Sequelize } = require("sequelize");
 const db = require("../../../database/sequelize/sequelize");
+const Pagination = require("../../../app/utility/calls/Pagination");
+
 const models = require("../../../database/sequelize/sequelize");
 const sendResponse = require("../../utility/functon/sendResponse");
 
@@ -642,7 +644,10 @@ module.exports = {
         OrderStatus = req.query.transStatus;
         findQuery.where.transactionStatus = OrderStatus
       }
-      let orders = await models.order.findAll(findQuery);
+
+     let pagination = new Pagination(req, findQuery);
+      let orders = await models.order.findAndCountAll(findQuery);
+      pagination.setCount(orders.count);
       if (!orders || orders.length == []) {
         return res.status(202).json({
           status: 202,
@@ -656,7 +661,8 @@ module.exports = {
         status: 200,
         message: "Fetch successfull",
         data: {
-          order: orders
+          order: orders.rows,
+          pagination: pagination
         },
       });
     } catch (error) {
@@ -676,8 +682,8 @@ module.exports = {
         include: [
           {
             model: models.orderDetail,
-            // as: "orderDetails",
             attributes: ['id', 'orderId', 'productId', 'orderNumber', 'price', 'quantity', 'total'],
+            separate: true,
             include: [
               {
                 model: models.products,
@@ -685,7 +691,7 @@ module.exports = {
                 include: {
                   attributes: ['id', 'uri', 'productId'],
                   model: models.product_images,
-                  // as: 'product_images',
+                  separate: true,
                 }
               },
             ],
@@ -697,7 +703,9 @@ module.exports = {
         OrderStatus = req.query.transStatus;
         findQuery.where.transactionStatus = OrderStatus
       }
-      let orders = await models.order.findAll(findQuery);
+      let pagination = new Pagination(req, findQuery);
+      let orders = await models.order.findAndCountAll(findQuery);
+      pagination.setCount(orders.count)
       if (!orders || orders.length == []) {
         return res.status(202).json({
           status: 202,
@@ -711,7 +719,8 @@ module.exports = {
         status: 200,
         message: "Fetch successfull",
         data: {
-          order: orders
+          order: orders.rows,
+          pagination: pagination
         },
       });
     } catch (error) {

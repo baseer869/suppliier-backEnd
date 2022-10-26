@@ -4,6 +4,8 @@ const sendResponse = require("../../utility/functon/sendResponse");
 const cloudinary = require("cloudinary").v2;
 const database = require("../../utility/calls/databaseRequest");
 const dotenv = require("dotenv");
+const Pagination = require("../../../app/utility/calls/Pagination");
+
 dotenv.config();
 
 cloudinary.config({
@@ -229,12 +231,14 @@ module.exports = {
   listProduct: async (req, res, next) => {
     try {
       let { search, filterType } = req.query;
+      let pagination;
       let findQuery = {
         where: {},
         include: [
           {
             model: models.product_images,
             as: "product_images",
+            separate: true,
           },
           // {
           //   attributes: ['id', 'charges', 'is_shipping_charges'],
@@ -271,7 +275,10 @@ module.exports = {
       //     productType: { [Op.like]: "%" + filterType + "%" },
       //   });
       // }
-      let list = await models.products.findAll(findQuery);
+       pagination = new Pagination(req, findQuery);
+      let list = await models.products.findAndCountAll(findQuery);
+        pagination.setCount(list.count);
+
       if (!list) {
         return res.status(202).send({
           status: 202,
@@ -283,7 +290,8 @@ module.exports = {
         status: 200,
         message: "fetch successfull",
         data: {
-          list: list,
+          list: list.rows,
+          pagination: pagination
         },
       });
     } catch (error) {
