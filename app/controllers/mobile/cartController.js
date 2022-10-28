@@ -645,7 +645,7 @@ module.exports = {
         findQuery.where.transactionStatus = OrderStatus
       }
 
-     let pagination = new Pagination(req, findQuery);
+      let pagination = new Pagination(req, findQuery);
       let orders = await models.order.findAndCountAll(findQuery);
       pagination.setCount(orders.count);
       if (!orders || orders.length == []) {
@@ -771,8 +771,8 @@ module.exports = {
           },
           attributes: ['id', 'username',],
           include: [{
-            where:{default:"1"},
-            attributes: ['id','userId', 'customer_name',  'phone', 'address', 'state', 'city'],
+            where: { default: "1" },
+            attributes: ['id', 'userId', 'customer_name', 'phone', 'address', 'state', 'city'],
             model: models.shipping_details,
             as: "shipping_details"
           }]
@@ -866,7 +866,31 @@ module.exports = {
     }
   },
 
+  cancelOrder: async (req, res, next) => {
+    try {
+      let { transactionStatus, id, type, processed_by } = req.body
+      let [order] = await models.order.update({ transactionStatus: transactionStatus, paid: '0' }, { where: { id: id, userId: req.userId } })
 
+      if (order ==1) {
+        return res.status(200).send({
+          status: 200,
+          message: "cancel successful",
+          data:null
+        });
+      } else {
+        return res.status(404).send({ 
+          status: 404,
+          message: "Unable to cancel your order try again",
+          data: {
+            order: null,
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      sendResponse.error(error, next, res);
+    }
+  },
   //--//
   transcationRequest: async (req, res, next) => {
     try {

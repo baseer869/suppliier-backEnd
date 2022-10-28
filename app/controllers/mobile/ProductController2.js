@@ -462,7 +462,7 @@ module.exports = {
       sendResponse.error(error, next, res);
     }
   },
-
+  
 
   addAppAdvertisement: async (req, res, next) => {
     try {

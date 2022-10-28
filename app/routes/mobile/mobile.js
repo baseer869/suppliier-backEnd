@@ -32,8 +32,10 @@ router.get('/countCart', authenticate("mobile"), cartController.countCart);
 
 router.post('/checkout2', authenticate("mobile"), cartController.checkout2)
 router.get('/listOrder', authenticate("mobile"), cartController.listOrder );
+
 //--//
 router.post('/checkout', authenticate("mobile"), cartController.checkout );
+router.post('/cancelOrder', authenticate("mobile"), cartController.cancelOrder );
 
 //--//
 
