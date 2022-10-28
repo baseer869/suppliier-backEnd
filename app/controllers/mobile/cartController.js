@@ -1100,9 +1100,15 @@ module.exports = {
             bankDetails: bankDetails
           },
         });
+      } else if(!bankDetails) {
+        return res.status(202).json({
+          status: 202,
+          message: "Please add bank details",
+          data: null
+        });
       } else {
-        return res.status(404).json({
-          status: 404,
+        return res.status(202).json({
+          status: 202,
           message: "Database error, try again",
           data: null
         });
