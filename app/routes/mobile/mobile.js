@@ -38,6 +38,9 @@ router.post('/checkout', authenticate("mobile"), cartController.checkout );
 router.post('/cancelOrder', authenticate("mobile"), cartController.cancelOrder );
 
 //--//
+router.post('/addBankAccountDetail', authenticate("mobile"), cartController.addBankAccountDetail );
+router.get('/BankAccountDetail', authenticate("mobile"), cartController.BankAccountDetail );
+router.post('/editBankAccountDetail', authenticate("mobile"), cartController.editBankAccountDetail );
 
 
 //--//

@@ -870,16 +870,16 @@ module.exports = {
     try {
       let { transactionStatus, id, type, processed_by, reason } = req.body
       let [order] = await models.order.update({ transactionStatus: transactionStatus, paid: '0', reason: reason }, { where: { id: id, userId: req.userId } })
-       
-      if (order ==1) {
-        
+
+      if (order == 1) {
+
         return res.status(200).send({
           status: 200,
           message: "cancel successful",
-          data:null
+          data: null
         });
       } else {
-        return res.status(404).send({ 
+        return res.status(404).send({
           status: 404,
           message: "Unable to cancel your order try again",
           data: {
@@ -892,6 +892,7 @@ module.exports = {
       sendResponse.error(error, next, res);
     }
   },
+
   //--//
   transcationRequest: async (req, res, next) => {
     try {
@@ -1051,6 +1052,97 @@ module.exports = {
     } catch (error) {
       sendResponse.error(error, next, res);
 
+    }
+  },
+  addBankAccountDetail: async (req, res, next) => {
+    try {
+      let { account_benefciary_name, bank_name, account_number, account_name } = req.body
+
+      let bank_details = await models.bank_details.create({
+        account_benefciary_name: String(account_benefciary_name).trim() || null,
+        userId: req.userId,
+        bank_name: String(bank_name).trim(),
+        account_name: String(account_name).trim(),
+        account_number: String(account_number).trim()
+      });
+      if (bank_details) {
+        return res.status(200).send({
+          status: 200,
+          message: "Your Bank Details Successfully Added",
+          data: bank_details
+        });
+      } else {
+        return res.status(404).send({
+          status: 404,
+          message: "Sorry!\nFailed to save your bank details, try again",
+          data: {
+            bank_details: null,
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      sendResponse.error(error, next, res);
+    }
+  },
+  BankAccountDetail: async (req, res, next) => {
+    try {
+
+      let findQuery = {
+        where: { userId: req.userId }
+      }
+      let bankDetails = await models.bank_details.findOne(findQuery);
+      if (bankDetails) {
+        return res.status(200).json({
+          status: 200,
+          message: "",
+          data: {
+            bankDetails: bankDetails
+          },
+        });
+      } else {
+        return res.status(404).json({
+          status: 404,
+          message: "Database error, try again",
+          data: null
+        });
+      }
+    } catch (error) {
+      sendResponse.error(error, next, res);
+
+    }
+  },
+
+
+  editBankAccountDetail: async (req, res, next) => {
+    try {
+      let { account_benefciary_name, bank_name, account_number, account_name } = req.body
+
+      let bank_details = await models.bank_details.update({
+        account_benefciary_name: String(account_benefciary_name).trim() || null,
+        userId: req.userId,
+        bank_name: String(bank_name).trim(),
+        account_name: String(account_name).trim(),
+        account_number: String(account_number).trim()
+      }, {where : { userId: req.userId }});
+      if (bank_details) {
+        return res.status(200).send({
+          status: 200,
+          message: "Your Bank Details Successfully Updated",
+          data: bank_details
+        });
+      } else {
+        return res.status(404).send({
+          status: 404,
+          message: "Sorry!\nFailed to update your bank details, try again",
+          data: {
+            bank_details: null,
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      sendResponse.error(error, next, res);
     }
   },
 

@@ -27,6 +27,10 @@ recentSearches : (require('../schemas/recentSearches'))(instance, Sequelize),
 
 transcation_logs : (require('../schemas/transcation_logs'))(instance, Sequelize),
 transcation_requests : (require('../schemas/transcation_requests'))(instance, Sequelize),
+//--//
+bank_details : (require('../schemas/bank_details'))(instance, Sequelize),
+
+
 
 
 
