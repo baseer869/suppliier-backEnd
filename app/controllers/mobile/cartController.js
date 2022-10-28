@@ -868,10 +868,11 @@ module.exports = {
 
   cancelOrder: async (req, res, next) => {
     try {
-      let { transactionStatus, id, type, processed_by } = req.body
-      let [order] = await models.order.update({ transactionStatus: transactionStatus, paid: '0' }, { where: { id: id, userId: req.userId } })
-
+      let { transactionStatus, id, type, processed_by, reason } = req.body
+      let [order] = await models.order.update({ transactionStatus: transactionStatus, paid: '0', reason: reason }, { where: { id: id, userId: req.userId } })
+       
       if (order ==1) {
+        
         return res.status(200).send({
           status: 200,
           message: "cancel successful",

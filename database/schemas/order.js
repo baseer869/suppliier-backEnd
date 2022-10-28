@@ -17,6 +17,9 @@ module.exports = function (sequelize, Sequelizew) {
     orderNumber: {
       type: Sequelize.STRING,
     },
+    reason: {
+      type: Sequelize.STRING,
+    },
 
     paymentId: {
       type: Sequelize.STRING,
