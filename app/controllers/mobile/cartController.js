@@ -614,11 +614,11 @@ module.exports = {
 
   listOrder: async (req, res, next) => {
     try {
-      var OrderStatus = "Pending"
+      var OrderStatus;
       let findQuery = {
         where: {
           userId: req.userId,
-          transactionStatus: OrderStatus
+          // transactionStatus: OrderStatus
         },
         include: [
           {
@@ -657,14 +657,34 @@ module.exports = {
           },
         });
       }
-      return res.status(200).json({
-        status: 200,
-        message: "Fetch successfull",
-        data: {
-          order: orders.rows,
-          pagination: pagination
-        },
-      });
+      else if (orders || orders.length > 0) {
+      console.log("looodd", orders.rows[0]?.userId); 
+
+        let findQuery = {
+          where: {
+            id: orders.rows[0]?.userId
+          },
+          attributes: ['id', 'username',],
+          include: [{
+            where: { default: "1" },
+            attributes: ['id', 'userId', 'customer_name', 'phone', 'address', 'state', 'city'],
+            model: models.shipping_details,
+            as: "shipping_details"
+          }]
+        }
+        let user = await models.users.findOne(findQuery);
+        
+          return res.status(200).json({
+            status: 200,
+            message: "Fetch successfull",
+            data: {
+              order: orders.rows,
+              pagination: pagination,
+              user: user,
+            },
+          });
+    
+      }
     } catch (error) {
       sendResponse.error(error, next, res);
 
@@ -674,7 +694,7 @@ module.exports = {
   //--//
   listOrder2: async (req, res, next) => {
     try {
-      var OrderStatus = "Pending"
+      var OrderStatus;
       let findQuery = {
         where: {
 
