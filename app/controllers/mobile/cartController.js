@@ -648,7 +648,7 @@ module.exports = {
       let pagination = new Pagination(req, findQuery);
       let orders = await models.order.findAndCountAll(findQuery);
       pagination.setCount(orders.count);
-      if (!orders || orders.length == []) {
+      if (!orders || orders.rows.length == []) {
         return res.status(202).json({
           status: 202,
           message: "You have no orders",
@@ -657,9 +657,7 @@ module.exports = {
           },
         });
       }
-      else if (orders || orders.length > 0) {
-      console.log("looodd", orders.rows[0]?.userId); 
-
+      else if (orders || orders.rows.length > 0) {
         let findQuery = {
           where: {
             id: orders.rows[0]?.userId
