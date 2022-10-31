@@ -162,7 +162,6 @@ module.exports = {
 	},
      login: async (req, res, next) => {
     try {
-      console.log('Here')
       if (!req.body.email || !req.body.password) {
         return res.status(400).json({
           status: 400,

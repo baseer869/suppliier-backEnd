@@ -102,12 +102,12 @@ module.exports = function (sequelize, Sequelize) {
       verified: {
         type: Sequelize.ENUM,
         values: ["0", "1", "2"],
-        defaultValue: "0",
+        defaultValue: "1",
       },
       status: {
         type: Sequelize.ENUM,
-        values: ["0", "1", "2"],
-        defaultValue: "0",
+        values: ["0", "1", "2", "3"],
+        defaultValue: "1",
       },
       balance:{
         type: Sequelize.INTEGER,
