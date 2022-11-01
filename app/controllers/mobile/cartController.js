@@ -644,6 +644,9 @@ module.exports = {
         OrderStatus = req.query.transStatus;
         findQuery.where.transactionStatus = OrderStatus
       }
+      if(req.query.search) {
+        findQuery.where = { orderNumber: { [Op.like]: "%" + `${req.query.search}` + "%" } } 
+      }
 
       let pagination = new Pagination(req, findQuery);
       let orders = await models.order.findAndCountAll(findQuery);
@@ -674,7 +677,7 @@ module.exports = {
         
           return res.status(200).json({
             status: 200,
-            message: "Fetch successfull",
+            message: "",
             data: {
               order: orders.rows,
               pagination: pagination,
