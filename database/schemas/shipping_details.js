@@ -24,7 +24,7 @@ module.exports = function (sequelize, Sequelizew) {
     default: {
       type: Sequelize.ENUM,
       values: ["0", "1",],
-      defaultValue: "0",
+      defaultValue: "1",
     },
     phone: {
       type: Sequelize.STRING,
