@@ -46,7 +46,7 @@ router.post('/editBankAccountDetail', authenticate("mobile"), cartController.edi
 //--//
 router.post('/addAddress', authenticate("mobile"), cartController.addAddress)
 router.get('/getAddress', authenticate("mobile"), cartController.getAddress)
-router.get('/listAddress',  cartController.listAddress)
+router.get('/listAddress',  authenticate("mobile") ,cartController.listAddress)
 router.post('/editAddress', authenticate("mobile"), cartController.eidtAddress)
 
 //--//
