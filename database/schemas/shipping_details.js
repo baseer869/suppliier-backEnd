@@ -27,7 +27,7 @@ module.exports = function (sequelize, Sequelizew) {
       defaultValue: "1",
     },
     phone: {
-      type: Sequelize.NUMBER,
+      type: Sequelize.INTEGER,
     },
     state: {
       type: Sequelize.STRING,
