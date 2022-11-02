@@ -466,7 +466,7 @@ module.exports = {
         });
       }
       else {
-        return sendResponse.dbError(result, req, res);
+        return sendResponse.dbError(address, req, res);
       }
     } catch (error) {
       console.log(error);
