@@ -14,10 +14,16 @@ module.exports = function (sequelize, Sequelizew) {
         key: "id",
       },
     },
+    orderId: {
+      type: Sequelize.BIGINT(20),
+      references: {
+        model: "orders",
+        key: "id",
+      },
+    },
     customer_name: {
       type: Sequelize.STRING,
     },
-
     address: {
       type: Sequelize.STRING,
     },

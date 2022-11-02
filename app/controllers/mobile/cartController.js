@@ -4,6 +4,7 @@ const Pagination = require("../../../app/utility/calls/pagination");
 
 const models = require("../../../database/sequelize/sequelize");
 const sendResponse = require("../../utility/functon/sendResponse");
+const sequelize = require("sequelize");
 
 /********************** CART ************************************* */
 
@@ -622,8 +623,12 @@ module.exports = {
         },
         include: [
           {
+            model: models.shipping_details,
+            separate: true,
+
+          },
+          {
             model: models.orderDetail,
-            // as: "orderDetails",
             attributes: ['id', 'orderId', 'productId', 'orderNumber', 'price', 'quantity', 'total'],
             include: [
               {
@@ -633,11 +638,15 @@ module.exports = {
                   attributes: ['id', 'uri', 'productId'],
                   model: models.product_images,
                   // as: 'product_images',
-                }
+                },
+
               },
+              
             ],
           },
+         
         ],
+      
       };
       //
       if (req.query.transStatus) {
@@ -659,32 +668,15 @@ module.exports = {
             order: null
           },
         });
-      }
-      else if (orders || orders.rows.length > 0) {
-        let findQuery = {
-          where: {
-            id: orders.rows[0]?.userId
-          },
-          attributes: ['id', 'username',],
-          include: [{
-            where: { default: "1" },
-            attributes: ['id', 'userId', 'customer_name', 'phone', 'address', 'state', 'city'],
-            model: models.shipping_details,
-            as: "shipping_details"
-          }]
-        }
-        let user = await models.users.findOne(findQuery);
-        
+      }else if (orders || orders.rows.length > 0) {
           return res.status(200).json({
             status: 200,
             message: "",
             data: {
               order: orders.rows,
               pagination: pagination,
-              user: user,
             },
           });
-    
       }
     } catch (error) {
       sendResponse.error(error, next, res);

@@ -53,13 +53,13 @@ module.exports = function (db) {
 
     })
 //--//
-db.users.hasMany(db.shipping_details, {
-    as:"shipping_details",
-    foreignKey: "userId"
+db.order.hasMany(db.shipping_details, {
+    // as:"shipping_details",
+    foreignKey: "orderId"
 });
-db.shipping_details.belongsTo(db.users, {
-    as:"users",
-    foreignKey: "userId"
+db.shipping_details.belongsTo(db.order, {
+    // as:"users",
+    foreignKey: "orderId"
 
 })
 
