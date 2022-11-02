@@ -641,20 +641,20 @@ module.exports = {
                 },
 
               },
-              
+
             ],
           },
-         
+
         ],
-      
+
       };
       //
       if (req.query.transStatus) {
         OrderStatus = req.query.transStatus;
         findQuery.where.transactionStatus = OrderStatus
       }
-      if(req.query.search) {
-        findQuery.where = { orderNumber: { [Op.like]: "%" + `${req.query.search}` + "%" } } 
+      if (req.query.search) {
+        findQuery.where = { orderNumber: { [Op.like]: "%" + `${req.query.search}` + "%" } }
       }
 
       let pagination = new Pagination(req, findQuery);
@@ -668,15 +668,15 @@ module.exports = {
             order: null
           },
         });
-      }else if (orders || orders.rows.length > 0) {
-          return res.status(200).json({
-            status: 200,
-            message: "",
-            data: {
-              order: orders.rows,
-              pagination: pagination,
-            },
-          });
+      } else if (orders || orders.rows.length > 0) {
+        return res.status(200).json({
+          status: 200,
+          message: "",
+          data: {
+            order: orders.rows,
+            pagination: pagination,
+          },
+        });
       }
     } catch (error) {
       sendResponse.error(error, next, res);
@@ -821,10 +821,13 @@ module.exports = {
 
       let order = new models.order(orderDetail);
       let isOrderPlaced = await order.save(order);
-
-
+      //update , add shipping info 
+      await models.shipping_details.update({
+        orderId: isOrderPlaced.dataValues.id
+      }, {
+        where: {   id: req.body.shippingId, }
+      })
       if (isOrderPlaced) {
-        // for sinle order
         let orderDetails = [];
         if (req.body.isCartItem == true) {
           for (let index = 0; index < orderDetail.product.length; index++) {
@@ -1113,7 +1116,7 @@ module.exports = {
             bankDetails: bankDetails
           },
         });
-      } else if(!bankDetails) {
+      } else if (!bankDetails) {
         return res.status(202).json({
           status: 202,
           message: "Please add bank details",
@@ -1143,7 +1146,7 @@ module.exports = {
         bank_name: String(bank_name).trim(),
         account_name: String(account_name).trim(),
         account_number: String(account_number).trim()
-      }, {where : { userId: req.userId }});
+      }, { where: { userId: req.userId } });
       if (bank_details) {
         return res.status(200).send({
           status: 200,
