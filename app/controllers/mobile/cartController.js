@@ -822,11 +822,12 @@ module.exports = {
       let order = new models.order(orderDetail);
       let isOrderPlaced = await order.save(order);
       //update , add shipping info 
-      await models.shipping_details.update({
-        orderId: isOrderPlaced.dataValues.id
-      }, {
-        where: {   id: req.body.shippingId, }
-      })
+    
+      let shipping_address = { ...req.body.shippingInfo };
+      shipping_address.orderId = isOrderPlaced.dataValues.id
+      shipping_address.userId = req.userId
+      await models.shipping_details.create(shipping_address);
+
       if (isOrderPlaced) {
         let orderDetails = [];
         if (req.body.isCartItem == true) {
