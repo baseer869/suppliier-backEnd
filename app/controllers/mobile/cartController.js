@@ -423,7 +423,7 @@ module.exports = {
       if (address) {
         return res.status(200).json({
           status: 200,
-          message: "Address found",
+          message: "",
           data: {
             address: address
           },
@@ -431,7 +431,7 @@ module.exports = {
       } else if (!address) {
         return res.status(202).json({
           status: 202,
-          message: "No Default Address found",
+          message: "Address Not found",
           data: {
             address: null
           },
