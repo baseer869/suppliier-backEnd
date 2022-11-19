@@ -46,6 +46,7 @@ module.exports = function (sequelize, Sequelize) {
         // },
          expiry:{
             type: Sequelize.DATE,
+        
         },
         createdAt: {
             field: 'created_at',

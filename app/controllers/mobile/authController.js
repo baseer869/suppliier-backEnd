@@ -192,16 +192,11 @@ module.exports = {
           user_id: user.id,
         };
         let authkey = await database.findOne(models.authKey, whereForAuthKey);
-        console.log("auth keys", authkey);
         if (!authkey) {
           let Authkey = new models.authKey({});
           Authkey.user_id = parseInt(user.id);
           Authkey.auth_key = token;
-          console.log("no Authkey", Authkey);
-
           let result = await database.save(Authkey);
-          console.log("result", result);
-
         } else if (authkey) {
           authkey.auth_key = token;
           let result = await database.save(authkey);
