@@ -19,6 +19,16 @@ module.exports.instance = function () {
         dialect: "mysql",
       }
     );
+  } else if(process.env.ENV === 'production') {
+    sequelize = new Sequelize(
+      "resello-production",
+      "resellods",
+      "resello1122@A",
+      {
+        host: "rm-6gjnq5a85b90z52067o.mysql.ap-south-1.rds.aliyuncs.com",
+        dialect: "mysql",
+      }
+    );
   }
 
   return sequelize;
