@@ -13,6 +13,7 @@ module.exports = function (sequelize, Sequelizew) {
         model: "shop_categories",
         key: "id",
       },
+      
     },
     userId: {
       type: Sequelize.INTEGER,
