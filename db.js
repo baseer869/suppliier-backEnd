@@ -19,6 +19,7 @@ module.exports.instance = function () {
         dialect: "mysql",
       }
     );
+    console.log('sequelize', sequelize);
   } else if(process.env.ENV === 'production') {
     sequelize = new Sequelize(
       "resello-production",
