@@ -12,8 +12,8 @@ module.exports.instance = function () {
   } else if(process.env.ENV === 'staging') {
     sequelize = new Sequelize(
       "resello-staging",
-      "resellods",
-      "resello1122@A",
+      "admin",
+      "admin123",
       {
         host: "staging.cqtdp0nlkbdj.ap-northeast-1.rds.amazonaws.com",
         dialect: "mysql",
@@ -22,8 +22,8 @@ module.exports.instance = function () {
   } else if(process.env.ENV === 'production') {
     sequelize = new Sequelize(
       "resello-production",
-      "resellods",
-      "resello1122@A",
+      "admin",
+      "admin123",
       {
         host: "production.cqtdp0nlkbdj.ap-northeast-1.rds.amazonaws.com",
         dialect: "mysql",
