@@ -15,7 +15,7 @@ module.exports.instance = function () {
       "resellods",
       "resello1122@A",
       {
-        host: "rm-6gjnq5a85b90z52067o.mysql.ap-south-1.rds.aliyuncs.com",
+        host: "staging.cqtdp0nlkbdj.ap-northeast-1.rds.amazonaws.com",
         dialect: "mysql",
       }
     );
@@ -25,7 +25,7 @@ module.exports.instance = function () {
       "resellods",
       "resello1122@A",
       {
-        host: "rm-6gjnq5a85b90z52067o.mysql.ap-south-1.rds.aliyuncs.com",
+        host: "production.cqtdp0nlkbdj.ap-northeast-1.rds.amazonaws.com",
         dialect: "mysql",
       }
     );
