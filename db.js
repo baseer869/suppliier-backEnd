@@ -4,11 +4,11 @@ module.exports.sequelize = Sequelize;
 module.exports.instance = function () {
   let sequelize;
   if (process.env.ENV === 'localhost') {
-    sequelize = new Sequelize( "resello-staging",
-    "admin",
-    "admin123",
+    sequelize = new Sequelize( "epiz_33044828_staging",
+    "epiz_33044828",
+    "kuPSP8eAvRfKmv",
     {
-      host: "staging.cqtdp0nlkbdj.ap-northeast-1.rds.amazonaws.com",
+      host: "sql205.epizy.com",
       dialect: "mysql",
     });
     console.log('sequelize', sequelize);
@@ -20,7 +20,7 @@ module.exports.instance = function () {
       "admin",
       "admin123",
       {
-        host: "staging.cqtdp0nlkbdj.ap-northeast-1.rds.amazonaws.com",
+        host: "resello-staging.c89akl5uhanc.ap-south-1.rds.amazonaws.com",
         dialect: "mysql",
       }
     );
