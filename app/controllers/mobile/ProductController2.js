@@ -338,9 +338,9 @@ module.exports = {
     try {
       let findQuery = {
         where: { group_categories_id: req.params.id },
-        //   order: [
-        //     ['id', 'DESC'],
-        // ],
+          order: [
+            ['id', 'DESC'],
+        ],
       };
       let list = await models.categories.findAll(findQuery);
       if (!list || list?.length == 0) {
