@@ -30,7 +30,7 @@ module.exports.instance = function () {
       "admin",
       "admin123",
       {
-        host: "production.cqtdp0nlkbdj.ap-northeast-1.rds.amazonaws.com",
+        host: "resello-production.c89akl5uhanc.ap-south-1.rds.amazonaws.com",
         dialect: "mysql",
       }
     );
