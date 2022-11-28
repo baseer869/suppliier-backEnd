@@ -93,11 +93,11 @@ db.shipping_details.belongsTo(db.order, {
         foreignKey:"productId"
     })
     db.products.hasMany(db.products_shipping_charges, {
-        // as:"products_shipping_charges",
+        as:"products_shipping_charges",
         foreignKey:"productId"
     })
     db.products_shipping_charges.belongsTo(db.products,{
-        // as:"product_charges",
+        as:"product_charges",
         foreignKey:"productId"
     })
 

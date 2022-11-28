@@ -4,11 +4,11 @@ module.exports.sequelize = Sequelize;
 module.exports.instance = function () {
   let sequelize;
   if (process.env.ENV === 'localhost') {
-    sequelize = new Sequelize( "resello-staging",
-    "admin",
-    "admin123",
+    sequelize = new Sequelize( "resello",
+    "root",
+    "root",
     {
-      host: "resello-staging.c89akl5uhanc.ap-south-1.rds.amazonaws.com",
+      host: "localhost",
       dialect: "mysql",
     });
    

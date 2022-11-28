@@ -97,17 +97,13 @@ module.exports = {
       parseInt(productBody.originalPrice);
       parseInt(productBody.price)
       item = await models.products.create(productBody);
+      //--//
+      let shipping_charges = {
+        productId : item.dataValues.id,
+        charges : req.body.charges
+      }
+      await models.products_shipping_charges.create(shipping_charges)
       if (item) {
-        // let shippingChargesBody = {
-        //   productId: item?.dataValues?.id,
-        //   is_shipping_charges: req.body.is_shipping_charges,
-        //   charges: parseInt(req.body.charges) 
-        // }
-
-        // await models.products_shipping_charges.create(
-        //   shippingChargesBody
-        // );
-
         for (let index = 0; index < imageUrlList.length; index++) {
           const element = imageUrlList[index];
           let imagesBody = {
@@ -240,11 +236,11 @@ module.exports = {
             as: "product_images",
             separate: true,
           },
-          // {
-          //   attributes: ['id', 'charges', 'is_shipping_charges'],
-          //   model: models.products_shipping_charges,
-          //   as: "products_shipping_charges",
-          // },
+          {
+            attributes: ['id', 'charges',],
+            model: models.products_shipping_charges,
+            as: "products_shipping_charges",
+          },
         ],
         order: [
           ['id', 'DESC'],
